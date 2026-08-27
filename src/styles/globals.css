@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #173A35;
+    --color-primary-hover: #22564F;
+    --color-primary-active: #102A27;
+    --color-secondary: #3E5A58;
+    --color-accent: #4F7C84;
+    --color-accent-hover: #3E666D;
+    --color-ink: #202B29;
+    --color-body: #46514F;
+    --color-muted: #76807D;
+    --color-canvas: #F3F0E8;
+    --color-surface: #FFFFFF;
+    --color-border: #D9DDD8;
+    --color-border-strong: #B8C2BD;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-body);
+    font-family: 'IBM Plex Sans', 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-ink);
+    letter-spacing: -0.015em;
+  }
+
+  /* Default focus indicator for keyboard accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Container system conforming to Asterra design manual */
+  .container-corporate {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  @screen md {
+    .container-corporate {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  @screen lg {
+    .container-corporate {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  /* Editorial Card Component */
+  .card-corporate {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-corporate:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: 0 4px 20px -2px rgba(23, 58, 53, 0.08);
+  }
+
+  /* Monospace Eyebrow Badge */
+  .badge-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    background-color: #EBF0EE;
+    color: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #D1DCD8;
+  }
+
+  /* Primary Button */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--color-primary);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-primary-active);
+  }
+
+  /* Secondary / Outline Button */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    color: var(--color-primary);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--color-border-strong);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    border-color: var(--color-primary);
+  }
+
+  /* Stat Callout Metric */
+  .stat-callout {
+    border-top: 2px solid var(--color-primary);
+    padding-top: 1.25rem;
+  }
+}
