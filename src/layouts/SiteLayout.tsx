@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, ShieldCheck } from 'lucide-react';
+import { Menu, X, ShieldCheck, ChevronDown } from 'lucide-react';
+import { businessUnits, company } from '../data';
 
 const NAV_LINKS = [
   { label: 'About', href: '/about' },
-  { label: 'Business Units', href: '/business' },
+  { label: 'Business Units', href: '/business', hasDropdown: true },
   { label: 'Projects', href: '/projects' },
   { label: 'Leadership', href: '/leadership' },
   { label: 'Insights', href: '/insights' },
@@ -13,11 +14,14 @@ const NAV_LINKS = [
 
 export const SiteLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  // Close mobile menu and scroll to top on route change
+  // Close mobile menu & dropdown on route change, scroll to top
   useEffect(() => {
     setMobileMenuOpen(false);
+    setDropdownOpen(false);
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
@@ -33,19 +37,35 @@ export const SiteLayout: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-ivory-canvas text-charcoal-body font-sans">
       {/* 1. TOP UTILITY BAR */}
       <div className="bg-evergreen-active text-border text-[11px] font-mono border-b border-evergreen py-1.5 hidden md:block">
         <div className="container-corporate flex justify-between items-center">
           <div className="flex items-center gap-6">
-            <span>ASTERRA MANUFACTURING GROUP • INDUSTRIAL EXCELLENCE</span>
-            <span>ISO 9001:2015 / ISO 14001 CERTIFIED</span>
+            <span className="font-semibold text-white">ASTERRA MANUFACTURING GROUP</span>
+            <span>•</span>
+            <span>ISO 9001:2015 / ISO 14001 / ISO 45001 CERTIFIED</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link to="/contact" className="hover:text-white transition-colors">HQ: Addis Ababa</Link>
+            <Link to="/contact" className="hover:text-white transition-colors">HQ: Addis Ababa, Ethiopia</Link>
             <span>•</span>
-            <a href="tel:+251115550199" className="hover:text-white transition-colors">+251 (0) 11 555 0199</a>
+            <a href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`} className="hover:text-white transition-colors font-semibold">
+              {company.contact.phonePrimary}
+            </a>
           </div>
         </div>
       </div>
@@ -62,29 +82,99 @@ export const SiteLayout: React.FC = () => {
               <span className="font-serif font-bold text-lg text-evergreen tracking-tight leading-none">
                 ASTERRA
               </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal-muted mt-0.5">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal-muted mt-0.5 font-semibold">
                 Manufacturing Group
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <NavLink
-                key={link.href}
-                to={link.href}
-                className={({ isActive }) =>
-                  `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 relative ${
-                    isActive
-                      ? 'text-evergreen font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-evergreen'
-                      : 'text-charcoal-body hover:text-evergreen'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
+          <nav className="hidden lg:flex items-center gap-7">
+            {NAV_LINKS.map((link) => {
+              if (link.hasDropdown) {
+                return (
+                  <div
+                    key={link.href}
+                    ref={dropdownRef}
+                    className="relative"
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
+                  >
+                    <NavLink
+                      to={link.href}
+                      className={({ isActive }) =>
+                        `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 flex items-center gap-1 ${
+                          isActive || location.pathname.startsWith('/business')
+                            ? 'text-evergreen font-bold border-b-2 border-evergreen'
+                            : 'text-charcoal-body hover:text-evergreen'
+                        }`
+                      }
+                      aria-haspopup="true"
+                      aria-expanded={dropdownOpen}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    </NavLink>
+
+                    {/* Dropdown Menu */}
+                    {dropdownOpen && (
+                      <div className="absolute top-full left-0 w-80 bg-white border border-border shadow-md py-2 mt-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                        <div className="px-4 py-2 border-b border-border/60 bg-ivory-canvas/60">
+                          <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal-muted font-bold">
+                            Operating Divisions Directory
+                          </span>
+                        </div>
+                        {businessUnits.map((u) => (
+                          <Link
+                            key={u.slug}
+                            to={`/business/${u.slug}`}
+                            className="block px-4 py-2.5 hover:bg-ivory-canvas transition-colors border-b border-border/30 last:border-0"
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-[10px] font-bold text-mineral-teal uppercase">
+                                {u.divisionCode}
+                              </span>
+                              <span className="font-serif font-bold text-xs text-evergreen">
+                                {u.name.split('—')[1] || u.name}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-charcoal-muted line-clamp-1 mt-0.5">
+                              {u.tagline}
+                            </p>
+                          </Link>
+                        ))}
+                        <div className="p-2 border-t border-border bg-ivory-canvas/30 text-center">
+                          <Link
+                            to="/business"
+                            className="font-mono text-[10px] uppercase tracking-wider text-evergreen font-bold hover:underline"
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            View All Divisions & Capacities →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <NavLink
+                  key={link.href}
+                  to={link.href}
+                  className={({ isActive }) =>
+                    `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 relative ${
+                      isActive
+                        ? 'text-evergreen font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-evergreen'
+                        : 'text-charcoal-body hover:text-evergreen'
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              );
+            })}
           </nav>
 
           {/* Header Action Button */}
@@ -119,15 +209,29 @@ export const SiteLayout: React.FC = () => {
               Home
             </NavLink>
             {NAV_LINKS.map((link) => (
-              <NavLink
-                key={link.href}
-                to={link.href}
-                className={({ isActive }) =>
-                  `text-lg font-serif tracking-wide py-2 ${isActive ? 'text-white font-bold' : 'text-border'}`
-                }
-              >
-                {link.label}
-              </NavLink>
+              <div key={link.href} className="space-y-2">
+                <NavLink
+                  to={link.href}
+                  className={({ isActive }) =>
+                    `text-lg font-serif tracking-wide py-2 block ${isActive ? 'text-white font-bold' : 'text-border'}`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+                {link.hasDropdown && (
+                  <div className="pl-4 space-y-2 border-l border-mineral-teal/40">
+                    {businessUnits.map((u) => (
+                      <Link
+                        key={u.slug}
+                        to={`/business/${u.slug}`}
+                        className="block text-xs font-mono text-border hover:text-white py-1"
+                      >
+                        {u.divisionCode}: {u.name.split('—')[1] || u.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
           <div className="pt-8 space-y-6">
@@ -136,7 +240,8 @@ export const SiteLayout: React.FC = () => {
             </Link>
             <div className="text-xs text-border space-y-2 font-mono">
               <p>Addis Ababa, Ethiopia</p>
-              <p>inquiries@asterragroup.com</p>
+              <p>{company.contact.generalEmail}</p>
+              <p>{company.contact.phonePrimary}</p>
             </div>
           </div>
         </div>
@@ -191,8 +296,9 @@ export const SiteLayout: React.FC = () => {
               <ul className="space-y-2.5 text-xs text-border">
                 <li><Link to="/business/precision-metals-fabrication" className="hover:text-white transition-colors">DIV-01: Precision Metals</Link></li>
                 <li><Link to="/business/industrial-materials-building-products" className="hover:text-white transition-colors">DIV-02: Building Products</Link></li>
-                <li><Link to="/projects" className="hover:text-white transition-colors">Project Portfolio</Link></li>
-                <li><Link to="/business" className="hover:text-white transition-colors">Plant Capacities</Link></li>
+                <li><Link to="/business/polymers-engineered-composites" className="hover:text-white transition-colors">DIV-03: Polymers & Piping</Link></li>
+                <li><Link to="/business/automated-equipment-assemblies" className="hover:text-white transition-colors">DIV-04: Automated Assemblies</Link></li>
+                <li><Link to="/projects" className="hover:text-white transition-colors">Delivered Case Studies</Link></li>
               </ul>
             </div>
 
@@ -202,17 +308,18 @@ export const SiteLayout: React.FC = () => {
                 Connect
               </h4>
               <ul className="space-y-2.5 text-xs text-border">
-                <li><Link to="/insights" className="hover:text-white transition-colors">Industry Insights & Papers</Link></li>
+                <li><Link to="/insights" className="hover:text-white transition-colors">Technical Whitepapers</Link></li>
                 <li><Link to="/careers" className="hover:text-white transition-colors">Engineering Careers</Link></li>
                 <li><Link to="/contact" className="hover:text-white transition-colors">Procurement Inquiries</Link></li>
-                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy & Terms</Link></li>
+                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy & Data Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Engagement</Link></li>
               </ul>
             </div>
           </div>
 
           {/* Sub-footer copyright */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-border font-mono">
-            <p>© {new Date().getFullYear()} Asterra Manufacturing Group. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Asterra Manufacturing Group S.C. All rights reserved.</p>
             <div className="flex gap-6">
               <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-white transition-colors">Terms of Engagement</Link>

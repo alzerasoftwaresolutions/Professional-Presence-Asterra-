@@ -3,11 +3,40 @@
  * Phase 6: Content Model & Data Architecture
  */
 
+export interface CoreValue {
+  title: string;
+  description: string;
+}
+
+export interface Milestone {
+  year: number;
+  title: string;
+  description: string;
+}
+
+export interface CertificationItem {
+  code: string;
+  title: string;
+  issuer: string;
+  year: number;
+}
+
+export interface SocialLinkItem {
+  platform: 'linkedin' | 'twitter' | 'youtube' | 'facebook';
+  url: string;
+}
+
 export interface CompanyInfo {
   name: string;
   legalName: string;
   tagline: string;
   foundingYear: number;
+  overview: string;
+  heritageStory: string;
+  mission: string;
+  vision: string;
+  coreValues: CoreValue[];
+  milestones: Milestone[];
   headquarters: {
     address: string;
     city: string;
@@ -35,16 +64,8 @@ export interface CompanyInfo {
     exportCountriesCount: number;
     activeMarkets: string[];
   };
-  certifications: {
-    code: string;
-    title: string;
-    issuer: string;
-    year: number;
-  }[];
-  socialLinks: {
-    platform: 'linkedin' | 'twitter' | 'youtube' | 'facebook';
-    url: string;
-  }[];
+  certifications: CertificationItem[];
+  socialLinks: SocialLinkItem[];
 }
 
 export interface CapabilityItem {

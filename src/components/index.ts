@@ -14,6 +14,7 @@ export * from './shared/SectionHeader';
 export * from './shared/Breadcrumbs';
 export * from './shared/CTABanner';
 export * from './shared/PageHeader';
+export * from './shared/PageSeo';
 
 // Domain Components
 export * from './domain/BusinessUnitCard';

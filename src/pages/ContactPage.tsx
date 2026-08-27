@@ -1,109 +1,138 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { getCompanyInfo } from '../data';
+import {
+  PageHeader,
+  CorporateInquiryForm,
+  Heading,
+  Text,
+  PageSeo,
+} from '../components';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Building2,
+  Factory,
+} from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  const company = getCompanyInfo();
 
   return (
     <div className="w-full">
-      <section className="bg-evergreen text-white py-16 lg:py-24 border-b border-evergreen-hover">
-        <div className="container-corporate">
-          <div className="badge-mono bg-evergreen-hover text-white border-mineral-teal mb-4">
-            Corporate Inquiry Hub
-          </div>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-white mb-4">
-            Direct Stakeholder & Procurement Inquiries.
-          </h1>
-          <p className="font-sans text-lg text-border max-w-2xl">
-            Connect with our division procurement teams, executive leadership, media relations, or human resources directorate.
-          </p>
-        </div>
-      </section>
+      <PageSeo
+        title="Corporate & Commercial Inquiries Desk"
+        description="Submit heavy manufacturing RFQ documents, schedule plant inspections, or contact Asterra Group executive directorates."
+        ogType="website"
+      />
+      {/* 1. PAGE HEADER */}
+      <PageHeader
+        eyebrow="Corporate & Commercial Channels"
+        title="Initiate a Technical Inquiry or Procurement RFQ."
+        description="Whether requesting a formal tender quotation, scheduling an in-plant facility inspection, or contacting our executive board, our directorship teams are at your disposal."
+        breadcrumbs={[{ label: 'Contact', href: '/contact' }]}
+        theme="evergreen"
+      />
 
-      <section className="py-16">
+      {/* 2. DIRECTORY & TRANSMISSION GRID */}
+      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
         <div className="container-corporate">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-7">
-              <div className="bg-white p-8 border border-border">
-                <h2 className="font-serif text-2xl font-bold text-evergreen mb-6">Corporate Inquiry Form</h2>
-                {submitted ? (
-                  <div className="p-8 bg-ivory-canvas border border-border text-center space-y-3">
-                    <CheckCircle2 className="w-12 h-12 text-evergreen mx-auto" />
-                    <h3 className="font-serif text-xl font-bold text-evergreen">Inquiry Transmitted</h3>
-                    <p className="text-xs text-charcoal-body">
-                      Your submission has been dispatched to the designated department. An executive officer will respond within one business day.
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">
-                        Department Destination *
-                      </label>
-                      <select className="w-full border border-border p-3 text-sm bg-white focus:outline-mineral-teal">
-                        <option>Procurement & High-Volume Sales</option>
-                        <option>Partnerships & Joint Ventures</option>
-                        <option>Careers & Talent Directorate</option>
-                        <option>Media & Investor Relations</option>
-                        <option>General Corporate Inquiry</option>
-                      </select>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">Full Name *</label>
-                        <input required type="text" className="w-full border border-border p-3 text-sm focus:outline-mineral-teal" placeholder="e.g. Samuel Yohannes" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">Organization *</label>
-                        <input required type="text" className="w-full border border-border p-3 text-sm focus:outline-mineral-teal" placeholder="Company / Agency" />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">Corporate Email *</label>
-                        <input required type="email" className="w-full border border-border p-3 text-sm focus:outline-mineral-teal" placeholder="name@company.com" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">Telephone *</label>
-                        <input required type="tel" className="w-full border border-border p-3 text-sm focus:outline-mineral-teal" placeholder="+251 ..." />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-widest text-charcoal-muted mb-1">Message / RFQ Specifications *</label>
-                      <textarea required rows={4} className="w-full border border-border p-3 text-sm focus:outline-mineral-teal" placeholder="Outline your technical requirements, estimated volume, or partnership request..."></textarea>
-                    </div>
-
-                    <button type="submit" className="btn-primary w-full sm:w-auto">
-                      Submit Corporate Inquiry <Send className="w-4 h-4 ml-1" />
-                    </button>
-                  </form>
-                )}
+            {/* Left Col: Transmission Form */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-2">
+                <span className="badge-mono">Direct Dispatch</span>
+                <Heading as="h2" font="serif" size="display-md" color="evergreen">
+                  Corporate Request Form
+                </Heading>
+                <Text variant="sm" color="body">
+                  Inquiries are routed automatically to the designated division directorate. Response SLA: within one business day.
+                </Text>
               </div>
+
+              <CorporateInquiryForm />
             </div>
 
-            <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white p-6 border border-border">
-                <h3 className="font-serif text-lg font-bold text-evergreen mb-4">Executive Headquarters</h3>
-                <div className="space-y-3 text-xs text-charcoal-body">
-                  <div className="flex items-start gap-3">
+            {/* Right Col: Operating Locations & Contact Directory */}
+            <div className="lg:col-span-5 space-y-8">
+              {/* Corporate HQ */}
+              <div className="bg-white p-6 sm:p-8 border border-border space-y-4 shadow-xs">
+                <div className="flex items-center gap-3 border-b border-border pb-3">
+                  <Building2 className="w-5 h-5 text-mineral-teal" />
+                  <Heading as="h3" font="serif" size="heading-sm" color="evergreen">
+                    Group Headquarters
+                  </Heading>
+                </div>
+
+                <div className="space-y-3 text-xs text-charcoal-body font-mono">
+                  <div className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
-                    <span>Asterra Corporate Towers, Industrial Zone 4, P.O. Box 1024, Addis Ababa, Ethiopia</span>
+                    <span>{company.headquarters.address}, {company.headquarters.city}, {company.headquarters.country}</span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <Phone className="w-4 h-4 text-mineral-teal shrink-0" />
-                    <span>+251 (0) 11 555 0199</span>
+                    <a href={`tel:${company.contact.phonePrimary}`} className="text-evergreen font-bold hover:underline">
+                      {company.contact.phonePrimary}
+                    </a>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-mineral-teal shrink-0" />
-                    <span>inquiries@asterragroup.com</span>
+                    <a href={`mailto:${company.contact.generalEmail}`} className="text-evergreen font-bold hover:underline">
+                      {company.contact.generalEmail}
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-mineral-teal shrink-0" />
+                    <span>{company.contact.operatingHours}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Plant Locations */}
+              <div className="bg-white p-6 sm:p-8 border border-border space-y-4 shadow-xs">
+                <div className="flex items-center gap-3 border-b border-border pb-3">
+                  <Factory className="w-5 h-5 text-mineral-teal" />
+                  <Heading as="h3" font="serif" size="heading-sm" color="evergreen">
+                    Manufacturing Complexes
+                  </Heading>
+                </div>
+
+                <div className="space-y-4 text-xs text-charcoal-body">
+                  <div className="border-l-2 border-mineral-teal pl-3 py-1">
+                    <div className="font-mono font-bold text-evergreen">Plants 1 & 2 (Metals & Precast)</div>
+                    <span className="text-charcoal-muted">Heavy Fabrication & Automated Batching Complex, Industrial Zone 4, Addis Ababa</span>
+                  </div>
+                  <div className="border-l-2 border-mineral-teal pl-3 py-1">
+                    <div className="font-mono font-bold text-evergreen">Plants 3 & 4 (Polymers & Automation)</div>
+                    <span className="text-charcoal-muted">Polymer Extrusion & CNC Integration Campus, Industrial Zone 4, Addis Ababa</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Directorate Emails */}
+              <div className="bg-evergreen text-white p-6 sm:p-8 border border-evergreen-hover space-y-4">
+                <Heading as="h3" font="serif" size="heading-sm" color="white">
+                  Direct Directorate Desks
+                </Heading>
+                <div className="space-y-2 text-xs font-mono text-border">
+                  <div className="flex justify-between items-center py-1.5 border-b border-white/10">
+                    <span>Procurement & RFQ:</span>
+                    <a href={`mailto:${company.contact.procurementEmail}`} className="text-white hover:underline font-bold">
+                      {company.contact.procurementEmail}
+                    </a>
+                  </div>
+                  <div className="flex justify-between items-center py-1.5 border-b border-white/10">
+                    <span>Human Resources:</span>
+                    <a href={`mailto:${company.contact.careersEmail}`} className="text-white hover:underline font-bold">
+                      {company.contact.careersEmail}
+                    </a>
+                  </div>
+                  <div className="flex justify-between items-center py-1.5">
+                    <span>Media & Investors:</span>
+                    <a href={`mailto:${company.contact.mediaEmail}`} className="text-white hover:underline font-bold">
+                      {company.contact.mediaEmail}
+                    </a>
                   </div>
                 </div>
               </div>
