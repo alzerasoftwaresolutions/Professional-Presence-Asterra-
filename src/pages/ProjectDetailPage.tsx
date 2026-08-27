@@ -104,11 +104,12 @@ export const ProjectDetailPage: React.FC = () => {
       {/* 3. HERO MEDIA & MULTI-ANGLE VIEWER (TOUCH & ARROW CONTROLS) */}
       <section className="py-8 sm:py-12 bg-ivory-canvas border-b border-border">
         <div className="container-corporate space-y-3 sm:space-y-4">
-          <div className="aspect-[16/10] sm:aspect-[21/9] bg-white border border-border overflow-hidden shadow-xs relative group">
+          <div className="aspect-[16/10] sm:aspect-[21/9] bg-white skeleton-shimmer border border-border overflow-hidden shadow-xs relative group">
             <img
               src={allMedia[activeImageIndex] || project.heroImage}
               alt={project.title}
               className="w-full h-full object-cover transition-all duration-300"
+              loading="lazy"
             />
             
             {/* View Indicator Badge */}
@@ -151,7 +152,7 @@ export const ProjectDetailPage: React.FC = () => {
                   }`}
                   aria-label={`Switch to Photo ${idx + 1}`}
                 >
-                  <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img src={img} alt="Thumbnail" className="w-full h-full object-cover" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -254,7 +255,7 @@ export const ProjectDetailPage: React.FC = () => {
                   {project.certificationsApplied.map((cert) => (
                     <span
                       key={cert}
-                      className="px-2.5 py-1 bg-white border border-border text-[11px] font-mono font-bold text-evergreen flex items-center gap-1.5"
+                      className="px-2.5 py-1 bg-white border border-border-strong text-[11px] font-mono font-bold text-evergreen flex items-center gap-1.5 shadow-2xs"
                     >
                       <ShieldCheck className="w-3.5 h-3.5 text-mineral-teal" />
                       {cert}

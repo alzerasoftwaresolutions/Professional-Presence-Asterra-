@@ -18,6 +18,7 @@ import {
   GraduationCap,
   Briefcase,
   HeartHandshake,
+  AlertCircle,
 } from 'lucide-react';
 
 export const JobDetailPage: React.FC = () => {
@@ -32,8 +33,10 @@ export const JobDetailPage: React.FC = () => {
     coverNote: '',
     honeypot: '',
   });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!job) {
     return (
@@ -52,12 +55,43 @@ export const JobDetailPage: React.FC = () => {
     );
   }
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
     if (formState.honeypot) {
       setIsSubmitted(true);
       return;
     }
+
+    const errors: Record<string, string> = {};
+    if (!formState.fullName.trim()) {
+      errors.fullName = 'Full applicant name is required.';
+    }
+    if (!formState.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
+      errors.email = 'Valid professional email address is required.';
+    }
+    if (!formState.phone.trim()) {
+      errors.phone = 'Direct telephone number is required.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setErrorMessage('Please fill in the required candidate details.');
+      return;
+    }
+
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
@@ -191,7 +225,7 @@ export const JobDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Direct Candidate Submission Form (Sticky on Desktop, Clean on Mobile) */}
+            {/* Right: Direct Candidate Submission Form (Sticky on Desktop) */}
             <div className="lg:col-span-5 lg:sticky lg:top-24">
               <div className="bg-white border border-border p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-xs">
                 <div className="border-b border-border pb-3">
@@ -207,38 +241,57 @@ export const JobDetailPage: React.FC = () => {
                 </div>
 
                 {isSubmitted ? (
-                  <div className="p-5 sm:p-6 bg-evergreen text-white text-center space-y-3">
+                  <div className="p-5 sm:p-6 bg-evergreen text-white text-center space-y-3 animate-fadeIn">
                     <CheckCircle2 className="w-10 h-10 text-mineral-teal mx-auto" />
                     <h4 className="font-serif text-lg font-bold">Dossier Received</h4>
                     <p className="text-xs text-border/90">
                       Our talent directorship has logged your submission for {job.title}. Shortlisted candidates will be contacted for technical assessments.
                     </p>
                     <button
-                      onClick={() => setIsSubmitted(false)}
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        setFormState({
+                          fullName: '',
+                          email: '',
+                          phone: '',
+                          linkedIn: '',
+                          coverNote: '',
+                          honeypot: '',
+                        });
+                        setFieldErrors({});
+                      }}
                       className="text-xs font-mono text-mineral-teal underline uppercase font-bold pt-2 cursor-pointer block mx-auto py-2 min-h-[44px]"
                     >
                       Submit Another Application
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                     {/* Honeypot */}
                     <input
                       type="text"
                       name="website_url_hp"
                       value={formState.honeypot}
-                      onChange={(e) => setFormState({ ...formState, honeypot: e.target.value })}
+                      onChange={(e) => handleInputChange('honeypot', e.target.value)}
                       className="hidden"
                       tabIndex={-1}
                       autoComplete="off"
                     />
+
+                    {errorMessage && (
+                      <div className="p-3 bg-red-50 border-l-4 border-state-error text-state-error text-xs flex items-center gap-2 animate-fadeIn">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
 
                     <Input
                       label="Full Legal Name"
                       required
                       placeholder="Abebe Bikila"
                       value={formState.fullName}
-                      onChange={(e) => setFormState({ ...formState, fullName: e.target.value })}
+                      onChange={(e) => handleInputChange('fullName', e.target.value)}
+                      error={fieldErrors.fullName}
                     />
 
                     <Input
@@ -247,7 +300,8 @@ export const JobDetailPage: React.FC = () => {
                       required
                       placeholder="abebe@example.com"
                       value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      error={fieldErrors.email}
                     />
 
                     <Input
@@ -256,14 +310,15 @@ export const JobDetailPage: React.FC = () => {
                       required
                       placeholder="+251 91 123 4567"
                       value={formState.phone}
-                      onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      error={fieldErrors.phone}
                     />
 
                     <Input
                       label="LinkedIn Profile or Portfolio URL"
                       placeholder="https://linkedin.com/in/username"
                       value={formState.linkedIn}
-                      onChange={(e) => setFormState({ ...formState, linkedIn: e.target.value })}
+                      onChange={(e) => handleInputChange('linkedIn', e.target.value)}
                     />
 
                     <Textarea
@@ -271,7 +326,7 @@ export const JobDetailPage: React.FC = () => {
                       rows={3}
                       placeholder="Highlight certifications (AWS, ISO, IWE), heavy CNC or precast experience..."
                       value={formState.coverNote}
-                      onChange={(e) => setFormState({ ...formState, coverNote: e.target.value })}
+                      onChange={(e) => handleInputChange('coverNote', e.target.value)}
                     />
 
                     <Button

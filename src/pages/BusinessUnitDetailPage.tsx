@@ -116,7 +116,7 @@ export const BusinessUnitDetailPage: React.FC = () => {
                   {unit.certifications.map((cert) => (
                     <span
                       key={cert}
-                      className="px-2.5 py-1 bg-white border border-border text-[11px] font-mono font-bold text-evergreen"
+                      className="px-2.5 py-1 bg-white border border-border-strong text-[11px] font-mono font-bold text-evergreen shadow-2xs"
                     >
                       {cert}
                     </span>
@@ -126,11 +126,12 @@ export const BusinessUnitDetailPage: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5">
-              <div className="aspect-[4/3] bg-white border border-border p-2 shadow-xs overflow-hidden">
+              <div className="aspect-[4/3] bg-white skeleton-shimmer border border-border p-2 shadow-xs overflow-hidden">
                 <img
                   src={unit.facilityImage}
                   alt={`${unit.name} Production Floor`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -189,9 +190,9 @@ export const BusinessUnitDetailPage: React.FC = () => {
                     <h4 className="font-serif text-base font-bold text-evergreen">{cap.title}</h4>
                     <p className="text-xs text-charcoal-body leading-relaxed">{cap.description}</p>
                     {cap.technicalSpecs && (
-                      <div className="pt-2 border-t border-border/80 flex flex-wrap gap-1">
+                      <div className="pt-2 border-t border-border flex flex-wrap gap-1.5">
                         {cap.technicalSpecs.map((spec) => (
-                          <span key={spec} className="text-[10px] font-mono px-1.5 py-0.5 bg-white border border-border text-charcoal-muted">
+                          <span key={spec} className="text-[10px] font-mono font-semibold px-2 py-0.5 bg-white border border-border-strong text-charcoal-body shadow-2xs">
                             {spec}
                           </span>
                         ))}
@@ -212,7 +213,7 @@ export const BusinessUnitDetailPage: React.FC = () => {
                       <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0" />
                     </div>
                     <h4 className="font-serif text-sm sm:text-base font-bold text-evergreen">{prod.name}</h4>
-                    <p className="text-xs text-charcoal-body font-mono bg-white p-2 border border-border">{prod.specification}</p>
+                    <p className="text-xs text-charcoal-body font-mono font-medium bg-white p-2.5 border border-border-strong">{prod.specification}</p>
                   </div>
                 ))}
               </div>

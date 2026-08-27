@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone, ArrowRight, Layers, FileText, Users, BookOpen, Briefcase, Info } from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronUp, Phone, ArrowRight, Layers, FileText, Users, BookOpen, Briefcase, Info } from 'lucide-react';
 import { businessUnits, company } from '../data';
 
 const NAV_LINKS = [
@@ -16,6 +16,7 @@ export const SiteLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileDivisionsOpen, setMobileDivisionsOpen] = useState(true);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -25,6 +26,23 @@ export const SiteLayout: React.FC = () => {
     setDropdownOpen(false);
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // Track window scroll for Back-To-Top button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -52,7 +70,15 @@ export const SiteLayout: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-ivory-canvas text-charcoal-body font-sans">
+    <div className="min-h-screen flex flex-col bg-ivory-canvas text-charcoal-body font-sans relative">
+      {/* 0. WCAG ACCESSIBLE SKIP LINK */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-evergreen focus:text-white focus:border-2 focus:border-mineral-teal focus:font-mono focus:text-xs focus:shadow-lg"
+      >
+        Skip to main content &rarr;
+      </a>
+
       {/* 1. TOP UTILITY BAR (Tablet & Desktop) */}
       <div className="bg-evergreen text-border text-[11px] font-mono border-b border-evergreen-hover py-2 hidden md:block">
         <div className="container-corporate flex justify-between items-center">
@@ -190,11 +216,8 @@ export const SiteLayout: React.FC = () => {
             </Link>
           </div>
 
-          {/* =========================================================================
-              HIGH-CONTRAST MOBILE & TABLET HAMBURGER BUTTON BAR
-              ========================================================================= */}
+          {/* High-Contrast Mobile & Tablet Hamburger Bar */}
           <div className="flex items-center gap-2 lg:hidden">
-            {/* Quick RFQ Pill Button */}
             <Link
               to="/contact"
               className="text-[11px] font-mono font-bold uppercase tracking-wider bg-ivory-canvas text-evergreen px-3 py-2 border-2 border-evergreen hover:bg-evergreen hover:text-white transition-all min-h-[44px] flex items-center"
@@ -202,7 +225,6 @@ export const SiteLayout: React.FC = () => {
               RFQ Desk
             </Link>
 
-            {/* High-Contrast Bold Hamburger Button */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -230,9 +252,7 @@ export const SiteLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* =========================================================================
-          3. FULL-SCREEN HIGH-CONTRAST MOBILE & TABLET NAVIGATION DRAWER
-          ========================================================================= */}
+      {/* 3. FULL-SCREEN HIGH-CONTRAST MOBILE DRAWER */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 z-50 bg-evergreen text-white flex flex-col justify-between overflow-y-auto lg:hidden animate-fadeIn"
@@ -240,7 +260,6 @@ export const SiteLayout: React.FC = () => {
           aria-modal="true"
           aria-label="Mobile Navigation Menu"
         >
-          {/* Mobile Drawer Top Bar with Brand & Close Button */}
           <div className="sticky top-0 z-10 bg-evergreen-active border-b-2 border-mineral-teal/40 px-5 py-4 flex items-center justify-between shadow-md">
             <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-white text-evergreen flex items-center justify-center font-serif font-bold text-lg">
@@ -267,9 +286,7 @@ export const SiteLayout: React.FC = () => {
             </button>
           </div>
 
-          {/* Drawer Navigation Links */}
           <div className="p-5 sm:p-8 space-y-6">
-            {/* Quick Status Pill */}
             <div className="flex items-center justify-between text-[11px] font-mono text-border/80 border-b border-white/15 pb-3">
               <span className="text-mineral-teal uppercase font-bold tracking-wider flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-mineral-teal animate-pulse" />
@@ -278,9 +295,7 @@ export const SiteLayout: React.FC = () => {
               <span>6 Modules</span>
             </div>
 
-            {/* Nav Cards Grid */}
             <nav className="space-y-2">
-              {/* Home Link */}
               <NavLink
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
@@ -358,7 +373,6 @@ export const SiteLayout: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Expandable Divisions Submenu */}
                     {link.hasDropdown && mobileDivisionsOpen && (
                       <div className="pl-3 pr-1 py-2 space-y-1.5 border-l-2 border-mineral-teal ml-4 animate-fadeIn">
                         <div className="text-[10px] font-mono text-mineral-teal font-bold uppercase tracking-wider px-2 py-0.5">
@@ -386,7 +400,6 @@ export const SiteLayout: React.FC = () => {
             </nav>
           </div>
 
-          {/* Quick Direct Desk Actions at Bottom */}
           <div className="p-5 sm:p-8 bg-evergreen-active border-t-2 border-mineral-teal/40 space-y-3">
             <Link
               to="/contact"
@@ -408,12 +421,25 @@ export const SiteLayout: React.FC = () => {
         </div>
       )}
 
-      {/* 4. PAGE OUTLET */}
-      <main className="flex-1">
+      {/* 4. PAGE OUTLET WITH MAIN ANCHOR */}
+      <main id="main-content" className="flex-1 focus:outline-hidden" tabIndex={-1}>
         <Outlet />
       </main>
 
-      {/* 5. FOOTER */}
+      {/* 5. FLOATING BACK TO TOP BUTTON */}
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-40 p-3 bg-evergreen text-white border-2 border-mineral-teal shadow-xl hover:bg-evergreen-hover active:scale-95 transition-all animate-fadeIn flex items-center justify-center cursor-pointer min-h-[44px] min-w-[44px]"
+          aria-label="Scroll back to top of page"
+          title="Back to top"
+        >
+          <ChevronUp className="w-5 h-5 text-mineral-teal" />
+        </button>
+      )}
+
+      {/* 6. FOOTER */}
       <footer className="bg-evergreen-active text-white border-t border-evergreen-hover pt-16 pb-12">
         <div className="container-corporate space-y-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">

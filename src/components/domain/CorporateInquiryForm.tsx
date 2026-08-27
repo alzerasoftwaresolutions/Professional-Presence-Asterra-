@@ -35,6 +35,7 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
     honeypot: '',
   });
 
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -45,6 +46,35 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear individual field error when user types
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
+  };
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {};
+
+    if (!formData.fullName?.trim()) {
+      errors.fullName = 'Full legal or corporate officer name is required.';
+    }
+    if (!formData.organization?.trim()) {
+      errors.organization = 'Company, institution, or client name is required.';
+    }
+    if (!formData.email?.trim()) {
+      errors.email = 'Corporate email address is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please provide a valid corporate email address.';
+    }
+    if (!formData.message?.trim()) {
+      errors.message = 'Please provide specifications, BOQ summary, or scope details.';
+    }
+
+    return errors;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -57,8 +87,10 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
       return;
     }
 
-    if (!formData.fullName || !formData.email || !formData.organization || !formData.message) {
-      setErrorMessage('Please fill in all mandatory corporate contact fields.');
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setErrorMessage('Please correct the highlighted fields before transmitting.');
       return;
     }
 
@@ -75,9 +107,9 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
 
   if (isSubmitted) {
     return (
-      <div className={`bg-white p-8 sm:p-12 border border-border text-center space-y-6 shadow-xs ${className}`}>
+      <div className={`bg-white p-6 sm:p-12 border border-border text-center space-y-6 shadow-xs ${className}`}>
         <div className="w-16 h-16 bg-evergreen-subtle text-evergreen flex items-center justify-center mx-auto border border-border">
-          <CheckCircle2 className="w-10 h-10" />
+          <CheckCircle2 className="w-10 h-10 text-mineral-teal" />
         </div>
 
         <div className="space-y-2">
@@ -87,8 +119,8 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
           <Heading as="h3" font="serif" size="heading-lg" color="evergreen">
             Corporate Inquiry Transmitted
           </Heading>
-          <Text variant="body" color="body" className="max-w-md mx-auto">
-            Your technical request has been routed to the <strong>{formData.department}</strong> directorate. A designated engineering or procurement officer will respond within one business day.
+          <Text variant="body" color="body" className="max-w-md mx-auto text-xs sm:text-sm">
+            Your technical request has been routed to the <strong>{formData.department}</strong> directorate. A designated engineering or procurement officer will respond within one business day (48-hour SLA).
           </Text>
         </div>
 
@@ -118,6 +150,7 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
                 timeline: 'Within 3 Months',
                 honeypot: '',
               });
+              setFieldErrors({});
             }}
           >
             Submit Another Request
@@ -132,8 +165,8 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`bg-white p-6 sm:p-10 border border-border space-y-6 shadow-xs ${className}`}
-      noValidate={false}
+      className={`bg-white p-5 sm:p-10 border border-border space-y-6 shadow-xs ${className}`}
+      noValidate
     >
       {/* Hidden Honeypot Field */}
       <div className="hidden" aria-hidden="true">
@@ -148,9 +181,9 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
       </div>
 
       {errorMessage && (
-        <div className="p-4 bg-red-50 border-l-4 border-state-error text-state-error text-xs flex items-center gap-2">
+        <div className="p-4 bg-red-50 border-l-4 border-state-error text-state-error text-xs flex items-center gap-2 animate-fadeIn">
           <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{errorMessage}</span>
+          <span className="font-semibold">{errorMessage}</span>
         </div>
       )}
 
@@ -180,130 +213,124 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
           placeholder="e.g. Samuel Yohannes"
           value={formData.fullName}
           onChange={handleChange}
+          error={fieldErrors.fullName}
           required
         />
+
         <Input
-          label="Corporate Organization / Agency"
+          label="Company / Contracting Entity"
           name="organization"
-          placeholder="e.g. National Transport Authority"
+          placeholder="e.g. Ethiopian Railways Corp / Private Enterprise"
           value={formData.organization}
           onChange={handleChange}
+          error={fieldErrors.organization}
           required
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="Official Email"
+          label="Corporate Email Address"
           name="email"
           type="email"
-          placeholder="name@company.com"
+          placeholder="samuel@enterprise.com"
           value={formData.email}
           onChange={handleChange}
+          error={fieldErrors.email}
           required
         />
+
         <Input
-          label="Telephone / Mobile"
+          label="Direct Telephone / Extension"
           name="phone"
           type="tel"
-          placeholder="+251 ..."
+          placeholder="+251 91 123 4567"
           value={formData.phone}
           onChange={handleChange}
-          required
-        />
-        <Input
-          label="Country / Operating Region"
-          name="country"
-          placeholder="Ethiopia"
-          value={formData.country}
-          onChange={handleChange}
-          required
         />
       </div>
 
-      {/* 3. Conditional RFQ Fields for Procurement */}
+      {/* 3. Procurement Specific Fields */}
       {isProcurement && (
-        <div className="p-4 sm:p-5 bg-ivory-canvas/60 border border-border space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <span className="font-mono text-[11px] uppercase tracking-widest text-evergreen font-bold">
-              RFQ Technical Parameters (Optional)
-            </span>
-            <span className="text-[10px] font-mono text-charcoal-muted">Faster Technical Quoting</span>
-          </div>
+        <div className="p-4 sm:p-5 bg-ivory-canvas/60 border border-border space-y-4 animate-fadeIn">
+          <span className="font-mono text-[10px] uppercase font-bold text-mineral-teal tracking-wider block">
+            Procurement Scope Specifications (Optional)
+          </span>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Select
-              label="Primary Division Target"
+              label="Preferred Plant Division"
               name="preferredDivision"
               value={formData.preferredDivision}
               onChange={handleChange}
               options={[
-                { value: '', label: 'Select Operating Division...' },
-                { value: 'DIV-01', label: 'DIV-01: Precision Metals & Structural' },
-                { value: 'DIV-02', label: 'DIV-02: Industrial Materials & Precast' },
-                { value: 'DIV-03', label: 'DIV-03: Polymers & HDPE Piping' },
-                { value: 'DIV-04', label: 'DIV-04: Automated Equipment Assemblies' },
+                { value: '', label: 'Select Target Plant Division' },
+                { value: 'DIV-01: Structural Steel & Heavy Metallurgy', label: 'DIV-01: Structural Steel' },
+                { value: 'DIV-02: Precast & High-Performance Concrete', label: 'DIV-02: UHPC Precast' },
+                { value: 'DIV-03: Industrial Polymers & Pressure Piping', label: 'DIV-03: Polymers & Piping' },
+                { value: 'DIV-04: Precision Machining & Assemblies', label: 'DIV-04: Precision Assemblies' },
               ]}
             />
+
             <Input
-              label="Estimated Volume / Tonnage"
+              label="Estimated Tonnage / Linear Volume"
               name="estimatedVolume"
-              placeholder="e.g. 2,500 MT or 15 km"
+              placeholder="e.g. 500 MT / 12,000 meters"
               value={formData.estimatedVolume}
               onChange={handleChange}
             />
+
             <Select
-              label="Project Schedule / Timeline"
+              label="Target Delivery Timeline"
               name="timeline"
               value={formData.timeline}
               onChange={handleChange}
               options={[
-                { value: 'Immediate (< 30 Days)', label: 'Immediate (< 30 Days)' },
+                { value: 'Immediate (Under 30 Days)', label: 'Immediate (< 30 Days)' },
                 { value: 'Within 3 Months', label: 'Within 3 Months' },
-                { value: '3 - 6 Months', label: '3 - 6 Months' },
-                { value: 'Long-term Strategic Framework', label: 'Long-term Strategic Framework' },
+                { value: '3 to 6 Months', label: '3 to 6 Months' },
+                { value: 'Q3/Q4 Capital Project', label: 'Q3/Q4 Capital Project' },
               ]}
             />
           </div>
         </div>
       )}
 
-      {/* 4. Subject & Message */}
+      {/* 4. Subject & Message Details */}
       <Input
-        label="Inquiry Subject"
+        label="Inquiry Subject / Tender Reference"
         name="subject"
-        placeholder="e.g. Heavy Plate Girder Fabrication RFQ — Lot 2"
+        placeholder="e.g. Inquiry regarding EN 1090 Bridge Girder Allocation"
         value={formData.subject}
         onChange={handleChange}
-        required
       />
 
       <Textarea
-        label="Technical Scope & Specifications"
+        label="Scope of Inquiry / Bill of Quantities Summary"
         name="message"
-        placeholder="Provide key engineering parameters, required delivery timeline, destination port/site, or questions for our technical directorship..."
-        rows={5}
+        rows={4}
+        placeholder="Provide material grade requirements (e.g. S355JR, PE100), dimensional tolerances, execution class, or tender timelines..."
         value={formData.message}
         onChange={handleChange}
+        error={fieldErrors.message}
         required
       />
 
-      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="text-[11px] font-mono text-charcoal-muted">
+          All technical drawings and specifications are processed under strict NDA.
+        </div>
+
         <Button
           type="submit"
           variant="primary"
-          size="lg"
+          size="md"
           isLoading={isSubmitting}
-          rightIcon={<Send className="w-4 h-4 ml-1" />}
           className="w-full sm:w-auto"
+          rightIcon={<Send className="w-4 h-4 ml-1" />}
         >
-          Submit Corporate RFQ
+          {isSubmitting ? 'Transmitting Transmission...' : 'Transmit Corporate RFQ'}
         </Button>
-
-        <span className="text-[11px] font-mono text-charcoal-muted flex items-center gap-1.5 text-center sm:text-left">
-          <ShieldCheck className="w-4 h-4 text-mineral-teal shrink-0" />
-          <span>Protected under Asterra Corporate Confidentiality Protocols</span>
-        </span>
       </div>
     </form>
   );

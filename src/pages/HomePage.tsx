@@ -142,7 +142,7 @@ export const HomePage: React.FC = () => {
 
             {/* Right: Dynamic Division Quick-View Console (Touch & Tablet Optimized) */}
             <div className="lg:col-span-5">
-              <div className="glass-panel-dark p-4 sm:p-6 border border-white/20 space-y-4 relative">
+              <div className="glass-panel-dark p-4 sm:p-6 border border-white/20 space-y-4 relative shadow-md">
                 <div className="flex items-center justify-between border-b border-white/15 pb-2.5">
                   <div className="flex items-center gap-2">
                     <Factory className="w-4 h-4 text-mineral-teal shrink-0" />
@@ -155,12 +155,13 @@ export const HomePage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="relative aspect-[16/10] overflow-hidden border border-white/10 bg-black/40">
+                <div className="relative aspect-[16/10] overflow-hidden border border-white/10 bg-black/40 skeleton-shimmer">
                   <img
                     key={selectedUnit.slug}
                     src={selectedUnit.heroImage}
                     alt={selectedUnit.name}
                     className="w-full h-full object-cover transition-opacity duration-300 animate-fadeIn"
+                    loading="lazy"
                   />
                   <div className="absolute top-2.5 left-2.5">
                     <span className="badge-mono bg-evergreen text-white border-mineral-teal text-[10px]">
@@ -268,7 +269,7 @@ export const HomePage: React.FC = () => {
                       <span className={`font-mono text-xs font-bold ${isActive ? 'text-evergreen' : 'text-charcoal-muted'}`}>
                         {unit.divisionCode}
                       </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 bg-ivory-canvas text-charcoal-body border border-border">
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 bg-ivory-canvas text-charcoal-body border border-border-strong">
                         {unit.annualCapacity}
                       </span>
                     </div>
@@ -300,11 +301,12 @@ export const HomePage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="relative aspect-[16/9] overflow-hidden border border-border bg-ivory-canvas">
+                <div className="relative aspect-[16/9] overflow-hidden border border-border bg-ivory-canvas skeleton-shimmer">
                   <img
                     src={selectedUnit.heroImage}
                     alt={selectedUnit.name}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute bottom-3 left-3 bg-evergreen/90 text-white px-3 py-1 text-xs font-mono">
                     Facility: {selectedUnit.facilityLocation} • {selectedUnit.facilitySizeSqM}
@@ -326,7 +328,7 @@ export const HomePage: React.FC = () => {
                         <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
                         <div>
                           <span className="font-bold text-evergreen block">{cap.title}</span>
-                          <span className="text-[11px] text-charcoal-muted">{cap.description}</span>
+                          <span className="text-[11px] text-charcoal-body font-medium">{cap.description}</span>
                         </div>
                       </div>
                     ))}
@@ -395,11 +397,12 @@ export const HomePage: React.FC = () => {
                   {/* Expandable In-Place Content */}
                   {isExpanded && (
                     <div className="p-4 sm:p-6 pt-0 border-t border-border space-y-4 animate-fadeIn">
-                      <div className="relative aspect-[16/9] overflow-hidden border border-border mt-3">
+                      <div className="relative aspect-[16/9] overflow-hidden border border-border mt-3 skeleton-shimmer">
                         <img
                           src={unit.heroImage}
                           alt={unit.name}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                         <div className="absolute bottom-2 left-2 bg-evergreen/90 text-white px-2.5 py-1 text-[10px] font-mono">
                           {unit.facilityLocation} • {unit.facilitySizeSqM}
@@ -420,7 +423,7 @@ export const HomePage: React.FC = () => {
                               <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
                               <div>
                                 <span className="font-bold text-evergreen block">{cap.title}</span>
-                                <span className="text-[11px] text-charcoal-muted">{cap.description}</span>
+                                <span className="text-[11px] text-charcoal-body font-medium">{cap.description}</span>
                               </div>
                             </div>
                           ))}
@@ -582,11 +585,12 @@ export const HomePage: React.FC = () => {
 
               {/* Right Media Showcase */}
               <div className="lg:col-span-6 space-y-3">
-                <div className="relative aspect-[16/11] overflow-hidden border border-border bg-white shadow-xs">
+                <div className="relative aspect-[16/11] overflow-hidden border border-border bg-white shadow-xs skeleton-shimmer">
                   <img
                     src={flagshipProject.heroImage}
                     alt={flagshipProject.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute top-3 right-3 bg-evergreen text-white font-mono text-[10px] px-2.5 py-1">
                     Client: {flagshipProject.client}
@@ -673,11 +677,12 @@ export const HomePage: React.FC = () => {
                   className="bg-white border border-border p-4 sm:p-5 flex flex-col justify-between group hover:border-evergreen transition-all shadow-xs"
                 >
                   <div className="space-y-3">
-                    <div className="aspect-[4/5] bg-ivory-canvas overflow-hidden border border-border">
+                    <div className="aspect-[4/5] bg-ivory-canvas overflow-hidden border border-border skeleton-shimmer">
                       <img
                         src={exec.photo}
                         alt={exec.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                     <div>
@@ -730,7 +735,7 @@ export const HomePage: React.FC = () => {
                     </span>
                     <ShieldCheck className="w-3 h-3 text-mineral-teal" />
                   </div>
-                  <p className="text-[10px] text-charcoal-body leading-snug truncate" title={cert.title}>
+                  <p className="text-[10px] text-charcoal-body leading-snug truncate font-medium" title={cert.title}>
                     {cert.title}
                   </p>
                 </div>
