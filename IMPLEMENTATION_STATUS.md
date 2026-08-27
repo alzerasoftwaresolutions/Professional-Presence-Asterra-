@@ -1,9 +1,9 @@
 # ASTERRA — Implementation Status
 
 ## Overall Status
-**Phase:** Phase 2 (Foundation) Complete → Entering Phase 3 & 4 (Components & Data)  
-**Overall Completion:** 35%  
-**Build Status:** `PASSING` (Vite 5 / TypeScript 5 Strict / Vitest 2/2 Tests)
+**Phase:** Phase 3 (UI Primitives) & Phase 4 (Domain Components & Content Layer) COMPLETE → Ready for Phase 5 (Full Page Implementations)  
+**Overall Completion:** 55%  
+**Build Status:** `PASSING` (Vite 5 / TypeScript 5 Strict / Vitest 14/14 Tests Passed)
 
 ---
 
@@ -18,57 +18,64 @@
 - [x] Strict TypeScript core interfaces (`src/types/index.ts`)
 - [x] Automated routing unit tests (`src/app/__tests__/routes.test.ts`)
 
-## Global Components (Phase 3 — IN PROGRESS)
-- [x] Header & utility bar scaffold
-- [x] Mobile Navigation Drawer with scroll-lock
+## Global UI Primitives & Chrome (Phase 3 — COMPLETE)
+- [x] Header & utility bar with corporate branding & contact links
+- [x] Mobile Navigation Drawer with scroll-lock & accessibility toggle
 - [x] Corporate Footer with 5-column navigation matrix
-- [ ] Reusable Button primitive (`src/components/ui/Button.tsx`)
-- [ ] Heading & Typography primitives (`src/components/ui/Heading.tsx`, `src/components/ui/Text.tsx`)
-- [ ] Eyebrow Badge primitive (`src/components/ui/Badge.tsx`)
-- [ ] StatCard / Metric Callout primitive (`src/components/shared/StatCard.tsx`)
-- [ ] SectionHeader & SectionDivider primitives (`src/components/shared/SectionHeader.tsx`)
-- [ ] Breadcrumbs navigation component (`src/components/shared/Breadcrumbs.tsx`)
-- [ ] Form primitives (Input, Select, Textarea, Checkbox)
+- [x] Reusable Button primitive (`src/components/ui/Button.tsx`)
+- [x] Eyebrow Badge primitive (`src/components/ui/Badge.tsx`)
+- [x] Heading & Typography primitives (`src/components/ui/Heading.tsx`, `src/components/ui/Text.tsx`)
+- [x] Divider primitive (`src/components/ui/Divider.tsx`)
+- [x] Form primitives with WCAG focus indicators (`Input.tsx`, `Select.tsx`, `Textarea.tsx`)
+- [x] StatCard / Metric Callout composite (`src/components/shared/StatCard.tsx`)
+- [x] SectionHeader composite (`src/components/shared/SectionHeader.tsx`)
+- [x] Breadcrumbs navigation composite (`src/components/shared/Breadcrumbs.tsx`)
+- [x] CTABanner full-width chapter composite (`src/components/shared/CTABanner.tsx`)
+- [x] PageHeader standardized inner banner (`src/components/shared/PageHeader.tsx`)
 
-## Domain Components & Content Models (Phase 4 — NEXT)
-- [ ] Assembled typed JSON data fixtures in `src/data/` (`company.json`, `businessUnits.json`, `projects.json`, `leadership.json`, `insights.json`, `careers.json`, `navigation.json`)
-- [ ] BusinessUnitCard & DivisionSpecList
-- [ ] ProjectCard & CaseStudyGallery
-- [ ] ExecutiveCard & GovernanceProfileBlock
-- [ ] ArticleCard & InsightResourceDownload
-- [ ] CareerJobCard & ApplicationForm
-- [ ] CorporateInquiryForm with department routing & honeypot spam protection
+## Content Models & Domain Components (Phase 4 — COMPLETE)
+- [x] Structured JSON data fixtures assembled in `src/data/`:
+  - `company.json` (Headquarters, certifications, global footprint metrics, milestones 1998-2024)
+  - `businessUnits.json` (4 Divisions: DIV-01 to DIV-04, capabilities, plant specs)
+  - `projects.json` (Flagship case studies, challenge-solution pairs, metrics)
+  - `leadership.json` (Board of Directors & Executive Committee profiles)
+  - `insights.json` (Thought leadership articles, summaries, takeaways)
+  - `careers.json` (Open positions, requirements, benefits)
+  - `navigation.json` (Mega-menu and footer link trees)
+- [x] Type-safe data layer index & getter functions (`src/data/index.ts`)
+- [x] `BusinessUnitCard.tsx` (Grid & featured layouts)
+- [x] `ProjectCard.tsx` (Infrastructure case study cards)
+- [x] `ExecutiveCard.tsx` (Governance profile cards)
+- [x] `ArticleCard.tsx` (Knowledge center cards)
+- [x] `JobCard.tsx` (Career opportunities cards)
+- [x] `CorporateInquiryForm.tsx` (Department routing, RFQ details, honeypot protection)
 
-## Pages & Templates (Phase 5 — QUEUED)
-- [x] Home (`/`) [Foundation scaffold complete]
-- [x] About (`/about`) [Foundation scaffold complete]
-- [x] Leadership Listing (`/leadership`) [Foundation scaffold complete]
-- [x] Executive Profile Detail (`/leadership/:slug`) [Foundation scaffold complete]
-- [x] Business Units Listing (`/business`) [Foundation scaffold complete]
-- [x] Business Unit Detail (`/business/:slug`) [Foundation scaffold complete]
-- [x] Projects Portfolio Listing (`/projects`) [Foundation scaffold complete]
-- [x] Project / Case Study Detail (`/projects/:slug`) [Foundation scaffold complete]
-- [x] Insights Knowledge Center (`/insights`) [Foundation scaffold complete]
-- [x] Insight Article Detail (`/insights/:slug`) [Foundation scaffold complete]
-- [x] Careers & Culture (`/careers`) [Foundation scaffold complete]
-- [x] Job Opportunity Detail (`/careers/:slug`) [Foundation scaffold complete]
-- [x] Corporate Contact & Inquiries (`/contact`) [Foundation scaffold complete]
-- [x] Legal & Terms (`/privacy`, `/terms`) [Foundation scaffold complete]
-- [x] Contextual 404 (`*`) [Foundation scaffold complete]
+## Pages & Templates (Phase 5 — NEXT TO IMPLEMENT WITH FULL EDITORIAL DEPTH)
+- [ ] Home (`/`)
+- [ ] About (`/about`)
+- [ ] Leadership Listing (`/leadership`)
+- [ ] Executive Profile Detail (`/leadership/:slug`)
+- [ ] Business Units Listing (`/business`)
+- [ ] Business Unit Detail (`/business/:slug`)
+- [ ] Projects Portfolio Listing (`/projects`)
+- [ ] Project / Case Study Detail (`/projects/:slug`)
+- [ ] Insights Knowledge Center (`/insights`)
+- [ ] Insight Article Detail (`/insights/:slug`)
+- [ ] Careers & Culture (`/careers`)
+- [ ] Job Opportunity Detail (`/careers/:slug`)
+- [ ] Corporate Contact & Inquiries (`/contact`)
+- [ ] Legal & Terms (`/privacy`, `/terms`)
+- [ ] Contextual 404 (`*`)
 
 ## Technical Systems (Phase 6 & 7 — QUEUED)
 - [ ] Structured Data JSON-LD (`Corporation`, `Article`, `JobPosting`)
 - [ ] Dynamic Meta SEO & OpenGraph tags
 - [ ] Accessibility review (WCAG 2.1 AA keyboard nav, focus indicators, aria labels)
 - [ ] Performance optimization (WebP images, code splitting, lazy loading)
-- [ ] Form validation, sanitization & honeypot spam protection
 - [x] Production build verification (`npm run build` PASSING)
 
 ## QA & Validation (Phase 8 — QUEUED)
-- [x] Automated unit tests harness active (`vitest run` PASSING)
+- [x] Automated unit tests active: **14 tests passing across 4 test suites**
 - [ ] Responsive testing (Mobile 375px, Tablet 768px/1024px, Desktop 1440px)
 - [ ] Cross-browser validation
-- [ ] Accessibility audit
-- [ ] SEO audit
-- [ ] Performance audit (Core Web Vitals)
 - [ ] Final Acceptance review

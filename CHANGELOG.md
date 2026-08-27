@@ -5,32 +5,42 @@ All notable changes to the Asterra Manufacturing Group (Package 3 — Profession
 ## [Unreleased]
 
 ### Added
-- **Phase 2 (Foundation & Tooling Complete)**:
-  - Initialized application codebase with React 18, Vite 5, TypeScript 5, and Tailwind CSS 3.4.
-  - Configured Asterra design system tokens in `tailwind.config.js` and `src/styles/globals.css` (Evergreen `#173A35`, Mineral Teal `#4F7C84`, Warm Ivory `#F3F0E8`, Charcoal `#202B29`).
-  - Integrated typography hierarchy supporting `IBM Plex Sans`, `IBM Plex Serif`, and `IBM Plex Mono` via Google Fonts.
-  - Implemented responsive `SiteLayout.tsx` featuring top utility header, sticky main header, full-screen mobile drawer with scroll-lock, and 5-column corporate footer.
-  - Built declarative routing registry in `src/app/routes.tsx` covering all 8 core modules and dynamic detail routes.
-  - Created strict TypeScript data interfaces in `src/types/index.ts` conforming to `Asterra_Content & Data_Implementation_Specification.md`.
-  - Implemented initial foundation page views for all 13 routes (`Home`, `About`, `Leadership`, `ExecutiveProfile`, `Business`, `BusinessUnitDetail`, `Projects`, `ProjectDetail`, `Insights`, `InsightDetail`, `Careers`, `JobDetail`, `Contact`, `Legal`, `NotFound`).
-  - Added automated Vitest routing test suite (`src/app/__tests__/routes.test.ts`).
+- **Phase 4 (Content Data Layer & Domain Components Complete)**:
+  - Assembled comprehensive structured JSON data fixtures in `src/data/`:
+    - `company.json`: 25-year corporate story, milestones (1998–2024), values, certifications, and global footprint statistics.
+    - `businessUnits.json`: 4 specialized operating divisions (`DIV-01` to `DIV-04`) with detailed plant specifications, capacities, and capabilities.
+    - `projects.json`: Flagship infrastructure case studies with verified metrics (`awash-heavy-rail-overpass`, `dire-dawa-industrial-steel-terminal`, etc.).
+    - `leadership.json`: Executive Committee and Board of Directors profiles with governance quotes and credentials.
+    - `insights.json`: Authoritative engineering whitepapers and technical research papers with executive takeaways.
+    - `careers.json`: Open engineering and plant management job postings with full specifications.
+    - `navigation.json`: Centralized navigation and footer link hierarchy.
+  - Created type-safe data access layer in `src/data/index.ts` with getters for all domain models.
+  - Built domain components in `src/components/domain/`:
+    - `BusinessUnitCard.tsx` (Grid & featured layouts with technical capability lists)
+    - `ProjectCard.tsx` (Infrastructure case study cards with metric callouts)
+    - `ExecutiveCard.tsx` (Executive governance profile cards)
+    - `ArticleCard.tsx` (Research whitepaper cards with reading times)
+    - `JobCard.tsx` (Career vacancy cards)
+    - `CorporateInquiryForm.tsx` (Multi-department routing, RFQ parameters, honeypot spam protection, reference ID generation)
+
+- **Phase 3 (Global UI Primitives & Chrome Complete)**:
+  - Built foundational UI primitives in `src/components/ui/`:
+    - `Button.tsx` (Primary Evergreen, Secondary Outline, Accent Teal, Ghost, and White variants)
+    - `Badge.tsx` (Mono uppercase eyebrow, division tags, status variants)
+    - `Heading.tsx` & `Text.tsx` (Typography components with exact IBM Plex scale)
+    - `Divider.tsx` (1px mineral dividers)
+    - `Input.tsx`, `Select.tsx`, `Textarea.tsx` (WCAG 2.1 AA compliant form controls)
+  - Built shared composites in `src/components/shared/`:
+    - `StatCard.tsx` (Top-bordered metric callout)
+    - `SectionHeader.tsx` (Eyebrow + H2 + lead text + optional CTA link)
+    - `Breadcrumbs.tsx` (Hierarchical route breadcrumbs with microdata)
+    - `CTABanner.tsx` (Full-width high-conversion chapter banner)
+    - `PageHeader.tsx` (Standardized editorial banner for inner pages)
 
 ### Changed
-- Refactored imports across all page components to enforce strict TypeScript zero-unused-locals compliance.
+- Resolved `TR-002` (Curated industrial imagery references) and `TR-003` (Content schemas unified).
 
-### Fixed
-- Resolved `TR-001` (Application codebase scaffolding).
-
-### Removed
-- N/A.
-
-### Refactored
-- Structured the project hierarchy to strictly match the 5-tier component and routing blueprint in `04_IMPLEMENTATION/`.
-
-### Documentation
-- Updated `IMPLEMENTATION_STATUS.md`, `TRREVIEW.md`, `DECISIONS.md`, and `TODO.md` to reflect Phase 2 completion.
-
-### QA
-- Validated production build (`npm run build`) with zero errors (CSS gzip: 4.15 kB, JS gzip: 63.61 kB).
-- Validated TypeScript type-checking (`npx tsc --noEmit`) with 0 errors.
-- Validated automated test suite (`npx vitest run`) with 2/2 tests passing (100%).
+### QA & Verification
+- `npx vitest run`: **14/14 tests passing (100%)** across 4 test suites (`data.test.ts`, `primitives.test.ts`, `domain.test.ts`, `routes.test.ts`).
+- `npx tsc --noEmit`: 0 errors.
+- `npm run build`: Production bundle generated cleanly in 3.49s (dist/ CSS: 6.05 kB gzip, JS: 63.61 kB gzip).
