@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, Phone, ArrowRight, Layers, FileText, Users, BookOpen, Briefcase, Info } from 'lucide-react';
 import { businessUnits, company } from '../data';
 
 const NAV_LINKS = [
-  { label: 'About', href: '/about' },
-  { label: 'Operating Divisions', href: '/business', hasDropdown: true },
-  { label: 'Case Studies', href: '/projects' },
-  { label: 'Leadership', href: '/leadership' },
-  { label: 'Insights', href: '/insights' },
-  { label: 'Careers', href: '/careers' },
+  { label: 'About Us', href: '/about', index: '01', icon: Info },
+  { label: 'Operating Divisions', href: '/business', index: '02', icon: Layers, hasDropdown: true },
+  { label: 'Case Studies', href: '/projects', index: '03', icon: FileText },
+  { label: 'Leadership', href: '/leadership', index: '04', icon: Users },
+  { label: 'Insights & Research', href: '/insights', index: '05', icon: BookOpen },
+  { label: 'Careers & Academy', href: '/careers', index: '06', icon: Briefcase },
 ];
 
 export const SiteLayout: React.FC = () => {
@@ -76,25 +76,25 @@ export const SiteLayout: React.FC = () => {
       </div>
 
       {/* 2. MAIN HEADER */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-border shadow-xs">
+      <header className="sticky top-0 z-40 bg-white border-b-2 border-border shadow-sm">
         <div className="container-corporate flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-evergreen text-white flex items-center justify-center font-serif font-bold text-lg sm:text-xl border border-evergreen-hover group-hover:bg-evergreen-hover transition-colors shadow-xs">
+          <Link to="/" className="flex items-center gap-3 group" aria-label="Asterra Home">
+            <div className="w-10 h-10 bg-evergreen text-white flex items-center justify-center font-serif font-bold text-xl border-2 border-evergreen group-hover:bg-evergreen-hover transition-colors shadow-xs">
               A
             </div>
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-base sm:text-lg text-evergreen tracking-tight leading-none">
+              <span className="font-serif font-bold text-lg text-evergreen tracking-tight leading-none">
                 ASTERRA
               </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-charcoal-muted mt-0.5 font-semibold">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-charcoal-muted mt-0.5 font-bold">
                 Manufacturing Group
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Main Navigation">
             {NAV_LINKS.map((link) => {
               if (link.hasDropdown) {
                 return (
@@ -123,7 +123,7 @@ export const SiteLayout: React.FC = () => {
 
                     {/* Dropdown Menu */}
                     {dropdownOpen && (
-                      <div className="absolute top-full left-0 w-80 bg-white border border-border shadow-lg py-2 mt-1 z-50 animate-fadeIn">
+                      <div className="absolute top-full left-0 w-80 bg-white border border-border shadow-xl py-2 mt-1 z-50 animate-fadeIn">
                         <div className="px-4 py-2 border-b border-border/60 bg-ivory-canvas/60">
                           <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal-muted font-bold">
                             Operating Divisions Directory
@@ -183,106 +183,199 @@ export const SiteLayout: React.FC = () => {
             })}
           </nav>
 
-          {/* Header Action Button */}
+          {/* Desktop Header Action Button */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/contact" className="btn-primary text-xs py-2.5 px-4">
+            <Link to="/contact" className="btn-primary text-xs py-2.5 px-4 shadow-sm">
               Submit Corporate RFQ
             </Link>
           </div>
 
-          {/* Mobile & Tablet Hamburger Button */}
+          {/* =========================================================================
+              HIGH-CONTRAST MOBILE & TABLET HAMBURGER BUTTON BAR
+              ========================================================================= */}
           <div className="flex items-center gap-2 lg:hidden">
+            {/* Quick RFQ Pill Button */}
             <Link
               to="/contact"
-              className="text-[11px] font-mono font-bold uppercase tracking-wider bg-evergreen text-white px-3 py-1.5 border border-evergreen hover:bg-evergreen-hover"
+              className="text-[11px] font-mono font-bold uppercase tracking-wider bg-ivory-canvas text-evergreen px-3 py-2 border-2 border-evergreen hover:bg-evergreen hover:text-white transition-all min-h-[44px] flex items-center"
             >
               RFQ Desk
             </Link>
+
+            {/* High-Contrast Bold Hamburger Button */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 text-evergreen hover:bg-ivory-canvas border border-border min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors cursor-pointer"
-              aria-label="Toggle Navigation Menu"
+              className={`min-h-[44px] px-3.5 py-2 font-mono text-xs uppercase font-bold tracking-wider flex items-center gap-2 border-2 transition-all cursor-pointer shadow-md active:scale-95 ${
+                mobileMenuOpen
+                  ? 'bg-mineral-teal text-white border-mineral-teal'
+                  : 'bg-evergreen text-white border-evergreen hover:bg-evergreen-hover'
+              }`}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <>
+                  <X className="w-5 h-5 text-white shrink-0" />
+                  <span>CLOSE</span>
+                </>
+              ) : (
+                <>
+                  <Menu className="w-5 h-5 text-white shrink-0" />
+                  <span>MENU</span>
+                </>
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* 3. MOBILE & TABLET NAVIGATION DRAWER */}
+      {/* =========================================================================
+          3. FULL-SCREEN HIGH-CONTRAST MOBILE & TABLET NAVIGATION DRAWER
+          ========================================================================= */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-16 sm:top-20 z-50 bg-evergreen/98 backdrop-blur-xl text-white flex flex-col justify-between p-5 sm:p-8 overflow-y-auto lg:hidden animate-fadeIn">
-          <div className="space-y-6">
-            {/* Quick Header Identity */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/15">
-              <span className="font-mono text-[11px] text-mineral-teal uppercase font-bold tracking-wider">
-                Corporate Directory Portal
+        <div
+          className="fixed inset-0 z-50 bg-evergreen text-white flex flex-col justify-between overflow-y-auto lg:hidden animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation Menu"
+        >
+          {/* Mobile Drawer Top Bar with Brand & Close Button */}
+          <div className="sticky top-0 z-10 bg-evergreen-active border-b-2 border-mineral-teal/40 px-5 py-4 flex items-center justify-between shadow-md">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-white text-evergreen flex items-center justify-center font-serif font-bold text-lg">
+                A
+              </div>
+              <div className="flex flex-col">
+                <span className="font-serif font-bold text-base text-white tracking-tight leading-none">
+                  ASTERRA GROUP
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-widest text-mineral-teal font-semibold">
+                  Navigation Directory
+                </span>
+              </div>
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-1.5 bg-white text-evergreen font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-white hover:bg-mineral-teal hover:text-white transition-colors cursor-pointer min-h-[40px]"
+              aria-label="Close Navigation Drawer"
+            >
+              <X className="w-4 h-4" />
+              <span>CLOSE</span>
+            </button>
+          </div>
+
+          {/* Drawer Navigation Links */}
+          <div className="p-5 sm:p-8 space-y-6">
+            {/* Quick Status Pill */}
+            <div className="flex items-center justify-between text-[11px] font-mono text-border/80 border-b border-white/15 pb-3">
+              <span className="text-mineral-teal uppercase font-bold tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-mineral-teal animate-pulse" />
+                <span>Select Corporate Destination</span>
               </span>
-              <span className="text-[10px] font-mono text-border/80 px-2 py-0.5 bg-white/10">
-                Zone 4 Facilities
-              </span>
+              <span>6 Modules</span>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="flex flex-col space-y-1">
+            {/* Nav Cards Grid */}
+            <nav className="space-y-2">
+              {/* Home Link */}
               <NavLink
                 to="/"
+                onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `text-base sm:text-lg font-serif tracking-wide py-3 px-3 flex items-center justify-between border-b border-white/10 ${
-                    isActive ? 'bg-white/10 text-white font-bold text-mineral-teal' : 'text-border hover:bg-white/5'
+                  `p-4 border-2 flex items-center justify-between transition-all min-h-[52px] ${
+                    isActive
+                      ? 'bg-mineral-teal text-white border-mineral-teal font-bold shadow-md'
+                      : 'bg-white/5 text-white border-white/15 hover:bg-white/10 hover:border-white/30'
                   }`
                 }
               >
-                <span>Home Overview</span>
-                {location.pathname === '/' && (
-                  <span className="text-[10px] font-mono text-mineral-teal font-bold px-2 py-0.5 bg-white/10">ACTIVE</span>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-mineral-teal font-bold px-1.5 py-0.5 bg-black/30">
+                    //00
+                  </span>
+                  <span className="font-serif text-base font-bold">Home Overview</span>
+                </div>
+                {location.pathname === '/' ? (
+                  <span className="text-[10px] font-mono px-2 py-0.5 bg-white text-evergreen font-bold">
+                    CURRENT
+                  </span>
+                ) : (
+                  <ArrowRight className="w-4 h-4 opacity-70" />
                 )}
               </NavLink>
 
               {NAV_LINKS.map((link) => {
                 const isActive = location.pathname.startsWith(link.href);
+                const IconComponent = link.icon;
+
                 return (
-                  <div key={link.href} className="border-b border-white/10">
-                    <div className="flex items-center justify-between">
+                  <div key={link.href} className="space-y-1">
+                    <div
+                      className={`border-2 flex items-stretch justify-between transition-all ${
+                        isActive
+                          ? 'bg-mineral-teal/20 border-mineral-teal shadow-sm'
+                          : 'bg-white/5 border-white/15 hover:bg-white/10'
+                      }`}
+                    >
                       <NavLink
                         to={link.href}
-                        className={`text-base sm:text-lg font-serif tracking-wide py-3 px-3 flex-1 flex items-center justify-between ${
-                          isActive ? 'text-mineral-teal font-bold' : 'text-border hover:text-white'
-                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="p-4 flex-1 flex items-center justify-between min-h-[52px]"
                       >
-                        <span>{link.label}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="font-mono text-xs text-mineral-teal font-bold px-1.5 py-0.5 bg-black/30">
+                            //{link.index}
+                          </span>
+                          <IconComponent className="w-4 h-4 text-mineral-teal shrink-0" />
+                          <span className={`font-serif text-base ${isActive ? 'font-bold text-white' : 'text-border'}`}>
+                            {link.label}
+                          </span>
+                        </div>
                         {isActive && (
-                          <span className="text-[10px] font-mono text-mineral-teal font-bold px-2 py-0.5 bg-white/10">
+                          <span className="text-[10px] font-mono px-2 py-0.5 bg-mineral-teal text-white font-bold mr-2">
                             ACTIVE
                           </span>
                         )}
                       </NavLink>
+
                       {link.hasDropdown && (
                         <button
+                          type="button"
                           onClick={() => setMobileDivisionsOpen(!mobileDivisionsOpen)}
-                          className="p-3 text-border hover:text-white cursor-pointer"
-                          aria-label="Toggle Divisions List"
+                          className="px-4 border-l border-white/15 bg-white/5 hover:bg-white/15 flex items-center justify-center cursor-pointer text-white"
+                          aria-label="Toggle Operating Divisions Submenu"
+                          aria-expanded={mobileDivisionsOpen}
                         >
                           <ChevronDown
-                            className={`w-4 h-4 transition-transform duration-200 ${mobileDivisionsOpen ? 'rotate-180' : ''}`}
+                            className={`w-5 h-5 transition-transform duration-200 text-mineral-teal ${
+                              mobileDivisionsOpen ? 'rotate-180' : ''
+                            }`}
                           />
                         </button>
                       )}
                     </div>
 
-                    {/* Expandable Divisions in Mobile Menu */}
+                    {/* Expandable Divisions Submenu */}
                     {link.hasDropdown && mobileDivisionsOpen && (
-                      <div className="pl-4 pr-2 pb-3 space-y-1.5 border-l-2 border-mineral-teal ml-3 my-1 animate-fadeIn">
+                      <div className="pl-3 pr-1 py-2 space-y-1.5 border-l-2 border-mineral-teal ml-4 animate-fadeIn">
+                        <div className="text-[10px] font-mono text-mineral-teal font-bold uppercase tracking-wider px-2 py-0.5">
+                          Four Operating Plant Blueprints:
+                        </div>
                         {businessUnits.map((u) => (
                           <Link
                             key={u.slug}
                             to={`/business/${u.slug}`}
-                            className="block text-xs font-mono text-border/90 hover:text-white py-1.5 px-2 bg-white/5 hover:bg-white/10 border border-white/5 flex items-center justify-between"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="block p-2.5 bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-xs font-mono text-white flex items-center justify-between min-h-[44px]"
                           >
                             <span className="font-bold text-mineral-teal">{u.divisionCode}</span>
-                            <span className="truncate ml-2 text-white font-sans text-xs">{u.name.split('—')[1] || u.name}</span>
+                            <span className="truncate ml-2 text-white font-sans text-xs font-medium">
+                              {u.name.split('—')[1] || u.name}
+                            </span>
+                            <ArrowRight className="w-3 h-3 text-border/60 shrink-0 ml-1" />
                           </Link>
                         ))}
                       </div>
@@ -294,19 +387,22 @@ export const SiteLayout: React.FC = () => {
           </div>
 
           {/* Quick Direct Desk Actions at Bottom */}
-          <div className="pt-6 mt-6 border-t border-white/15 space-y-3">
+          <div className="p-5 sm:p-8 bg-evergreen-active border-t-2 border-mineral-teal/40 space-y-3">
             <Link
               to="/contact"
-              className="btn-primary w-full bg-mineral-teal text-white border-mineral-teal text-center justify-center font-bold font-mono text-xs uppercase tracking-wider"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full p-3.5 bg-mineral-teal text-white border-2 border-mineral-teal font-bold font-mono text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:bg-mineral-teal/90 transition-all min-h-[48px]"
             >
-              Submit Corporate RFQ
+              <span>Submit Commercial RFQ</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
+
             <a
               href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`}
-              className="btn-secondary w-full text-white border-white/30 hover:bg-white/10 text-center justify-center font-mono text-xs"
+              className="w-full p-3 bg-white/10 text-white border border-white/20 hover:bg-white/20 font-mono text-xs flex items-center justify-center gap-2 min-h-[44px] transition-colors"
             >
-              <Phone className="w-3.5 h-3.5 mr-1 text-mineral-teal" />
-              <span>Call Direct Dispatch: {company.contact.phonePrimary}</span>
+              <Phone className="w-3.5 h-3.5 text-mineral-teal" />
+              <span>Direct Dispatch: {company.contact.phonePrimary}</span>
             </a>
           </div>
         </div>
@@ -357,9 +453,9 @@ export const SiteLayout: React.FC = () => {
                   <li key={unit.slug}>
                     <Link
                       to={`/business/${unit.slug}`}
-                      className="hover:text-mineral-teal transition-colors flex items-center gap-1.5"
+                      className="hover:text-mineral-teal transition-colors flex items-center gap-1.5 py-1"
                     >
-                      <span className="font-mono text-[10px] text-mineral-teal">{unit.divisionCode}</span>
+                      <span className="font-mono text-[10px] text-mineral-teal font-bold">{unit.divisionCode}</span>
                       <span>{unit.name.split('—')[1] || unit.name}</span>
                     </Link>
                   </li>
@@ -373,12 +469,12 @@ export const SiteLayout: React.FC = () => {
                 Directorship Portals
               </h4>
               <ul className="space-y-2 text-xs text-border/85">
-                <li><Link to="/about" className="hover:text-mineral-teal transition-colors">Corporate Story</Link></li>
-                <li><Link to="/projects" className="hover:text-mineral-teal transition-colors">Case Studies Archive</Link></li>
-                <li><Link to="/leadership" className="hover:text-mineral-teal transition-colors">Governance & Board</Link></li>
-                <li><Link to="/insights" className="hover:text-mineral-teal transition-colors">Applied Metallurgy Papers</Link></li>
-                <li><Link to="/careers" className="hover:text-mineral-teal transition-colors">Apprenticeship Academy</Link></li>
-                <li><Link to="/contact" className="hover:text-mineral-teal transition-colors">Commercial Tender Desk</Link></li>
+                <li><Link to="/about" className="hover:text-mineral-teal transition-colors py-1 block">Corporate Story</Link></li>
+                <li><Link to="/projects" className="hover:text-mineral-teal transition-colors py-1 block">Case Studies Archive</Link></li>
+                <li><Link to="/leadership" className="hover:text-mineral-teal transition-colors py-1 block">Governance & Board</Link></li>
+                <li><Link to="/insights" className="hover:text-mineral-teal transition-colors py-1 block">Applied Metallurgy</Link></li>
+                <li><Link to="/careers" className="hover:text-mineral-teal transition-colors py-1 block">Apprenticeship Academy</Link></li>
+                <li><Link to="/contact" className="hover:text-mineral-teal transition-colors py-1 block">Commercial Tender Desk</Link></li>
               </ul>
             </div>
 
@@ -390,15 +486,21 @@ export const SiteLayout: React.FC = () => {
               <div className="space-y-2 text-xs text-border/85 font-mono">
                 <div>
                   <span className="text-border/60 block text-[10px]">TENDER ESTIMATION:</span>
-                  <span className="text-white">{company.contact.procurementEmail}</span>
+                  <a href={`mailto:${company.contact.procurementEmail}`} className="text-white hover:underline">
+                    {company.contact.procurementEmail}
+                  </a>
                 </div>
                 <div>
                   <span className="text-border/60 block text-[10px]">EXECUTIVE DESK:</span>
-                  <span className="text-white">{company.contact.generalEmail}</span>
+                  <a href={`mailto:${company.contact.generalEmail}`} className="text-white hover:underline">
+                    {company.contact.generalEmail}
+                  </a>
                 </div>
                 <div>
                   <span className="text-border/60 block text-[10px]">DISPATCH TELEPHONE:</span>
-                  <span className="text-white font-bold">{company.contact.phonePrimary}</span>
+                  <a href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`} className="text-white font-bold hover:underline">
+                    {company.contact.phonePrimary}
+                  </a>
                 </div>
               </div>
             </div>
@@ -410,9 +512,9 @@ export const SiteLayout: React.FC = () => {
               &copy; {new Date().getFullYear()} Asterra Manufacturing Group S.C. All rights reserved.
             </div>
             <div className="flex items-center gap-4">
-              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/privacy" className="hover:text-white transition-colors py-1">Privacy Policy</Link>
               <span>•</span>
-              <Link to="/terms" className="hover:text-white transition-colors">Terms of RFQ</Link>
+              <Link to="/terms" className="hover:text-white transition-colors py-1">Terms of RFQ</Link>
               <span>•</span>
               <span>ISO 9001:2015 & EN 1090-2</span>
             </div>
