@@ -8,10 +8,6 @@ import {
   PageSeo,
 } from '../components';
 import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
   Building2,
   Factory,
 } from 'lucide-react';
@@ -26,116 +22,104 @@ export const ContactPage: React.FC = () => {
         description="Submit heavy manufacturing RFQ documents, schedule plant inspections, or contact Asterra Group executive directorates."
         ogType="website"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow="Corporate & Commercial Channels"
-        title="Initiate a Technical Inquiry or Procurement RFQ."
-        description="Whether requesting a formal tender quotation, scheduling an in-plant facility inspection, or contacting our executive board, our directorship teams are at your disposal."
+        title="Direct Contact & Commercial Inquiries Desk."
+        description="Connect directly with our engineering estimation teams, procurement directorship, and executive secretariat across Addis Ababa facilities."
         breadcrumbs={[{ label: 'Contact', href: '/contact' }]}
         theme="evergreen"
       />
 
-      {/* 2. DIRECTORY & TRANSMISSION GRID */}
-      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
+      {/* 2. CHANNELS SELECTOR & INQUIRY FORM */}
+      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Left Col: Transmission Form */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="space-y-2">
-                <span className="badge-mono">Direct Dispatch</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left: Location & Contact Directory */}
+            <div className="lg:col-span-5 space-y-8">
+              <div className="space-y-3">
+                <span className="badge-mono">Direct Communication</span>
                 <Heading as="h2" font="serif" size="display-md" color="evergreen">
-                  Corporate Request Form
+                  Headquarters & Production Complexes
                 </Heading>
-                <Text variant="sm" color="body">
-                  Inquiries are routed automatically to the designated division directorate. Response SLA: within one business day.
+                <Text variant="body" color="body">
+                  Our corporate headquarters coordinates group contracts, while engineering estimation teams are stationed on-site at our 4 manufacturing facilities in Industrial Zone 4.
                 </Text>
               </div>
 
-              <CorporateInquiryForm />
+              {/* Physical Facilities */}
+              <div className="space-y-4">
+                <div className="p-6 bg-white border border-border space-y-3 shadow-xs">
+                  <div className="flex items-center gap-2 text-evergreen font-serif font-bold text-base">
+                    <Building2 className="w-5 h-5 text-mineral-teal" />
+                    <h4>Corporate Executive Headquarters</h4>
+                  </div>
+                  <p className="text-xs text-charcoal-body font-mono">
+                    {company.headquarters.address}, {company.headquarters.city}, {company.headquarters.country}
+                  </p>
+                  <div className="text-xs font-mono text-charcoal-muted pt-2 border-t border-border flex items-center justify-between">
+                    <span>Executive Secretariat</span>
+                    <span className="text-evergreen font-bold">{company.contact.phonePrimary}</span>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-white border border-border space-y-3 shadow-xs">
+                  <div className="flex items-center gap-2 text-evergreen font-serif font-bold text-base">
+                    <Factory className="w-5 h-5 text-mineral-teal" />
+                    <h4>Zone 4 Industrial Complexes (Plants 1–4)</h4>
+                  </div>
+                  <p className="text-xs text-charcoal-body font-mono">
+                    Plot 12–18, Heavy Industrial Sector, Industrial Zone 4, Addis Ababa
+                  </p>
+                  <div className="text-xs font-mono text-charcoal-muted pt-2 border-t border-border flex items-center justify-between">
+                    <span>Plant Dispatch Desk</span>
+                    <span className="text-evergreen font-bold">+251 11 654 3211</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Verified Direct Desks */}
+              <div className="p-6 bg-evergreen text-white border border-evergreen-hover space-y-4">
+                <span className="font-mono text-xs uppercase text-mineral-teal font-bold tracking-wider block">
+                  Directorate Direct Email Desks
+                </span>
+                <div className="space-y-2.5 text-xs font-mono">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span className="text-border">Structural Steel RFQs:</span>
+                    <span className="text-white font-bold">{company.contact.procurementEmail}</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span className="text-border">General Corporate Desk:</span>
+                    <span className="text-white font-bold">{company.contact.generalEmail}</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span className="text-border">Talent & Careers:</span>
+                    <span className="text-white font-bold">{company.contact.careersEmail}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-border">Media & Institutional:</span>
+                    <span className="text-white font-bold">{company.contact.mediaEmail}</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Right Col: Operating Locations & Contact Directory */}
-            <div className="lg:col-span-5 space-y-8">
-              {/* Corporate HQ */}
-              <div className="bg-white p-6 sm:p-8 border border-border space-y-4 shadow-xs">
-                <div className="flex items-center gap-3 border-b border-border pb-3">
-                  <Building2 className="w-5 h-5 text-mineral-teal" />
-                  <Heading as="h3" font="serif" size="heading-sm" color="evergreen">
-                    Group Headquarters
-                  </Heading>
-                </div>
-
-                <div className="space-y-3 text-xs text-charcoal-body font-mono">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
-                    <span>{company.headquarters.address}, {company.headquarters.city}, {company.headquarters.country}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-mineral-teal shrink-0" />
-                    <a href={`tel:${company.contact.phonePrimary}`} className="text-evergreen font-bold hover:underline">
-                      {company.contact.phonePrimary}
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-mineral-teal shrink-0" />
-                    <a href={`mailto:${company.contact.generalEmail}`} className="text-evergreen font-bold hover:underline">
-                      {company.contact.generalEmail}
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-mineral-teal shrink-0" />
-                    <span>{company.contact.operatingHours}</span>
-                  </div>
-                </div>
+            {/* Right: Interactive Multi-Department RFQ Form */}
+            <div className="lg:col-span-7 bg-white border border-border p-6 sm:p-10 space-y-6 shadow-xs">
+              <div className="border-b border-border pb-4">
+                <span className="font-mono text-xs text-mineral-teal uppercase font-bold tracking-wider block">
+                  Interactive Submission Portal
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-evergreen mt-1">
+                  Submit Technical Inquiries & Tender Documents
+                </h3>
+                <p className="text-xs text-charcoal-muted mt-1">
+                  Requests are automatically routed to the corresponding engineering directorship with a guaranteed 48-hour response SLA.
+                </p>
               </div>
 
-              {/* Plant Locations */}
-              <div className="bg-white p-6 sm:p-8 border border-border space-y-4 shadow-xs">
-                <div className="flex items-center gap-3 border-b border-border pb-3">
-                  <Factory className="w-5 h-5 text-mineral-teal" />
-                  <Heading as="h3" font="serif" size="heading-sm" color="evergreen">
-                    Manufacturing Complexes
-                  </Heading>
-                </div>
-
-                <div className="space-y-4 text-xs text-charcoal-body">
-                  <div className="border-l-2 border-mineral-teal pl-3 py-1">
-                    <div className="font-mono font-bold text-evergreen">Plants 1 & 2 (Metals & Precast)</div>
-                    <span className="text-charcoal-muted">Heavy Fabrication & Automated Batching Complex, Industrial Zone 4, Addis Ababa</span>
-                  </div>
-                  <div className="border-l-2 border-mineral-teal pl-3 py-1">
-                    <div className="font-mono font-bold text-evergreen">Plants 3 & 4 (Polymers & Automation)</div>
-                    <span className="text-charcoal-muted">Polymer Extrusion & CNC Integration Campus, Industrial Zone 4, Addis Ababa</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Directorate Emails */}
-              <div className="bg-evergreen text-white p-6 sm:p-8 border border-evergreen-hover space-y-4">
-                <Heading as="h3" font="serif" size="heading-sm" color="white">
-                  Direct Directorate Desks
-                </Heading>
-                <div className="space-y-2 text-xs font-mono text-border">
-                  <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                    <span>Procurement & RFQ:</span>
-                    <a href={`mailto:${company.contact.procurementEmail}`} className="text-white hover:underline font-bold">
-                      {company.contact.procurementEmail}
-                    </a>
-                  </div>
-                  <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                    <span>Human Resources:</span>
-                    <a href={`mailto:${company.contact.careersEmail}`} className="text-white hover:underline font-bold">
-                      {company.contact.careersEmail}
-                    </a>
-                  </div>
-                  <div className="flex justify-between items-center py-1.5">
-                    <span>Media & Investors:</span>
-                    <a href={`mailto:${company.contact.mediaEmail}`} className="text-white hover:underline font-bold">
-                      {company.contact.mediaEmail}
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <CorporateInquiryForm />
             </div>
           </div>
         </div>

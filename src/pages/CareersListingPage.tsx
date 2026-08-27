@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { getCareers } from '../data';
 import {
   PageHeader,
-  SectionHeader,
-  CTABanner,
-  JobCard,
   Heading,
   Text,
+  Button,
   PageSeo,
 } from '../components';
 import {
   GraduationCap,
-  ShieldCheck,
-  HeartHandshake,
-  Wrench,
-  Zap,
+  ArrowRight,
+  MapPin,
+  Calendar,
 } from 'lucide-react';
 
 export const CareersListingPage: React.FC = () => {
@@ -35,90 +32,69 @@ export const CareersListingPage: React.FC = () => {
         description="Explore open engineering, quality assurance, and plant operations vacancies across Asterra Manufacturing Group facilities."
         ogType="website"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow="Talent & Engineering Careers"
         title="Build Industrial Infrastructure with Africa's Leading Manufacturers."
-        description="Join a multidisciplinary team of 1,450+ metallurgical scientists, certified European Welding Engineers, automation specialists, and plant leaders."
+        description="Join a multidisciplinary team of 1,840+ metallurgical scientists, certified European Welding Engineers, automation specialists, and plant leaders."
         breadcrumbs={[{ label: 'Careers', href: '/careers' }]}
         theme="evergreen"
       />
 
-      {/* 2. WORKING AT ASTERRA CULTURE & VALUES */}
-      <section className="py-20 bg-white border-b border-border">
+      {/* 2. WORKING AT ASTERRA & APPRENTICESHIP ACADEMY */}
+      <section className="py-16 lg:py-20 bg-white border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <span className="badge-mono">Workplace Excellence</span>
+              <span className="badge-mono">Workforce Excellence</span>
               <Heading as="h2" font="serif" size="display-md" color="evergreen">
                 A Culture Founded on Precision & Lifelong Craft Mastery.
               </Heading>
               <Text variant="body" color="body" className="leading-relaxed">
-                At Asterra, we believe manufacturing greatness starts with rigorous engineering standards and continuous investment in human capability. Our employees work with modern automated CNC machinery, state-of-the-art laboratory instrumentation, and international execution codes.
+                At Asterra, we believe manufacturing greatness starts with rigorous engineering standards and continuous investment in human capability. Our employees operate 12 kW fiber lasers, computerized batching towers, and robotic welding cells under strict ISO 45001 safety governance.
               </Text>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="flex items-start gap-3">
-                  <Wrench className="w-5 h-5 text-mineral-teal shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-serif font-bold text-sm text-evergreen">Continuous Education</h4>
-                    <p className="text-xs text-charcoal-muted mt-0.5">IWE/EWE welding certifications & ISO lead auditor funding.</p>
-                  </div>
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="p-4 bg-ivory-canvas border border-border space-y-1">
+                  <div className="font-serif text-2xl font-bold text-evergreen">1,840</div>
+                  <span className="font-mono text-[10px] text-charcoal-muted uppercase">Active Workforce</span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <ShieldCheck className="w-5 h-5 text-mineral-teal shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-serif font-bold text-sm text-evergreen">Zero-Harm Safety</h4>
-                    <p className="text-xs text-charcoal-muted mt-0.5">ISO 45001 certified PPE, protocols, and safety culture.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-mineral-teal shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-serif font-bold text-sm text-evergreen">Advanced Automation</h4>
-                    <p className="text-xs text-charcoal-muted mt-0.5">Operate fiber lasers, 5-axis CNCs & robotic welding cells.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <HeartHandshake className="w-5 h-5 text-mineral-teal shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-serif font-bold text-sm text-evergreen">Comprehensive Care</h4>
-                    <p className="text-xs text-charcoal-muted mt-0.5">Family health insurance, pension, and company transit.</p>
-                  </div>
+                <div className="p-4 bg-ivory-canvas border border-border space-y-1">
+                  <div className="font-serif text-2xl font-bold text-evergreen">100%</div>
+                  <span className="font-mono text-[10px] text-charcoal-muted uppercase">Certified PPE & Safety</span>
                 </div>
               </div>
             </div>
 
-            {/* Apprenticeship Academy Feature */}
-            <div className="lg:col-span-6">
-              <div className="p-8 sm:p-10 bg-ivory-canvas border border-border space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-evergreen text-white flex items-center justify-center">
-                    <GraduationCap className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-mineral-teal font-bold block">
-                      Institutional Initiative
-                    </span>
-                    <Heading as="h3" font="serif" size="heading-sm" color="evergreen">
-                      The Asterra Technical Apprenticeship Academy
-                    </Heading>
-                  </div>
+            {/* Academy Showcase Card */}
+            <div className="lg:col-span-6 bg-evergreen text-white p-8 border border-evergreen-hover space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-mineral-teal text-white flex items-center justify-center">
+                  <GraduationCap className="w-6 h-6" />
                 </div>
+                <div>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-mineral-teal font-bold block">
+                    Institutional Initiative
+                  </span>
+                  <h3 className="font-serif text-lg font-bold text-white">
+                    Asterra Technical Apprenticeship Academy
+                  </h3>
+                </div>
+              </div>
 
-                <Text variant="sm" color="body">
-                  Founded in 2016, our in-house academy has graduated over 800 certified welders, machinists, and NDT technicians through dual vocational-industrial curricula accredited to international DIN/EN qualification benchmarks.
-                </Text>
+              <p className="text-xs sm:text-sm text-border/90 leading-relaxed">
+                Founded in 2016, our in-house academy has graduated over 800 certified welders, machinists, and NDT technicians through dual vocational-industrial curricula accredited to international DIN/EN benchmarks.
+              </p>
 
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
-                  <div>
-                    <div className="font-serif text-2xl font-bold text-evergreen">800+</div>
-                    <span className="font-mono text-[10px] uppercase text-charcoal-muted">Certified Graduates</span>
-                  </div>
-                  <div>
-                    <div className="font-serif text-2xl font-bold text-evergreen">100%</div>
-                    <span className="font-mono text-[10px] uppercase text-charcoal-muted">Full-Time Placement</span>
-                  </div>
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/15">
+                <div>
+                  <div className="font-serif text-3xl font-bold text-mineral-teal">800+</div>
+                  <span className="font-mono text-[10px] uppercase text-border/70">Certified Graduates</span>
+                </div>
+                <div>
+                  <div className="font-serif text-3xl font-bold text-mineral-teal">100%</div>
+                  <span className="font-mono text-[10px] uppercase text-border/70">Direct Full-Time Placement</span>
                 </div>
               </div>
             </div>
@@ -126,23 +102,27 @@ export const CareersListingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. OPEN POSITIONS DIRECTORY */}
-      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <SectionHeader
-              eyebrow="Open Vacancies"
-              title="Current Engineering & Operational Opportunities."
-              description="Explore open positions across our 4 manufacturing facilities in Industrial Zone 4, Addis Ababa."
-            />
+      {/* 3. OPEN POSITIONS DIRECTORY & FILTER */}
+      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6">
+            <div className="space-y-2">
+              <span className="badge-mono">Open Vacancies</span>
+              <Heading as="h2" font="serif" size="display-md" color="evergreen">
+                Current Engineering & Operational Roles.
+              </Heading>
+              <Text variant="body" color="body">
+                Explore open positions across our 4 manufacturing facilities in Industrial Zone 4, Addis Ababa.
+              </Text>
+            </div>
 
-            {/* Filter Pills */}
-            <div className="flex flex-wrap gap-2 shrink-0">
+            {/* Department Filter Pills */}
+            <div className="flex flex-wrap gap-1.5 shrink-0">
               {departments.map((dept) => (
                 <button
                   key={dept}
                   onClick={() => setSelectedDept(dept)}
-                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer border ${
+                  className={`px-3.5 py-2 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
                     selectedDept === dept
                       ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs'
                       : 'bg-white text-charcoal-body border-border hover:border-evergreen'
@@ -154,24 +134,71 @@ export const CareersListingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
+          {/* Job Vacancy Cards */}
+          <div className="space-y-4">
             {filteredJobs.map((job) => (
-              <JobCard key={job.slug} job={job} />
+              <div
+                key={job.slug}
+                className="bg-white border border-border p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-evergreen transition-all shadow-xs"
+              >
+                <div className="space-y-3 flex-1">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="badge-mono text-[9px] bg-ivory-canvas text-evergreen border-border">
+                      {job.division}
+                    </span>
+                    <span className="text-xs font-mono text-charcoal-muted">
+                      {job.employmentType} • {job.experienceLevel}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                    {job.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-charcoal-body max-w-3xl leading-relaxed">
+                    {job.summary}
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-charcoal-muted pt-1">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-mineral-teal" />
+                      {job.location}
+                    </span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-mineral-teal" />
+                      Closing: {job.closingDate}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="shrink-0 pt-2 md:pt-0">
+                  <Button
+                    to={`/careers/${job.slug}`}
+                    variant="primary"
+                    size="sm"
+                    rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
+                  >
+                    View Job & Apply
+                  </Button>
+                </div>
+              </div>
             ))}
           </div>
+
+          {filteredJobs.length === 0 && (
+            <div className="py-16 text-center space-y-3 bg-white border border-border">
+              <p className="font-serif text-lg text-evergreen font-bold">No vacancies currently open in this department.</p>
+              <button
+                onClick={() => setSelectedDept('All')}
+                className="text-xs font-mono text-mineral-teal underline uppercase font-bold cursor-pointer"
+              >
+                View All Departments
+              </button>
+            </div>
+          )}
         </div>
       </section>
-
-      {/* 4. CTA BANNER */}
-      <CTABanner
-        eyebrow="Spontaneous Applications"
-        title="Don't see an exact match for your engineering discipline?"
-        description="Our Human Resources & Talent Directorate welcomes expressions of interest from experienced metallurgical scientists and plant leaders."
-        primaryBtnText="Submit Spontaneous CV"
-        primaryBtnLink="/contact"
-        secondaryBtnText="Explore Operating Divisions"
-        secondaryBtnLink="/business"
-      />
     </div>
   );
 };

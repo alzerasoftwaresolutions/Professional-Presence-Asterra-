@@ -2,28 +2,30 @@ import React, { useState } from 'react';
 import { getProjects } from '../data';
 import {
   PageHeader,
-  SectionHeader,
-  CTABanner,
-  ProjectCard,
-  Heading,
-  Text,
+  Button,
   PageSeo,
 } from '../components';
-import { ShieldCheck, Award, Layers, FileCheck2 } from 'lucide-react';
+import { Award, Search, ArrowRight, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const ProjectsListingPage: React.FC = () => {
   const allProjects = getProjects();
   const [selectedSector, setSelectedSector] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const sectors = ['All', 'Transport & Rail', 'Industrial Logistics', 'Maritime & Dry Ports', 'Water Infrastructure'];
 
-  const filteredProjects =
-    selectedSector === 'All'
-      ? allProjects
-      : allProjects.filter((p) => p.sector === selectedSector);
+  const filteredProjects = allProjects.filter((p) => {
+    const matchesSector = selectedSector === 'All' || p.sector === selectedSector;
+    const matchesSearch =
+      searchQuery === '' ||
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.location.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSector && matchesSearch;
+  });
 
   const flagship = allProjects.find((p) => p.isFlagship) || allProjects[0];
-  const gridProjects = filteredProjects.filter((p) => p.slug !== flagship.slug || selectedSector !== 'All');
 
   return (
     <div className="w-full">
@@ -32,7 +34,8 @@ export const ProjectsListingPage: React.FC = () => {
         description="Verified case studies of major rail bridges, dry port precast slabs, and industrial terminals fabricated and erected across regional export corridors."
         ogType="website"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow="Industrial Portfolio & Case Studies"
         title="Verified Infrastructure & Engineering Deliveries."
@@ -41,43 +44,32 @@ export const ProjectsListingPage: React.FC = () => {
         theme="evergreen"
       />
 
-      {/* 2. FLAGSHIP FEATURED PROJECT SHOWCASE (when viewing All) */}
-      {selectedSector === 'All' && (
-        <section className="py-16 lg:py-20 bg-white border-b border-border">
-          <div className="container-corporate space-y-8">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-evergreen font-bold flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-mineral-teal" />
-                Featured Flagship Delivery
-              </span>
-              <span className="text-xs font-mono text-charcoal-muted">Major Infrastructure Contract</span>
+      {/* 2. SEARCH & SECTOR FILTER BAR */}
+      <section className="bg-white border-b border-border py-6">
+        <div className="container-corporate space-y-4">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            {/* Search Input */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 text-charcoal-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search by project, client, or corridor..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-ivory-canvas/60 border border-border text-xs text-charcoal-body placeholder-charcoal-muted/70 focus:outline-hidden focus:border-evergreen focus:bg-white transition-all font-mono"
+              />
             </div>
 
-            <ProjectCard project={flagship} layout="featured" />
-          </div>
-        </section>
-      )}
-
-      {/* 3. PORTFOLIO FILTER & GRID */}
-      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <SectionHeader
-              eyebrow="Portfolio Directory"
-              title="Filter Case Studies by Industrial Sector."
-              description="Explore verified case studies, contractual milestones, and non-destructive examination metrics."
-            />
-
-            {/* Filter Pills */}
-            <div className="flex flex-wrap gap-2 shrink-0">
+            {/* Sector Filters */}
+            <div className="flex flex-wrap gap-1.5">
               {sectors.map((sec) => (
                 <button
                   key={sec}
                   onClick={() => setSelectedSector(sec)}
-                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer border ${
+                  className={`px-3.5 py-2 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
                     selectedSector === sec
                       ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs'
-                      : 'bg-white text-charcoal-body border-border hover:border-evergreen'
+                      : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen'
                   }`}
                 >
                   {sec}
@@ -86,59 +78,175 @@ export const ProjectsListingPage: React.FC = () => {
             </div>
           </div>
 
+          <div className="flex items-center justify-between text-xs font-mono text-charcoal-muted pt-2 border-t border-border">
+            <span>Showing {filteredProjects.length} Verified Case Studies</span>
+            <span>All contracts verified to ISO & EN execution classes</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. FLAGSHIP SHOWCASE (When Viewing All and no search) */}
+      {selectedSector === 'All' && searchQuery === '' && flagship && (
+        <section className="py-12 bg-ivory-canvas border-b border-border">
+          <div className="container-corporate space-y-6">
+            <div className="flex items-center gap-2">
+              <Award className="w-4 h-4 text-mineral-teal" />
+              <span className="font-mono text-xs text-mineral-teal uppercase font-bold tracking-wider">
+                Featured Flagship Delivery
+              </span>
+            </div>
+
+            <div className="bg-white border border-border p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xs">
+              <div className="lg:col-span-6 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="badge-mono text-[10px] bg-ivory-canvas text-evergreen border-border">
+                    {flagship.sector}
+                  </span>
+                  <span className="font-mono text-xs text-charcoal-muted">Delivered {flagship.year}</span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-evergreen">
+                  {flagship.title}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-charcoal-body leading-relaxed">
+                  {flagship.subtitle}
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                  {flagship.results.map((r) => (
+                    <div key={r.label} className="p-2.5 bg-ivory-canvas border border-border">
+                      <div className="font-serif text-base font-bold text-evergreen">{r.metric}</div>
+                      <span className="font-mono text-[9px] text-charcoal-muted uppercase">{r.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <Button
+                    to={`/projects/${flagship.slug}`}
+                    variant="primary"
+                    size="sm"
+                    rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
+                  >
+                    Explore Case Study & Execution Details
+                  </Button>
+                </div>
+              </div>
+
+              <div className="lg:col-span-6">
+                <div className="aspect-[16/10] overflow-hidden border border-border bg-ivory-canvas">
+                  <img
+                    src={flagship.heroImage}
+                    alt={flagship.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 4. CASE STUDY PORTFOLIO GRID */}
+      <section className="py-16 lg:py-24 bg-white border-b border-border">
+        <div className="container-corporate space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {gridProjects.map((project) => (
-              <ProjectCard key={project.slug} project={project} layout="grid" />
+            {filteredProjects.map((project) => (
+              <Link
+                key={project.slug}
+                to={`/projects/${project.slug}`}
+                className="bg-ivory-canvas/40 border border-border flex flex-col justify-between group hover:border-evergreen hover:bg-white transition-all duration-300 shadow-xs overflow-hidden"
+              >
+                <div>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-ivory-canvas border-b border-border">
+                    <img
+                      src={project.heroImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="badge-mono text-[9px] bg-evergreen text-white border-mineral-teal">
+                        {project.sector}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-xs text-white px-2 py-0.5 text-[10px] font-mono">
+                      {project.year}
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-3">
+                    <div className="text-[11px] font-mono text-charcoal-muted flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-mineral-teal" />
+                      <span>{project.location} • Client: {project.client}</span>
+                    </div>
+
+                    <h3 className="font-serif text-lg font-bold text-evergreen group-hover:text-mineral-teal transition-colors leading-snug">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-xs text-charcoal-body line-clamp-2 leading-relaxed">
+                      {project.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 pt-0">
+                  <div className="grid grid-cols-2 gap-2 p-2.5 bg-white border border-border mb-4">
+                    {project.results.slice(0, 2).map((res) => (
+                      <div key={res.label}>
+                        <span className="font-serif text-sm font-bold text-evergreen block">{res.metric}</span>
+                        <span className="font-mono text-[9px] text-charcoal-muted uppercase">{res.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="border-t border-border pt-3 flex items-center justify-between text-xs font-mono text-evergreen font-bold group-hover:text-mineral-teal">
+                    <span>Read Case Study</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
+
+          {filteredProjects.length === 0 && (
+            <div className="py-16 text-center space-y-3 bg-ivory-canvas border border-border">
+              <p className="font-serif text-lg text-evergreen font-bold">No case studies match your search criteria.</p>
+              <button
+                onClick={() => { setSelectedSector('All'); setSearchQuery(''); }}
+                className="text-xs font-mono text-mineral-teal underline uppercase font-bold cursor-pointer"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* 4. PERFORMANCE VERIFICATION METRICS */}
-      <section className="py-16 bg-white border-b border-border">
-        <div className="container-corporate">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 bg-ivory-canvas border border-border space-y-2">
-              <FileCheck2 className="w-6 h-6 text-mineral-teal" />
-              <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                100% NDT Traceability
-              </Heading>
-              <Text variant="caption" color="muted">
-                Every weld seam and precast batch is cataloged with EN 10204 3.1 material test certificates.
-              </Text>
-            </div>
-            <div className="p-6 bg-ivory-canvas border border-border space-y-2">
-              <Layers className="w-6 h-6 text-mineral-teal" />
-              <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                Pre-Assembly Scanning
-              </Heading>
-              <Text variant="caption" color="muted">
-                3D laser coordinate alignment verification conducted in-plant prior to convoy dispatch.
-              </Text>
-            </div>
-            <div className="p-6 bg-ivory-canvas border border-border space-y-2">
-              <ShieldCheck className="w-6 h-6 text-mineral-teal" />
-              <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                Zero Defect Handover
-              </Heading>
-              <Text variant="caption" color="muted">
-                Audited by independent international inspection bureaus including TÜV Rheinland & Bureau Veritas.
-              </Text>
-            </div>
+      {/* 5. DIRECT TENDER INQUIRY CTA */}
+      <section className="py-16 bg-evergreen text-white border-b border-evergreen-hover">
+        <div className="container-corporate flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 max-w-2xl">
+            <span className="font-mono text-xs uppercase tracking-widest text-mineral-teal font-bold block">
+              Contract Tenders & Feasibility
+            </span>
+            <h3 className="font-serif text-2xl font-bold text-white">
+              Have an upcoming infrastructure or industrial facility project?
+            </h3>
+            <p className="text-xs text-border/80">Our directorship provides feasibility and structural steel shop drawing estimation.</p>
           </div>
+          <Button
+            to="/contact"
+            variant="white"
+            size="md"
+            rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
+          >
+            Submit Project RFQ
+          </Button>
         </div>
       </section>
-
-      {/* 5. CTA BANNER */}
-      <CTABanner
-        eyebrow="Tender & Project Inquiries"
-        title="Planning a major structural or infrastructure development?"
-        description="Consult with our senior engineering directors on material specifications, plant lead times, and capacity reservations."
-        primaryBtnText="Submit Tender Documents"
-        primaryBtnLink="/contact"
-        secondaryBtnText="Explore Operating Divisions"
-        secondaryBtnLink="/business"
-      />
     </div>
   );
 };

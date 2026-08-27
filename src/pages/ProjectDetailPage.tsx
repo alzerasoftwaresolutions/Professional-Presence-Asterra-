@@ -1,26 +1,26 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { getProjectBySlug, getBusinessUnitBySlug } from '../data';
 import {
   PageHeader,
-  SectionHeader,
   Heading,
-  Text,
   Badge,
   Button,
-  CTABanner,
-  BusinessUnitCard,
   PageSeo,
 } from '../components';
 import {
   ShieldCheck,
   ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 
 export const ProjectDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = getProjectBySlug(slug || '');
   const relatedBusinessUnit = project ? getBusinessUnitBySlug(project.businessUnitSlug) : undefined;
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'challenge' | 'solution' | 'execution'>('solution');
 
   if (!project) {
     return (
@@ -29,15 +29,17 @@ export const ProjectDetailPage: React.FC = () => {
         <Heading as="h1" font="serif" size="display-md" color="evergreen">
           Project Case Study Not Found
         </Heading>
-        <Text variant="body" color="muted">
+        <p className="text-xs text-charcoal-muted">
           The requested project record is unavailable or has been archived.
-        </Text>
+        </p>
         <Button to="/projects" variant="primary" leftIcon={<ArrowLeft className="w-4 h-4 mr-1" />}>
           Return to All Projects
         </Button>
       </div>
     );
   }
+
+  const allMedia = [project.heroImage, ...project.galleryImages];
 
   return (
     <div className="w-full">
@@ -46,7 +48,8 @@ export const ProjectDetailPage: React.FC = () => {
         description={project.subtitle}
         ogType="article"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow={`${project.sector} // CASE STUDY`}
         title={project.title}
@@ -58,106 +61,153 @@ export const ProjectDetailPage: React.FC = () => {
         theme="evergreen"
       />
 
-      {/* 2. PROJECT METRICS / FAST FACTS STRIP */}
+      {/* 2. PROJECT METRICS TELEMETRY STRIP */}
       <section className="bg-white border-b border-border py-8">
         <div className="container-corporate">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Client Entity</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
+            <div className="p-2 sm:px-4 first:pl-0">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Client Entity</span>
               <span className="font-serif text-sm font-bold text-evergreen truncate block">{project.client}</span>
+              <span className="text-[10px] font-mono text-mineral-teal">{project.clientCategory}</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Project Location</span>
+            <div className="p-2 sm:px-4">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Project Location</span>
               <span className="font-serif text-sm font-bold text-evergreen truncate block">{project.location}</span>
+              <span className="text-[10px] font-mono text-charcoal-muted">Corridor Route</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Delivery Year</span>
+            <div className="p-2 sm:px-4">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Delivery Year</span>
               <span className="font-serif text-2xl font-bold text-evergreen">{project.year}</span>
+              <span className="text-[10px] font-mono text-charcoal-muted">Commissioned</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Client Sector</span>
-              <span className="font-serif text-sm font-bold text-evergreen truncate block">{project.clientCategory}</span>
+            <div className="p-2 sm:px-4 last:pr-0">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Delivering Division</span>
+              <span className="font-serif text-sm font-bold text-evergreen truncate block">
+                {relatedBusinessUnit?.name || 'Asterra Industrial'}
+              </span>
+              <span className="text-[10px] font-mono text-mineral-teal">{relatedBusinessUnit?.divisionCode}</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. HERO MEDIA GALLERY */}
+      {/* 3. HERO MEDIA & MULTI-ANGLE VIEWER */}
       <section className="py-12 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-6">
-          <div className="aspect-[21/9] bg-white border border-border overflow-hidden shadow-xs">
+        <div className="container-corporate space-y-4">
+          <div className="aspect-[21/9] bg-white border border-border overflow-hidden shadow-xs relative">
             <img
-              src={project.heroImage}
+              src={allMedia[activeImageIndex] || project.heroImage}
               alt={project.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-all duration-500"
             />
+            <div className="absolute bottom-3 left-3 bg-evergreen/90 text-white text-xs font-mono px-3 py-1">
+              Field Erection Photograph // View {activeImageIndex + 1} of {allMedia.length}
+            </div>
           </div>
 
-          {project.galleryImages.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {project.galleryImages.map((img, idx) => (
-                <div key={idx} className="aspect-[16/10] bg-white border border-border overflow-hidden">
-                  <img
-                    src={img}
-                    alt={`${project.title} Erection Detail ${idx + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
+          {/* Thumbnail Strip */}
+          {allMedia.length > 1 && (
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {allMedia.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`w-24 h-16 shrink-0 border-2 overflow-hidden transition-all cursor-pointer ${
+                    activeImageIndex === idx ? 'border-evergreen ring-2 ring-evergreen/20' : 'border-border opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                </button>
               ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* 4. CHALLENGE, SOLUTION & ENGINEERING EXECUTION */}
-      <section className="py-20 lg:py-28 bg-white border-b border-border">
+      {/* 4. TECHNICAL CASE STUDY BLUEPRINT */}
+      <section className="py-16 lg:py-24 bg-white border-b border-border">
         <div className="container-corporate">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-8 space-y-12">
-              {/* Challenge */}
-              <div className="space-y-4">
-                <span className="badge-mono">01 // The Engineering Challenge</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  Project Requirements & Site Constraints
-                </Heading>
-                <Text variant="body" color="body" className="leading-relaxed">
-                  {project.challenge}
-                </Text>
+            {/* Left: Interactive Challenge / Solution Tabs */}
+            <div className="lg:col-span-8 space-y-8">
+              {/* Tab Selector */}
+              <div className="flex border-b border-border">
+                <button
+                  onClick={() => setActiveTab('solution')}
+                  className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    activeTab === 'solution'
+                      ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
+                      : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                  }`}
+                >
+                  01 // Engineering Solution
+                </button>
+                <button
+                  onClick={() => setActiveTab('challenge')}
+                  className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    activeTab === 'challenge'
+                      ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
+                      : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                  }`}
+                >
+                  02 // Project Challenge
+                </button>
+                <button
+                  onClick={() => setActiveTab('execution')}
+                  className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    activeTab === 'execution'
+                      ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
+                      : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                  }`}
+                >
+                  03 // Fabrication Execution
+                </button>
               </div>
 
-              {/* Solution */}
-              <div className="space-y-4">
-                <span className="badge-mono">02 // The Technical Solution</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  Fabrication Methodology & Pre-Assembly Scanning
-                </Heading>
-                <Text variant="body" color="body" className="leading-relaxed">
-                  {project.solution}
-                </Text>
+              {/* Tab Content */}
+              <div className="space-y-6 min-h-[160px]">
+                {activeTab === 'solution' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <h3 className="font-serif text-2xl font-bold text-evergreen">
+                      Methodology & Pre-Assembly Laser Modeling
+                    </h3>
+                    <p className="text-sm sm:text-base text-charcoal-body leading-relaxed">
+                      {project.solution}
+                    </p>
+                  </div>
+                )}
+                {activeTab === 'challenge' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <h3 className="font-serif text-2xl font-bold text-evergreen">
+                      Site Constraints & Engineering Demands
+                    </h3>
+                    <p className="text-sm sm:text-base text-charcoal-body leading-relaxed">
+                      {project.challenge}
+                    </p>
+                  </div>
+                )}
+                {activeTab === 'execution' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <h3 className="font-serif text-2xl font-bold text-evergreen">
+                      Tolerances & Non-Destructive Examination (NDE)
+                    </h3>
+                    <p className="text-sm sm:text-base text-charcoal-body leading-relaxed">
+                      {project.engineeringExecution}
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {/* Execution */}
-              <div className="space-y-4">
-                <span className="badge-mono">03 // Execution & Quality Assurance</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  Non-Destructive Testing & Schedule Acceleration
-                </Heading>
-                <Text variant="body" color="body" className="leading-relaxed">
-                  {project.engineeringExecution}
-                </Text>
-              </div>
-
-              {/* Applied Standards */}
-              <div className="pt-4 border-t border-border space-y-3">
-                <span className="font-mono text-xs uppercase tracking-widest text-charcoal-muted font-bold block">
-                  Applicable Execution Standards & Welding Codes:
+              {/* Applied Quality Standards Badges */}
+              <div className="p-6 bg-ivory-canvas border border-border space-y-3">
+                <span className="font-mono text-xs uppercase font-bold text-evergreen tracking-wider block">
+                  Applied Quality Standards on this Delivery:
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {project.certificationsApplied.map((cert) => (
                     <span
                       key={cert}
-                      className="px-3 py-1 bg-ivory-canvas border border-border text-xs font-mono font-semibold text-evergreen flex items-center gap-1.5"
+                      className="px-3 py-1 bg-white border border-border text-xs font-mono font-bold text-evergreen flex items-center gap-1.5"
                     >
                       <ShieldCheck className="w-3.5 h-3.5 text-mineral-teal" />
                       {cert}
@@ -167,68 +217,82 @@ export const ProjectDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Sidebar: Verified Results */}
+            {/* Right: Quantitative Outcome Metrics Dashboard */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-ivory-canvas p-6 sm:p-8 border border-border space-y-6">
+              <div className="bg-ivory-canvas border border-border p-6 sm:p-8 space-y-6 shadow-xs">
                 <div className="border-b border-border pb-3">
-                  <span className="font-mono text-xs uppercase tracking-widest text-mineral-teal font-bold block">
-                    Verified Performance
+                  <span className="font-mono text-[10px] text-mineral-teal font-bold uppercase block">
+                    VERIFIED RESULTS
                   </span>
-                  <Heading as="h3" font="serif" size="heading-md" color="evergreen">
-                    Contractual Results
-                  </Heading>
+                  <h4 className="font-serif text-lg font-bold text-evergreen">
+                    Contractual Performance Metrics
+                  </h4>
                 </div>
 
-                <div className="space-y-6">
-                  {project.results.map((res, i) => (
-                    <div key={i} className="border-t border-border pt-4 first:border-t-0 first:pt-0">
-                      <div className="font-serif text-3xl font-bold text-evergreen">{res.metric}</div>
-                      <span className="font-mono text-xs uppercase tracking-wider text-charcoal-ink font-semibold block mt-0.5">
+                <div className="space-y-4">
+                  {project.results.map((res) => (
+                    <div key={res.label} className="p-4 bg-white border border-border space-y-1">
+                      <span className="font-serif text-2xl font-bold text-evergreen block">
+                        {res.metric}
+                      </span>
+                      <span className="font-mono text-xs uppercase font-bold text-charcoal-muted block">
                         {res.label}
                       </span>
-                      {res.context && (
-                        <p className="text-xs text-charcoal-muted mt-1 leading-relaxed">{res.context}</p>
-                      )}
+                      <p className="text-[11px] text-charcoal-body leading-snug">
+                        {res.context}
+                      </p>
                     </div>
                   ))}
                 </div>
-
-                <div className="pt-4 border-t border-border">
-                  <Button to="/contact" variant="primary" size="sm" fullWidth>
-                    Inquire About Similar Scope
-                  </Button>
-                </div>
               </div>
+
+              {relatedBusinessUnit && (
+                <div className="p-6 bg-evergreen text-white border border-evergreen-hover space-y-3">
+                  <span className="font-mono text-[10px] text-mineral-teal uppercase font-bold block">
+                    Delivered by {relatedBusinessUnit.divisionCode}
+                  </span>
+                  <h4 className="font-serif text-lg font-bold text-white">
+                    {relatedBusinessUnit.name}
+                  </h4>
+                  <p className="text-xs text-border/80 leading-relaxed">
+                    {relatedBusinessUnit.tagline}
+                  </p>
+                  <Link
+                    to={`/business/${relatedBusinessUnit.slug}`}
+                    className="inline-flex items-center text-xs font-mono uppercase text-mineral-teal hover:underline font-bold pt-2"
+                  >
+                    <span>View Division Plant Specs</span>
+                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. DELIVERING OPERATING DIVISION */}
-      {relatedBusinessUnit && (
-        <section className="py-20 bg-ivory-canvas border-b border-border">
-          <div className="container-corporate space-y-8">
-            <SectionHeader
-              eyebrow="Delivering Division"
-              title="Manufactured by Asterra Operating Facilities."
-              description="Learn more about the automated tooling, plant footprint, and engineers responsible for this delivery."
-            />
+      {/* 5. BACK TO PROJECTS & RFQ CTA */}
+      <section className="py-12 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Button
+            to="/projects"
+            variant="secondary"
+            size="sm"
+            leftIcon={<ArrowLeft className="w-4 h-4 mr-1" />}
+          >
+            Back to All Case Studies
+          </Button>
 
-            <BusinessUnitCard unit={relatedBusinessUnit} layout="featured" />
-          </div>
-        </section>
-      )}
-
-      {/* 6. FINAL CTA */}
-      <CTABanner
-        eyebrow="Infrastructure Project Partnership"
-        title="Ready to commission heavy structural or infrastructure manufacturing?"
-        description="Our directorship teams provide formal technical proposals, plant capacity allocations, and feasibility reviews."
-        primaryBtnText="Submit Project RFQ"
-        primaryBtnLink="/contact"
-        secondaryBtnText="Explore All Projects"
-        secondaryBtnLink="/projects"
-      />
+          <Button
+            to="/contact"
+            variant="primary"
+            size="sm"
+            rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
+          >
+            Submit RFQ for Similar Scope
+          </Button>
+        </div>
+      </section>
     </div>
   );
 };

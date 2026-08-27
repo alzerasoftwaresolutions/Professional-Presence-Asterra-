@@ -1,15 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getExecutiveBySlug, getLeadership } from '../data';
 import {
   PageHeader,
-  SectionHeader,
   Heading,
   Text,
   Badge,
   Button,
-  CTABanner,
-  ExecutiveCard,
   PageSeo,
 } from '../components';
 import {
@@ -17,8 +14,8 @@ import {
   Award,
   Briefcase,
   Quote,
-  Linkedin,
   ArrowLeft,
+  CheckCircle2,
 } from 'lucide-react';
 
 export const ExecutiveProfilePage: React.FC = () => {
@@ -51,7 +48,8 @@ export const ExecutiveProfilePage: React.FC = () => {
         description={executive.bio}
         ogType="profile"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow={`${executive.department} // PROFILE`}
         title={executive.name}
@@ -63,13 +61,13 @@ export const ExecutiveProfilePage: React.FC = () => {
         theme="evergreen"
       />
 
-      {/* 2. MAIN PROFILE CONTENT */}
-      <section className="py-20 lg:py-28 bg-white border-b border-border">
+      {/* 2. EXECUTIVE DOSSIER HERO */}
+      <section className="py-16 lg:py-24 bg-white border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Left Col: Photo & Credentials */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left Portrait & Quick Facts */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="aspect-[4/5] bg-ivory-canvas border border-border overflow-hidden shadow-xs">
+              <div className="aspect-[4/5] bg-ivory-canvas border border-border p-2 shadow-xs overflow-hidden">
                 <img
                   src={executive.photo}
                   alt={executive.name}
@@ -77,100 +75,65 @@ export const ExecutiveProfilePage: React.FC = () => {
                 />
               </div>
 
-              <div className="p-6 bg-ivory-canvas border border-border space-y-4">
+              <div className="bg-ivory-canvas border border-border p-6 space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-3">
-                  <span className="font-mono text-xs text-charcoal-muted uppercase">Tenure with Asterra</span>
-                  <span className="font-serif text-lg font-bold text-evergreen">{executive.tenureYears} Years</span>
+                  <span className="font-mono text-xs text-charcoal-muted uppercase">Tenure with Group</span>
+                  <span className="font-serif text-lg font-bold text-evergreen">{executive.tenureYears}+ Years</span>
                 </div>
-
-                {executive.directorships && executive.directorships.length > 0 && (
-                  <div className="space-y-2">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-charcoal-muted font-bold block">
-                      Directorships & Boards:
-                    </span>
-                    <ul className="space-y-1 text-xs text-charcoal-body font-mono">
-                      {executive.directorships.map((d, i) => (
-                        <li key={i} className="flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 bg-mineral-teal shrink-0" />
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <span className="font-mono text-xs text-charcoal-muted uppercase">Directorate</span>
+                  <span className="font-mono text-xs font-bold text-evergreen">{executive.department}</span>
+                </div>
+                {executive.directorships && (
+                  <div className="space-y-1">
+                    <span className="font-mono text-[10px] text-charcoal-muted uppercase font-bold block">Board Directorships:</span>
+                    <ul className="text-xs text-charcoal-body space-y-1">
+                      {executive.directorships.map((d) => (
+                        <li key={d} className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0" />
                           <span>{d}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
-
-                {executive.linkedInUrl && (
-                  <div className="pt-3 border-t border-border">
-                    <a
-                      href={executive.linkedInUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase text-evergreen hover:text-mineral-teal transition-colors"
-                    >
-                      <Linkedin className="w-4 h-4 text-[#0077B5]" />
-                      <span>Official LinkedIn Profile</span>
-                    </a>
-                  </div>
-                )}
               </div>
             </div>
 
-            {/* Right Col: Biography, Governance Statement & Career Details */}
-            <div className="lg:col-span-7 space-y-10">
-              {/* Bio */}
+            {/* Right Biography, Quote & Qualifications */}
+            <div className="lg:col-span-7 space-y-8">
+              {/* Signed Governance Statement */}
+              <div className="p-6 sm:p-8 bg-ivory-canvas border-l-4 border-evergreen space-y-3 relative">
+                <Quote className="w-8 h-8 text-mineral-teal/30 absolute top-4 right-4" />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-mineral-teal font-bold block">
+                  Governance Statement
+                </span>
+                <p className="font-serif text-lg text-evergreen italic leading-relaxed">
+                  &ldquo;{executive.governanceQuote}&rdquo;
+                </p>
+                <div className="text-xs font-mono text-charcoal-muted pt-1">
+                  — {executive.name}, {executive.role}
+                </div>
+              </div>
+
+              {/* Biography */}
               <div className="space-y-4">
-                <span className="badge-mono">Executive Overview</span>
-                <Heading as="h2" font="serif" size="display-md" color="evergreen">
-                  Professional Biography
-                </Heading>
-                <Text variant="body" color="body" className="leading-relaxed text-base sm:text-lg">
+                <h3 className="font-serif text-2xl font-bold text-evergreen">Executive Biography</h3>
+                <Text variant="body" color="body" className="leading-relaxed text-sm sm:text-base">
                   {executive.bio}
                 </Text>
-              </div>
-
-              {/* Governance Quote */}
-              <div className="p-8 bg-evergreen text-white border border-evergreen-hover space-y-4 relative">
-                <Quote className="w-8 h-8 text-mineral-teal/50" />
-                <p className="font-serif text-lg sm:text-xl italic leading-relaxed text-white">
-                  "{executive.governanceQuote}"
-                </p>
-                <span className="font-mono text-xs text-border block uppercase tracking-wider">
-                  — {executive.name}, {executive.role}
-                </span>
-              </div>
-
-              {/* Career Highlights */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-mineral-teal" />
-                  <Heading as="h3" font="serif" size="heading-md" color="evergreen">
-                    Career & Modernization Highlights
-                  </Heading>
-                </div>
-                <ul className="space-y-3">
-                  {executive.careerHighlights.map((h, i) => (
-                    <li key={i} className="p-4 bg-ivory-canvas/60 border border-border text-sm text-charcoal-body flex items-start gap-3">
-                      <span className="font-mono text-xs font-bold text-mineral-teal shrink-0 mt-0.5">
-                        0{i + 1} //
-                      </span>
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
               {/* Education & Credentials */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-border">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <GraduationCap className="w-5 h-5 text-mineral-teal" />
-                    <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                      Academic Credentials
-                    </Heading>
+                  <div className="flex items-center gap-2 text-evergreen font-serif font-bold text-base">
+                    <GraduationCap className="w-4 h-4 text-mineral-teal" />
+                    <h4>Academic Credentials</h4>
                   </div>
-                  <ul className="space-y-2 text-xs text-charcoal-body font-mono">
-                    {executive.education.map((edu, i) => (
-                      <li key={i} className="border-l-2 border-border pl-3 py-1">
+                  <ul className="space-y-2 text-xs text-charcoal-body">
+                    {executive.education.map((edu) => (
+                      <li key={edu} className="p-2.5 bg-ivory-canvas/60 border border-border">
                         {edu}
                       </li>
                     ))}
@@ -178,51 +141,75 @@ export const ExecutiveProfilePage: React.FC = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Award className="w-5 h-5 text-mineral-teal" />
-                    <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                      Professional Fellowships
-                    </Heading>
+                  <div className="flex items-center gap-2 text-evergreen font-serif font-bold text-base">
+                    <Award className="w-4 h-4 text-mineral-teal" />
+                    <h4>Professional Fellowships</h4>
                   </div>
-                  <ul className="space-y-2 text-xs text-charcoal-body font-mono">
-                    {executive.credentials.map((cred, i) => (
-                      <li key={i} className="border-l-2 border-mineral-teal pl-3 py-1">
+                  <ul className="space-y-2 text-xs text-charcoal-body">
+                    {executive.credentials.map((cred) => (
+                      <li key={cred} className="p-2.5 bg-ivory-canvas/60 border border-border">
                         {cred}
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
+
+              {/* Career Highlights */}
+              <div className="space-y-3 pt-4 border-t border-border">
+                <div className="flex items-center gap-2 text-evergreen font-serif font-bold text-base">
+                  <Briefcase className="w-4 h-4 text-mineral-teal" />
+                  <h4>Industrial Career Milestones</h4>
+                </div>
+                <ul className="space-y-2 text-xs text-charcoal-body">
+                  {executive.careerHighlights.map((hl) => (
+                    <li key={hl} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
+                      <span>{hl}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. OTHER LEADERSHIP MEMBERS */}
-      <section className="py-20 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
-          <SectionHeader
-            eyebrow="Governance Team"
-            title="Other Members of Asterra Leadership."
-            actionLink={{ label: 'View All Directors', href: '/leadership' }}
-          />
+      {/* 3. PEER DIRECTORS CAROUSEL */}
+      <section className="py-16 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <h3 className="font-serif text-xl font-bold text-evergreen">
+              Other Members of Executive Leadership
+            </h3>
+            <Link to="/leadership" className="text-xs font-mono uppercase text-evergreen hover:text-mineral-teal font-bold">
+              View All Directory &rarr;
+            </Link>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {otherLeaders.map((other) => (
-              <ExecutiveCard key={other.slug} executive={other} />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {otherLeaders.map((leader) => (
+              <Link
+                key={leader.slug}
+                to={`/leadership/${leader.slug}`}
+                className="bg-white border border-border p-4 group hover:border-evergreen transition-all flex items-center gap-4"
+              >
+                <img
+                  src={leader.photo}
+                  alt={leader.name}
+                  className="w-14 h-14 object-cover border border-border shrink-0"
+                />
+                <div className="truncate">
+                  <h4 className="font-serif text-sm font-bold text-evergreen group-hover:text-mineral-teal transition-colors truncate">
+                    {leader.name}
+                  </h4>
+                  <p className="text-[11px] font-mono text-charcoal-muted truncate">{leader.role}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
-
-      {/* 4. CTA BANNER */}
-      <CTABanner
-        eyebrow="Direct Institutional Engagement"
-        title="Connect with Executive Leadership."
-        description="For joint venture inquiries, government infrastructure tenders, and institutional procurement."
-        primaryBtnText="Submit Executive Inquiry"
-        primaryBtnLink="/contact"
-      />
     </div>
   );
 };

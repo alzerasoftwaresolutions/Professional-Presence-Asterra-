@@ -14,10 +14,10 @@ import {
 import {
   CheckCircle2,
   Send,
-  ShieldCheck,
   ArrowLeft,
   GraduationCap,
-  Sparkles,
+  Briefcase,
+  HeartHandshake,
 } from 'lucide-react';
 
 export const JobDetailPage: React.FC = () => {
@@ -94,7 +94,8 @@ export const JobDetailPage: React.FC = () => {
           },
         }}
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow={`${job.division} // VACANCY`}
         title={job.title}
@@ -106,47 +107,49 @@ export const JobDetailPage: React.FC = () => {
         theme="evergreen"
       />
 
-      {/* 2. FAST FACTS BAR */}
+      {/* 2. JOB TELEMETRY STRIP */}
       <section className="bg-white border-b border-border py-6">
         <div className="container-corporate">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Department</span>
-              <span className="font-serif text-base font-bold text-evergreen truncate block">{job.department}</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
+            <div className="p-2 sm:px-4 first:pl-0">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Department</span>
+              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.department}</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Employment Type</span>
-              <span className="font-serif text-base font-bold text-evergreen truncate block">{job.employmentType}</span>
+            <div className="p-2 sm:px-4">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Employment Type</span>
+              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.employmentType}</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Experience Benchmark</span>
-              <span className="font-serif text-base font-bold text-evergreen truncate block">{job.experienceLevel}</span>
+            <div className="p-2 sm:px-4">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Location</span>
+              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.location}</span>
             </div>
-            <div className="border-l-2 border-mineral-teal pl-4 py-1">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted block">Application Deadline</span>
-              <span className="font-serif text-base font-bold text-evergreen truncate block">{job.closingDate}</span>
+            <div className="p-2 sm:px-4 last:pr-0">
+              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Application Deadline</span>
+              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.closingDate}</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. MAIN JOB DETAILS & APPLICATION FORM */}
-      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
+      {/* 3. JOB DETAILS & APPLICATION FORM */}
+      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Left Col: Responsibilities, Qualifications, Benefits */}
-            <div className="lg:col-span-7 space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left: Role Breakdown */}
+            <div className="lg:col-span-7 space-y-10">
               {/* Responsibilities */}
               <div className="space-y-4">
-                <span className="badge-mono">01 // Key Accountabilities</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  Primary Responsibilities
-                </Heading>
-                <ul className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-mineral-teal" />
+                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                    Primary Accountabilities & Scope
+                  </h3>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-charcoal-body">
                   {job.responsibilities.map((resp, idx) => (
-                    <li key={idx} className="p-4 bg-white border border-border text-sm text-charcoal-body flex items-start gap-3">
+                    <li key={idx} className="flex items-start gap-2.5 p-3 bg-white border border-border">
                       <CheckCircle2 className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{resp}</span>
+                      <span>{resp}</span>
                     </li>
                   ))}
                 </ul>
@@ -154,133 +157,133 @@ export const JobDetailPage: React.FC = () => {
 
               {/* Qualifications */}
               <div className="space-y-4">
-                <span className="badge-mono">02 // Experience & Credentials</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  Required Qualifications
-                </Heading>
-                <ul className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5 text-mineral-teal" />
+                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                    Required Credentials & Qualifications
+                  </h3>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-charcoal-body">
                   {job.qualifications.map((qual, idx) => (
-                    <li key={idx} className="p-4 bg-white border border-border text-sm text-charcoal-body flex items-start gap-3">
-                      <GraduationCap className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{qual}</span>
+                    <li key={idx} className="flex items-start gap-2.5 p-3 bg-white border border-border">
+                      <CheckCircle2 className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
+                      <span>{qual}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Benefits */}
+              {/* Compensation & Benefits */}
               <div className="space-y-4">
-                <span className="badge-mono">03 // Compensation & Benefits</span>
-                <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                  What We Offer
-                </Heading>
-                <ul className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <HeartHandshake className="w-5 h-5 text-mineral-teal" />
+                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                    Compensation, Training & Benefits Package
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {job.benefits.map((ben, idx) => (
-                    <li key={idx} className="p-4 bg-evergreen text-white border border-evergreen-hover text-sm flex items-start gap-3">
-                      <Sparkles className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
-                      <span className="leading-relaxed text-border">{ben}</span>
-                    </li>
+                    <div key={idx} className="p-3.5 bg-white border border-border text-xs text-charcoal-body font-mono">
+                      ✓ {ben}
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
 
-            {/* Right Col: Direct Application Form */}
-            <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white p-6 sm:p-8 border border-border space-y-6 shadow-xs sticky top-24">
+            {/* Right: Direct Candidate Submission Form (Sticky) */}
+            <div className="lg:col-span-5 sticky top-24">
+              <div className="bg-white border border-border p-6 sm:p-8 space-y-6 shadow-xs">
                 <div className="border-b border-border pb-3">
-                  <span className="font-mono text-xs uppercase tracking-widest text-mineral-teal font-bold block">
-                    Direct Application
+                  <span className="font-mono text-[10px] text-mineral-teal uppercase font-bold tracking-wider block">
+                    Direct Application Desk
                   </span>
-                  <Heading as="h3" font="serif" size="heading-md" color="evergreen">
+                  <h3 className="font-serif text-xl font-bold text-evergreen">
                     Submit Candidate Dossier
-                  </Heading>
+                  </h3>
                   <p className="text-xs text-charcoal-muted mt-1">
-                    Direct submission to Asterra Talent Directorate.
+                    Apply directly for {job.title}.
                   </p>
                 </div>
 
                 {isSubmitted ? (
-                  <div className="py-8 text-center space-y-4">
-                    <div className="w-12 h-12 bg-evergreen-subtle text-evergreen flex items-center justify-center mx-auto border border-border">
-                      <CheckCircle2 className="w-8 h-8" />
-                    </div>
-                    <Heading as="h4" font="serif" size="heading-sm" color="evergreen">
-                      Application Received
-                    </Heading>
-                    <Text variant="sm" color="body">
-                      Thank you for applying for the <strong>{job.title}</strong> position. Our talent committee will review your credentials against the role specification.
-                    </Text>
+                  <div className="p-6 bg-evergreen text-white text-center space-y-3">
+                    <CheckCircle2 className="w-10 h-10 text-mineral-teal mx-auto" />
+                    <h4 className="font-serif text-lg font-bold">Dossier Received</h4>
+                    <p className="text-xs text-border/90">
+                      Our talent directorship has logged your submission for {job.title}. Shortlisted candidates will be contacted for technical assessments.
+                    </p>
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="text-xs font-mono text-mineral-teal underline uppercase font-bold pt-2 cursor-pointer block mx-auto"
+                    >
+                      Submit Another Application
+                    </button>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="hidden" aria-hidden="true">
-                      <input
-                        type="text"
-                        name="honeypot"
-                        value={formState.honeypot}
-                        onChange={(e) => setFormState({ ...formState, honeypot: e.target.value })}
-                        tabIndex={-1}
-                      />
-                    </div>
+                    {/* Honeypot */}
+                    <input
+                      type="text"
+                      name="website_url_hp"
+                      value={formState.honeypot}
+                      onChange={(e) => setFormState({ ...formState, honeypot: e.target.value })}
+                      className="hidden"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
 
                     <Input
                       label="Full Legal Name"
-                      placeholder="e.g. Bethlehem Yohannes"
+                      required
+                      placeholder="Abebe Bikila"
                       value={formState.fullName}
                       onChange={(e) => setFormState({ ...formState, fullName: e.target.value })}
-                      required
                     />
 
                     <Input
-                      label="Email Address"
+                      label="Corporate / Professional Email"
                       type="email"
-                      placeholder="candidate@domain.com"
+                      required
+                      placeholder="abebe@example.com"
                       value={formState.email}
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      required
                     />
 
                     <Input
-                      label="Telephone / Mobile"
+                      label="Direct Telephone"
                       type="tel"
-                      placeholder="+251 ..."
+                      required
+                      placeholder="+251 91 123 4567"
                       value={formState.phone}
                       onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                      required
                     />
 
                     <Input
                       label="LinkedIn Profile or Portfolio URL"
-                      placeholder="https://linkedin.com/in/..."
+                      placeholder="https://linkedin.com/in/username"
                       value={formState.linkedIn}
                       onChange={(e) => setFormState({ ...formState, linkedIn: e.target.value })}
                     />
 
                     <Textarea
-                      label="Summary Cover Note / Relevant Certifications"
-                      placeholder="Summarize your key welding qualifications, plant leadership experience, or software proficiency..."
-                      rows={4}
+                      label="Summary of Relevant Industrial Experience"
+                      rows={3}
+                      placeholder="Highlight certifications (AWS, ISO, IWE), heavy CNC or precast experience..."
                       value={formState.coverNote}
                       onChange={(e) => setFormState({ ...formState, coverNote: e.target.value })}
-                      required
                     />
 
                     <Button
                       type="submit"
                       variant="primary"
                       size="md"
+                      className="w-full justify-center"
                       isLoading={isSubmitting}
-                      fullWidth
                       rightIcon={<Send className="w-4 h-4 ml-1" />}
                     >
-                      Transmit Application
+                      {isSubmitting ? 'Verifying Dossier...' : 'Submit Job Application'}
                     </Button>
-
-                    <div className="pt-2 flex items-center justify-center gap-1.5 text-[10px] font-mono text-charcoal-muted">
-                      <ShieldCheck className="w-3.5 h-3.5 text-mineral-teal" />
-                      <span>Data held strictly for recruitment selection</span>
-                    </div>
                   </form>
                 )}
               </div>

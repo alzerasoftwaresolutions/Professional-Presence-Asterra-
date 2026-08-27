@@ -2,30 +2,31 @@ import React, { useState } from 'react';
 import { getInsights } from '../data';
 import {
   PageHeader,
-  SectionHeader,
-  CTABanner,
-  ArticleCard,
-  Heading,
-  Text,
   Badge,
   Button,
   PageSeo,
 } from '../components';
-import { BookOpen, ArrowRight, Clock, Calendar } from 'lucide-react';
+import { BookOpen, ArrowRight, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const InsightsListingPage: React.FC = () => {
   const allArticles = getInsights();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const categories = ['All', 'Engineering & Technical', 'Sustainability & ESG', 'Market Reports'];
 
-  const filteredArticles =
-    selectedCategory === 'All'
-      ? allArticles
-      : allArticles.filter((a) => a.category === selectedCategory);
+  const filteredArticles = allArticles.filter((a) => {
+    const matchesCategory = selectedCategory === 'All' || a.category === selectedCategory;
+    const matchesSearch =
+      searchQuery === '' ||
+      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.author.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const featuredArticle = allArticles[0];
-  const gridArticles = filteredArticles.filter((a) => a.slug !== featuredArticle.slug || selectedCategory !== 'All');
 
   return (
     <div className="w-full">
@@ -34,7 +35,8 @@ export const InsightsListingPage: React.FC = () => {
         description="Authoritative technical research whitepapers, material performance evaluations, and ESG circularity studies from Asterra Group."
         ogType="website"
       />
-      {/* 1. PAGE HEADER */}
+
+      {/* 1. ARCHITECTURAL PAGE HEADER */}
       <PageHeader
         eyebrow="Knowledge & Technical Publications"
         title="Engineering Insights, Metallurgy & Industry Analysis."
@@ -43,101 +45,32 @@ export const InsightsListingPage: React.FC = () => {
         theme="evergreen"
       />
 
-      {/* 2. FEATURED RESEARCH WHITEPAPER (when viewing All) */}
-      {selectedCategory === 'All' && featuredArticle && (
-        <section className="py-16 lg:py-20 bg-white border-b border-border">
-          <div className="container-corporate space-y-8">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-evergreen font-bold flex items-center gap-1.5">
-                <BookOpen className="w-4 h-4 text-mineral-teal" />
-                Featured Technical Paper
-              </span>
-              <span className="text-xs font-mono text-charcoal-muted">Published Directorship Research</span>
+      {/* 2. SEARCH & DISCIPLINE FILTER BAR */}
+      <section className="bg-white border-b border-border py-6">
+        <div className="container-corporate space-y-4">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            {/* Search Input */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 text-charcoal-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search technical papers, authors, or topics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-ivory-canvas/60 border border-border text-xs text-charcoal-body placeholder-charcoal-muted/70 focus:outline-hidden focus:border-evergreen focus:bg-white transition-all font-mono"
+              />
             </div>
 
-            <div className="card-corporate overflow-hidden border border-border bg-ivory-canvas/60">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-                <div className="lg:col-span-5 relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-ivory-canvas">
-                  <img
-                    src={featuredArticle.heroImage}
-                    alt={featuredArticle.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge variant="mono">{featuredArticle.category}</Badge>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-xs font-mono text-charcoal-muted">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-mineral-teal" />
-                        {featuredArticle.publishedDate}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-mineral-teal" />
-                        {featuredArticle.readTimeMinutes} Min Read
-                      </span>
-                    </div>
-
-                    <Heading as="h2" font="serif" size="heading-lg" color="evergreen">
-                      {featuredArticle.title}
-                    </Heading>
-
-                    <Text variant="body" color="body">
-                      {featuredArticle.subtitle}
-                    </Text>
-
-                    <div className="p-4 bg-white border border-border space-y-2">
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-mineral-teal font-bold block">
-                        Executive Key Takeaways:
-                      </span>
-                      <ul className="space-y-1 text-xs text-charcoal-body font-mono">
-                        {featuredArticle.keyTakeaways.slice(0, 2).map((takeaway, i) => (
-                          <li key={i} className="flex items-start gap-1.5">
-                            <span className="text-mineral-teal">•</span>
-                            <span>{takeaway}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-border flex items-center justify-between">
-                    <span className="text-xs text-charcoal-muted">Author: {featuredArticle.author.name}</span>
-                    <Button to={`/insights/${featuredArticle.slug}`} variant="primary" size="sm">
-                      Read Technical Paper <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 3. CATEGORY FILTER & ARTICLES GRID */}
-      <section className="py-20 lg:py-28 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <SectionHeader
-              eyebrow="Research Archive"
-              title="Filter by Engineering Discipline."
-              description="Explore technical papers, life cycle cost models, and structural fatigue evaluations."
-            />
-
-            {/* Filter Pills */}
-            <div className="flex flex-wrap gap-2 shrink-0">
+            {/* Category Filter Chips */}
+            <div className="flex flex-wrap gap-1.5">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer border ${
+                  className={`px-3.5 py-2 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
                     selectedCategory === cat
                       ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs'
-                      : 'bg-white text-charcoal-body border-border hover:border-evergreen'
+                      : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen'
                   }`}
                 >
                   {cat}
@@ -146,24 +79,174 @@ export const InsightsListingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {gridArticles.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
-            ))}
+          <div className="flex items-center justify-between text-xs font-mono text-charcoal-muted pt-2 border-t border-border">
+            <span>Showing {filteredArticles.length} Technical Publications</span>
+            <span>Peer-reviewed operational monographs</span>
           </div>
         </div>
       </section>
 
-      {/* 4. CTA BANNER */}
-      <CTABanner
-        eyebrow="Technical Engineering Collaboration"
-        title="Require tailored metallurgical testing or structural consultation?"
-        description="Our technical directors collaborate directly with consulting engineering firms, government authorities, and industrial developers."
-        primaryBtnText="Consult Engineering Directorate"
-        primaryBtnLink="/contact"
-        secondaryBtnText="Explore Operating Divisions"
-        secondaryBtnLink="/business"
-      />
+      {/* 3. FEATURED LEAD WHITEPAPER (When viewing All and no search) */}
+      {selectedCategory === 'All' && searchQuery === '' && featuredArticle && (
+        <section className="py-12 bg-ivory-canvas border-b border-border">
+          <div className="container-corporate space-y-6">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-mineral-teal" />
+              <span className="font-mono text-xs text-mineral-teal uppercase font-bold tracking-wider">
+                Featured Lead Monograph
+              </span>
+            </div>
+
+            <div className="bg-white border border-border p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xs">
+              <div className="lg:col-span-7 space-y-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Badge variant="mono">{featuredArticle.category}</Badge>
+                  <span className="text-xs font-mono text-charcoal-muted">
+                    {featuredArticle.readTimeMinutes} Min Read • Published {featuredArticle.publishedDate}
+                  </span>
+                </div>
+
+                <Link to={`/insights/${featuredArticle.slug}`} className="block group">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-evergreen group-hover:text-mineral-teal transition-colors">
+                    {featuredArticle.title}
+                  </h3>
+                </Link>
+
+                <p className="text-xs sm:text-sm text-charcoal-body leading-relaxed">
+                  {featuredArticle.subtitle}
+                </p>
+
+                {/* Key Takeaways */}
+                {featuredArticle.keyTakeaways && (
+                  <div className="p-4 bg-ivory-canvas border border-border space-y-1.5">
+                    <span className="font-mono text-[10px] text-evergreen uppercase font-bold block">
+                      Executive Engineering Takeaway:
+                    </span>
+                    <p className="text-xs text-charcoal-body leading-relaxed">
+                      {featuredArticle.keyTakeaways[0]}
+                    </p>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-border flex items-center justify-between">
+                  <div className="text-xs">
+                    <span className="font-bold text-evergreen block">{featuredArticle.author.name}</span>
+                    <span className="text-charcoal-muted text-[11px]">{featuredArticle.author.role}</span>
+                  </div>
+                  <Button
+                    to={`/insights/${featuredArticle.slug}`}
+                    variant="primary"
+                    size="sm"
+                    rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
+                  >
+                    Read Technical Report
+                  </Button>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5">
+                <div className="aspect-[16/11] overflow-hidden border border-border bg-ivory-canvas">
+                  <img
+                    src={featuredArticle.heroImage}
+                    alt={featuredArticle.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 4. EDITORIAL PUBLICATION GRID */}
+      <section className="py-16 lg:py-24 bg-white border-b border-border">
+        <div className="container-corporate space-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredArticles.map((article) => (
+              <Link
+                key={article.slug}
+                to={`/insights/${article.slug}`}
+                className="bg-ivory-canvas/40 border border-border flex flex-col justify-between group hover:border-evergreen hover:bg-white transition-all shadow-xs overflow-hidden"
+              >
+                <div>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-ivory-canvas border-b border-border">
+                    <img
+                      src={article.heroImage}
+                      alt={article.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="badge-mono text-[9px] bg-evergreen text-white border-mineral-teal">
+                        {article.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-3">
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-charcoal-muted">
+                      <span>{article.publishedDate}</span>
+                      <span>•</span>
+                      <span>{article.readTimeMinutes} min read</span>
+                    </div>
+
+                    <h3 className="font-serif text-lg font-bold text-evergreen group-hover:text-mineral-teal transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-xs text-charcoal-body line-clamp-2 leading-relaxed">
+                      {article.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 pt-0">
+                  <div className="border-t border-border pt-3 flex items-center justify-between text-xs font-mono">
+                    <span className="text-charcoal-muted text-[11px]">By {article.author.name}</span>
+                    <span className="text-evergreen font-bold group-hover:text-mineral-teal uppercase tracking-wider text-[11px] flex items-center gap-1">
+                      Read <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {filteredArticles.length === 0 && (
+            <div className="py-16 text-center space-y-3 bg-ivory-canvas border border-border">
+              <p className="font-serif text-lg text-evergreen font-bold">No research papers match your search.</p>
+              <button
+                onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
+                className="text-xs font-mono text-mineral-teal underline uppercase font-bold cursor-pointer"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 5. NEWSLETTER / RESEARCH SUBSCRIPTION */}
+      <section className="py-16 bg-evergreen text-white border-b border-evergreen-hover">
+        <div className="container-corporate flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 max-w-2xl">
+            <span className="font-mono text-xs uppercase tracking-widest text-mineral-teal font-bold block">
+              Quarterly Metallurgy & Infrastructure Review
+            </span>
+            <h3 className="font-serif text-2xl font-bold text-white">
+              Subscribe to direct technical bulletins from our engineering desk.
+            </h3>
+          </div>
+          <Button
+            to="/contact"
+            variant="white"
+            size="md"
+            rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
+          >
+            Join Publications Desk
+          </Button>
+        </div>
+      </section>
     </div>
   );
 };
