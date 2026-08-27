@@ -37,60 +37,65 @@ export const LeadershipListingPage: React.FC = () => {
       />
 
       {/* 2. GOVERNANCE CHARTER & FILTER TABS */}
-      <section className="bg-white border-b border-border py-8">
+      <section className="bg-white border-b border-border py-6 sm:py-8">
         <div className="container-corporate space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-border">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pb-4 sm:pb-6 border-b border-border">
             <div className="flex items-start gap-3">
               <Scale className="w-5 h-5 text-mineral-teal shrink-0 mt-1" />
               <div>
-                <h4 className="font-serif text-base font-bold text-evergreen">Independent Oversight</h4>
+                <h4 className="font-serif text-sm sm:text-base font-bold text-evergreen">Independent Oversight</h4>
                 <p className="text-xs text-charcoal-muted mt-0.5">Audit, Risk & Technical Standards committees operate with independent majority.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-mineral-teal shrink-0 mt-1" />
               <div>
-                <h4 className="font-serif text-base font-bold text-evergreen">Technical Governance</h4>
+                <h4 className="font-serif text-sm sm:text-base font-bold text-evergreen">Technical Governance</h4>
                 <p className="text-xs text-charcoal-muted mt-0.5">Direct executive oversight of EN 1090, ISO 9001, and WPS/PQR certifications.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Users className="w-5 h-5 text-mineral-teal shrink-0 mt-1" />
               <div>
-                <h4 className="font-serif text-base font-bold text-evergreen">Zero-Harm Safety</h4>
+                <h4 className="font-serif text-sm sm:text-base font-bold text-evergreen">Zero-Harm Safety</h4>
                 <p className="text-xs text-charcoal-muted mt-0.5">Executive KPIs directly tied to ISO 45001 safety and carbon reduction metrics.</p>
               </div>
             </div>
           </div>
 
-          {/* Department Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-2">
-              {departments.map((dept) => (
-                <button
-                  key={dept}
-                  onClick={() => setSelectedDept(dept)}
-                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
-                    selectedDept === dept
-                      ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs'
-                      : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen'
-                  }`}
-                >
-                  {dept}
-                </button>
-              ))}
+          {/* Department Filter Tabs (Touch Scrollable on Mobile) */}
+          <div className="space-y-2">
+            <div className="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+              {departments.map((dept) => {
+                const isActive = selectedDept === dept;
+                return (
+                  <button
+                    key={dept}
+                    onClick={() => setSelectedDept(dept)}
+                    className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border shrink-0 min-h-[44px] flex items-center justify-center ${
+                      isActive
+                        ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs ring-2 ring-mineral-teal/30 scale-[1.02]'
+                        : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen active:scale-95'
+                    }`}
+                    aria-pressed={isActive}
+                  >
+                    {dept}
+                  </button>
+                );
+              })}
             </div>
-            <span className="text-xs font-mono text-charcoal-muted">
-              {filteredLeaders.length} Executive Profiles
-            </span>
+            <div className="flex items-center justify-between text-[11px] font-mono text-charcoal-muted px-1">
+              <span>● Showing {filteredLeaders.length} Executive Profiles</span>
+              <span className="text-mineral-teal font-bold hidden sm:inline">Tap any profile to view full dossier</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 3. EXECUTIVE DOSSIER GRID */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredLeaders.map((leader) => (
               <div
                 key={leader.slug}
@@ -111,9 +116,9 @@ export const LeadershipListingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-3">
+                  <div className="p-5 sm:p-6 space-y-3">
                     <div>
-                      <h3 className="font-serif text-xl font-bold text-evergreen group-hover:text-mineral-teal transition-colors">
+                      <h3 className="font-serif text-lg sm:text-xl font-bold text-evergreen group-hover:text-mineral-teal transition-colors">
                         {leader.name}
                       </h3>
                       <span className="font-mono text-xs text-mineral-teal font-semibold block mt-0.5">
@@ -126,7 +131,7 @@ export const LeadershipListingPage: React.FC = () => {
                     </p>
 
                     {/* Credentials Pills */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {leader.credentials.slice(0, 2).map((c) => (
                         <span key={c} className="text-[10px] font-mono px-2 py-0.5 bg-ivory-canvas border border-border text-charcoal-muted">
                           {c}
@@ -136,12 +141,12 @@ export const LeadershipListingPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-6 pt-0">
-                  <div className="border-t border-border pt-4 flex items-center justify-between text-xs font-mono">
+                <div className="p-5 sm:p-6 pt-0">
+                  <div className="border-t border-border pt-3 flex items-center justify-between text-xs font-mono min-h-[32px]">
                     <span className="text-charcoal-muted">Tenure: {leader.tenureYears}+ Yrs</span>
                     <Link
                       to={`/leadership/${leader.slug}`}
-                      className="inline-flex items-center text-evergreen font-bold group-hover:text-mineral-teal uppercase tracking-wider text-[11px]"
+                      className="inline-flex items-center text-evergreen font-bold group-hover:text-mineral-teal uppercase tracking-wider text-[11px] py-1"
                     >
                       <span>Full Dossier</span>
                       <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -155,13 +160,13 @@ export const LeadershipListingPage: React.FC = () => {
       </section>
 
       {/* 4. GOVERNANCE INQUIRIES ACTION */}
-      <section className="py-16 bg-white border-b border-border">
-        <div className="container-corporate flex flex-col md:flex-row items-center justify-between gap-6">
+      <section className="py-12 sm:py-16 bg-white border-b border-border">
+        <div className="container-corporate flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6">
           <div className="space-y-1">
             <span className="font-mono text-xs font-bold text-mineral-teal uppercase block">
               Institutional Relations
             </span>
-            <h3 className="font-serif text-2xl font-bold text-evergreen">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-evergreen">
               Require investor relations or board governance disclosures?
             </h3>
           </div>
@@ -169,6 +174,7 @@ export const LeadershipListingPage: React.FC = () => {
             to="/contact"
             variant="primary"
             size="md"
+            className="w-full md:w-auto justify-center"
             rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
           >
             Contact Secretariat Desk

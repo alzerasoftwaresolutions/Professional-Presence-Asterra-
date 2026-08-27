@@ -19,12 +19,19 @@
     --color-border-strong: #B8C2BD;
   }
 
+  /* Optimize touch interactions on mobile & tablet */
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-canvas);
     color: var(--color-body);
     font-family: 'IBM Plex Sans', 'Plus Jakarta Sans', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -46,8 +53,15 @@
     max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @screen sm {
+    .container-corporate {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
 
   @screen md {
@@ -79,14 +93,14 @@
 
   /* Glassmorphism Panels */
   .glass-panel-dark {
-    background: rgba(23, 58, 53, 0.75);
+    background: rgba(23, 58, 53, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .glass-panel-light {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(217, 221, 216, 0.8);
@@ -97,7 +111,7 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.6875rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     font-weight: 600;
     padding: 0.25rem 0.625rem;
     background-color: #EBF0EE;
@@ -105,6 +119,7 @@
     display: inline-flex;
     align-items: center;
     border: 1px solid #D1DCD8;
+    white-space: nowrap;
   }
 
   /* Primary Button */
@@ -119,13 +134,19 @@
     font-size: 0.875rem;
     padding: 0.75rem 1.5rem;
     border: 1px solid var(--color-primary);
+    min-height: 44px; /* Accessible touch target */
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
   }
 
   .btn-primary:hover {
     background-color: var(--color-primary-hover);
     border-color: var(--color-primary-hover);
     box-shadow: 0 4px 14px 0 rgba(23, 58, 53, 0.25);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
   }
 
   /* Secondary Button */
@@ -140,12 +161,35 @@
     font-size: 0.875rem;
     padding: 0.75rem 1.5rem;
     border: 1px solid var(--color-primary);
+    min-height: 44px; /* Accessible touch target */
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
   }
 
   .btn-secondary:hover {
     background-color: #EBF0EE;
     color: var(--color-primary-hover);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  /* Mobile Horizontal Scroll Strip with Hide Scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Touch Interactive Pill Active State */
+  .interactive-pill-active {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(23, 58, 53, 0.2);
   }
 
   /* Subtle technical grid background */
@@ -160,4 +204,20 @@
                       linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 32px 32px;
   }
+}
+
+/* Keyframe animations for active transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

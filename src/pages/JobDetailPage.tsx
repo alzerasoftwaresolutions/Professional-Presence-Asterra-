@@ -108,44 +108,44 @@ export const JobDetailPage: React.FC = () => {
       />
 
       {/* 2. JOB TELEMETRY STRIP */}
-      <section className="bg-white border-b border-border py-6">
+      <section className="bg-white border-b border-border py-4 sm:py-6">
         <div className="container-corporate">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
             <div className="p-2 sm:px-4 first:pl-0">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Department</span>
-              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.department}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Department</span>
+              <span className="font-serif text-xs sm:text-sm font-bold text-evergreen truncate block">{job.department}</span>
             </div>
             <div className="p-2 sm:px-4">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Employment Type</span>
-              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.employmentType}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Employment Type</span>
+              <span className="font-serif text-xs sm:text-sm font-bold text-evergreen truncate block">{job.employmentType}</span>
             </div>
             <div className="p-2 sm:px-4">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Location</span>
-              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.location}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Location</span>
+              <span className="font-serif text-xs sm:text-sm font-bold text-evergreen truncate block">{job.location}</span>
             </div>
             <div className="p-2 sm:px-4 last:pr-0">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Application Deadline</span>
-              <span className="font-serif text-sm font-bold text-evergreen truncate block">{job.closingDate}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Application Deadline</span>
+              <span className="font-serif text-xs sm:text-sm font-bold text-evergreen truncate block">{job.closingDate}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* 3. JOB DETAILS & APPLICATION FORM */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left: Role Breakdown */}
-            <div className="lg:col-span-7 space-y-10">
+            <div className="lg:col-span-7 space-y-8 sm:space-y-10">
               {/* Responsibilities */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-mineral-teal" />
-                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                  <Briefcase className="w-5 h-5 text-mineral-teal shrink-0" />
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-evergreen">
                     Primary Accountabilities & Scope
                   </h3>
                 </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-charcoal-body">
+                <ul className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-charcoal-body">
                   {job.responsibilities.map((resp, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 p-3 bg-white border border-border">
                       <CheckCircle2 className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
@@ -156,14 +156,14 @@ export const JobDetailPage: React.FC = () => {
               </div>
 
               {/* Qualifications */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center gap-2">
-                  <GraduationCap className="w-5 h-5 text-mineral-teal" />
-                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                  <GraduationCap className="w-5 h-5 text-mineral-teal shrink-0" />
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-evergreen">
                     Required Credentials & Qualifications
                   </h3>
                 </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-charcoal-body">
+                <ul className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-charcoal-body">
                   {job.qualifications.map((qual, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 p-3 bg-white border border-border">
                       <CheckCircle2 className="w-4 h-4 text-mineral-teal shrink-0 mt-0.5" />
@@ -174,16 +174,16 @@ export const JobDetailPage: React.FC = () => {
               </div>
 
               {/* Compensation & Benefits */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center gap-2">
-                  <HeartHandshake className="w-5 h-5 text-mineral-teal" />
-                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                  <HeartHandshake className="w-5 h-5 text-mineral-teal shrink-0" />
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-evergreen">
                     Compensation, Training & Benefits Package
                   </h3>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   {job.benefits.map((ben, idx) => (
-                    <div key={idx} className="p-3.5 bg-white border border-border text-xs text-charcoal-body font-mono">
+                    <div key={idx} className="p-3 bg-white border border-border text-xs text-charcoal-body font-mono">
                       ✓ {ben}
                     </div>
                   ))}
@@ -191,14 +191,14 @@ export const JobDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Direct Candidate Submission Form (Sticky) */}
-            <div className="lg:col-span-5 sticky top-24">
-              <div className="bg-white border border-border p-6 sm:p-8 space-y-6 shadow-xs">
+            {/* Right: Direct Candidate Submission Form (Sticky on Desktop, Clean on Mobile) */}
+            <div className="lg:col-span-5 lg:sticky lg:top-24">
+              <div className="bg-white border border-border p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-xs">
                 <div className="border-b border-border pb-3">
                   <span className="font-mono text-[10px] text-mineral-teal uppercase font-bold tracking-wider block">
                     Direct Application Desk
                   </span>
-                  <h3 className="font-serif text-xl font-bold text-evergreen">
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-evergreen">
                     Submit Candidate Dossier
                   </h3>
                   <p className="text-xs text-charcoal-muted mt-1">
@@ -207,7 +207,7 @@ export const JobDetailPage: React.FC = () => {
                 </div>
 
                 {isSubmitted ? (
-                  <div className="p-6 bg-evergreen text-white text-center space-y-3">
+                  <div className="p-5 sm:p-6 bg-evergreen text-white text-center space-y-3">
                     <CheckCircle2 className="w-10 h-10 text-mineral-teal mx-auto" />
                     <h4 className="font-serif text-lg font-bold">Dossier Received</h4>
                     <p className="text-xs text-border/90">
@@ -215,7 +215,7 @@ export const JobDetailPage: React.FC = () => {
                     </p>
                     <button
                       onClick={() => setIsSubmitted(false)}
-                      className="text-xs font-mono text-mineral-teal underline uppercase font-bold pt-2 cursor-pointer block mx-auto"
+                      className="text-xs font-mono text-mineral-teal underline uppercase font-bold pt-2 cursor-pointer block mx-auto py-2 min-h-[44px]"
                     >
                       Submit Another Application
                     </button>

@@ -17,6 +17,7 @@ import {
   Cog,
   ShieldCheck,
   Layers,
+  ArrowRight,
 } from 'lucide-react';
 
 export const BusinessUnitDetailPage: React.FC = () => {
@@ -67,55 +68,55 @@ export const BusinessUnitDetailPage: React.FC = () => {
       />
 
       {/* 2. DIVISION TELEMETRY STRIP */}
-      <section className="bg-white border-b border-border py-8">
+      <section className="bg-white border-b border-border py-6 sm:py-8">
         <div className="container-corporate">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border">
             <div className="p-2 sm:px-4 first:pl-0">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Annual Capacity</span>
-              <span className="font-serif text-2xl font-bold text-evergreen">{unit.annualCapacity}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Annual Capacity</span>
+              <span className="font-serif text-xl sm:text-2xl font-bold text-evergreen">{unit.annualCapacity}</span>
             </div>
             <div className="p-2 sm:px-4">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Covered Plant Area</span>
-              <span className="font-serif text-2xl font-bold text-evergreen">{unit.facilitySizeSqM}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Covered Area</span>
+              <span className="font-serif text-xl sm:text-2xl font-bold text-evergreen">{unit.facilitySizeSqM}</span>
             </div>
             <div className="p-2 sm:px-4">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Division Personnel</span>
-              <span className="font-serif text-2xl font-bold text-evergreen">{unit.workforceCount}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Workforce</span>
+              <span className="font-serif text-xl sm:text-2xl font-bold text-evergreen">{unit.workforceCount}</span>
             </div>
             <div className="p-2 sm:px-4 last:pr-0">
-              <span className="text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Facility Location</span>
-              <span className="font-serif text-base font-bold text-evergreen truncate block">{unit.facilityLocation}</span>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase text-charcoal-muted font-bold block">Plant Location</span>
+              <span className="font-serif text-xs sm:text-base font-bold text-evergreen truncate block">{unit.facilityLocation}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* 3. DIVISION BLUEPRINT: OVERVIEW & SPECIFICATION TABS */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8 sm:space-y-12">
           {/* Overview & Facility Photo */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7 space-y-6">
-              <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-5">
+              <div className="space-y-2">
                 <span className="badge-mono">{unit.divisionCode} Infrastructure</span>
-                <Heading as="h2" font="serif" size="display-md" color="evergreen">
+                <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl">
                   Production Capabilities & Machine Infrastructure.
                 </Heading>
-                <Text variant="lead" color="body">
+                <Text variant="lead" color="body" className="text-xs sm:text-base">
                   {unit.overview}
                 </Text>
               </div>
 
               {/* Accreditations list */}
-              <div className="pt-2">
-                <span className="font-mono text-xs uppercase tracking-widest text-charcoal-muted font-bold block mb-2.5">
+              <div className="pt-1">
+                <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-charcoal-muted font-bold block mb-2">
                   Division Standards & Certified Execution Classes:
                 </span>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {unit.certifications.map((cert) => (
                     <span
                       key={cert}
-                      className="px-3 py-1 bg-white border border-border text-xs font-mono font-bold text-evergreen"
+                      className="px-2.5 py-1 bg-white border border-border text-[11px] font-mono font-bold text-evergreen"
                     >
                       {cert}
                     </span>
@@ -135,48 +136,51 @@ export const BusinessUnitDetailPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Interactive Specification Tabs */}
-          <div className="bg-white border border-border p-6 sm:p-10 space-y-8 shadow-xs">
-            {/* Tab Selector */}
-            <div className="flex border-b border-border">
+          {/* Interactive Specification Tabs (Mobile & Touch Optimized) */}
+          <div className="bg-white border border-border p-4 sm:p-8 lg:p-10 space-y-6 sm:space-y-8 shadow-xs">
+            {/* Tab Selector Buttons */}
+            <div className="grid grid-cols-3 gap-1 bg-ivory-canvas p-1 border border-border">
               <button
                 onClick={() => setActiveTab('capabilities')}
-                className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer flex items-center gap-2 ${
+                className={`py-3 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1.5 min-h-[48px] text-center ${
                   activeTab === 'capabilities'
-                    ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
-                    : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                    ? 'bg-evergreen text-white shadow-xs'
+                    : 'text-charcoal-muted hover:text-evergreen'
                 }`}
+                aria-pressed={activeTab === 'capabilities'}
               >
-                <Cog className="w-4 h-4" />
-                <span>Primary Plant Capabilities ({unit.capabilities.length})</span>
+                <Cog className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                <span>Capabilities ({unit.capabilities.length})</span>
               </button>
               <button
                 onClick={() => setActiveTab('products')}
-                className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer flex items-center gap-2 ${
+                className={`py-3 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1.5 min-h-[48px] text-center ${
                   activeTab === 'products'
-                    ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
-                    : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                    ? 'bg-evergreen text-white shadow-xs'
+                    : 'text-charcoal-muted hover:text-evergreen'
                 }`}
+                aria-pressed={activeTab === 'products'}
               >
-                <Layers className="w-4 h-4" />
-                <span>Standard Products ({unit.keyProducts.length})</span>
+                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                <span>Products ({unit.keyProducts.length})</span>
               </button>
               <button
                 onClick={() => setActiveTab('qa')}
-                className={`px-5 py-3 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer flex items-center gap-2 ${
+                className={`py-3 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1.5 min-h-[48px] text-center ${
                   activeTab === 'qa'
-                    ? 'border-evergreen text-evergreen bg-ivory-canvas/40'
-                    : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                    ? 'bg-evergreen text-white shadow-xs'
+                    : 'text-charcoal-muted hover:text-evergreen'
                 }`}
+                aria-pressed={activeTab === 'qa'}
               >
-                <ShieldCheck className="w-4 h-4" />
-                <span>Quality & Compliance</span>
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                <span>Quality & QA</span>
               </button>
             </div>
 
             {/* Tab 1: Capabilities */}
             {activeTab === 'capabilities' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 animate-fadeIn">
                 {unit.capabilities.map((cap, idx) => (
                   <div key={cap.id} className="p-4 bg-ivory-canvas/60 border border-border space-y-2">
                     <span className="font-mono text-[10px] text-mineral-teal font-bold block">
@@ -200,14 +204,14 @@ export const BusinessUnitDetailPage: React.FC = () => {
 
             {/* Tab 2: Key Products */}
             {activeTab === 'products' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 animate-fadeIn">
                 {unit.keyProducts.map((prod) => (
                   <div key={prod.name} className="p-4 bg-ivory-canvas/60 border border-border space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[10px] text-mineral-teal uppercase font-bold">{prod.category}</span>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0" />
                     </div>
-                    <h4 className="font-serif text-base font-bold text-evergreen">{prod.name}</h4>
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-evergreen">{prod.name}</h4>
                     <p className="text-xs text-charcoal-body font-mono bg-white p-2 border border-border">{prod.specification}</p>
                   </div>
                 ))}
@@ -217,7 +221,7 @@ export const BusinessUnitDetailPage: React.FC = () => {
             {/* Tab 3: QA & Compliance */}
             {activeTab === 'qa' && (
               <div className="space-y-4 animate-fadeIn">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                   <div className="p-4 bg-ivory-canvas/60 border border-border space-y-1">
                     <span className="font-mono text-[10px] text-mineral-teal font-bold">WELDING & MIX INSPECTION</span>
                     <div className="font-serif text-base font-bold text-evergreen">100% NDT & Batch Lab</div>
@@ -242,24 +246,25 @@ export const BusinessUnitDetailPage: React.FC = () => {
 
       {/* 4. DELIVERED INFRASTRUCTURE CASE STUDIES */}
       {relatedProjects.length > 0 && (
-        <section className="py-16 lg:py-24 bg-white border-b border-border">
-          <div className="container-corporate space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6">
+        <section className="py-12 sm:py-16 lg:py-24 bg-white border-b border-border">
+          <div className="container-corporate space-y-8 sm:space-y-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border pb-4 sm:pb-6">
               <div className="space-y-1">
                 <span className="badge-mono">Delivered Projects</span>
-                <Heading as="h2" font="serif" size="display-md" color="evergreen">
+                <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl">
                   Representative Deliveries by {unit.name}.
                 </Heading>
               </div>
               <Link
                 to="/projects"
-                className="text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold"
+                className="text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold py-2 min-h-[44px] flex items-center"
               >
-                View Full Project Archive &rarr;
+                <span>View Full Project Archive</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-1" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               {relatedProjects.map((proj) => (
                 <ProjectCard key={proj.slug} project={proj} layout="grid" />
               ))}
@@ -269,14 +274,14 @@ export const BusinessUnitDetailPage: React.FC = () => {
       )}
 
       {/* 5. DIRECT DIVISION RFQ FORM */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate max-w-4xl mx-auto space-y-8">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate max-w-4xl mx-auto space-y-6 sm:space-y-8">
           <div className="text-center space-y-2">
             <span className="badge-mono">Tender & Procurement Channel</span>
-            <Heading as="h2" font="serif" size="display-md" color="evergreen">
+            <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl">
               Request Technical Allocation for {unit.name}
             </Heading>
-            <Text variant="body" color="body">
+            <Text variant="body" color="body" className="text-xs sm:text-sm">
               Submit your engineering drawings, bill of quantities (BOQ), or annual supply volume requirements directly to this division.
             </Text>
           </div>

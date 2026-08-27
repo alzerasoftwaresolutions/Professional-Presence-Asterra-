@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Phone, ArrowRight } from 'lucide-react';
 import { businessUnits, company } from '../data';
 
 const NAV_LINKS = [
   { label: 'About', href: '/about' },
-  { label: 'Business Units', href: '/business', hasDropdown: true },
-  { label: 'Projects', href: '/projects' },
+  { label: 'Operating Divisions', href: '/business', hasDropdown: true },
+  { label: 'Case Studies', href: '/projects' },
   { label: 'Leadership', href: '/leadership' },
   { label: 'Insights', href: '/insights' },
   { label: 'Careers', href: '/careers' },
@@ -15,6 +15,7 @@ const NAV_LINKS = [
 export const SiteLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileDivisionsOpen, setMobileDivisionsOpen] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -52,44 +53,48 @@ export const SiteLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-ivory-canvas text-charcoal-body font-sans">
-      {/* 1. TOP UTILITY BAR */}
-      <div className="bg-evergreen-active text-border text-[11px] font-mono border-b border-evergreen py-1.5 hidden md:block">
+      {/* 1. TOP UTILITY BAR (Tablet & Desktop) */}
+      <div className="bg-evergreen text-border text-[11px] font-mono border-b border-evergreen-hover py-2 hidden md:block">
         <div className="container-corporate flex justify-between items-center">
           <div className="flex items-center gap-6">
-            <span className="font-semibold text-white">ASTERRA MANUFACTURING GROUP</span>
+            <span className="font-bold text-white tracking-wide">ASTERRA MANUFACTURING GROUP S.C.</span>
             <span>•</span>
-            <span>ISO 9001:2015 / ISO 14001 / ISO 45001 CERTIFIED</span>
+            <span className="text-mineral-teal">EN 1090-2 EXC3 // ISO 9001:2015</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link to="/contact" className="hover:text-white transition-colors">HQ: Addis Ababa, Ethiopia</Link>
+          <div className="flex items-center gap-5">
+            <span className="text-border/80">Industrial Zone 4, Addis Ababa</span>
             <span>•</span>
-            <a href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`} className="hover:text-white transition-colors font-semibold">
-              {company.contact.phonePrimary}
+            <a
+              href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`}
+              className="hover:text-white transition-colors font-bold text-white flex items-center gap-1.5"
+            >
+              <Phone className="w-3 h-3 text-mineral-teal" />
+              <span>{company.contact.phonePrimary}</span>
             </a>
           </div>
         </div>
       </div>
 
       {/* 2. MAIN HEADER */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-border shadow-xs">
-        <div className="container-corporate flex items-center justify-between h-20">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-border shadow-xs">
+        <div className="container-corporate flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-evergreen text-white flex items-center justify-center font-serif font-bold text-xl border border-evergreen-hover group-hover:bg-evergreen-hover transition-colors">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-evergreen text-white flex items-center justify-center font-serif font-bold text-lg sm:text-xl border border-evergreen-hover group-hover:bg-evergreen-hover transition-colors shadow-xs">
               A
             </div>
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-lg text-evergreen tracking-tight leading-none">
+              <span className="font-serif font-bold text-base sm:text-lg text-evergreen tracking-tight leading-none">
                 ASTERRA
               </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal-muted mt-0.5 font-semibold">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-charcoal-muted mt-0.5 font-semibold">
                 Manufacturing Group
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-7">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {NAV_LINKS.map((link) => {
               if (link.hasDropdown) {
                 return (
@@ -103,7 +108,7 @@ export const SiteLayout: React.FC = () => {
                     <NavLink
                       to={link.href}
                       className={({ isActive }) =>
-                        `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 flex items-center gap-1 ${
+                        `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 flex items-center gap-1 min-h-[44px] ${
                           isActive || location.pathname.startsWith('/business')
                             ? 'text-evergreen font-bold border-b-2 border-evergreen'
                             : 'text-charcoal-body hover:text-evergreen'
@@ -118,7 +123,7 @@ export const SiteLayout: React.FC = () => {
 
                     {/* Dropdown Menu */}
                     {dropdownOpen && (
-                      <div className="absolute top-full left-0 w-80 bg-white border border-border shadow-md py-2 mt-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                      <div className="absolute top-full left-0 w-80 bg-white border border-border shadow-lg py-2 mt-1 z-50 animate-fadeIn">
                         <div className="px-4 py-2 border-b border-border/60 bg-ivory-canvas/60">
                           <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal-muted font-bold">
                             Operating Divisions Directory
@@ -147,10 +152,11 @@ export const SiteLayout: React.FC = () => {
                         <div className="p-2 border-t border-border bg-ivory-canvas/30 text-center">
                           <Link
                             to="/business"
-                            className="font-mono text-[10px] uppercase tracking-wider text-evergreen font-bold hover:underline"
+                            className="font-mono text-[10px] uppercase tracking-wider text-evergreen font-bold hover:underline inline-flex items-center gap-1"
                             onClick={() => setDropdownOpen(false)}
                           >
-                            View All Divisions & Capacities →
+                            <span>Explore All 4 Plant Blueprints</span>
+                            <ArrowRight className="w-3 h-3" />
                           </Link>
                         </div>
                       </div>
@@ -164,7 +170,7 @@ export const SiteLayout: React.FC = () => {
                   key={link.href}
                   to={link.href}
                   className={({ isActive }) =>
-                    `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 relative ${
+                    `text-xs font-semibold uppercase tracking-[0.1em] transition-colors py-2 relative min-h-[44px] flex items-center ${
                       isActive
                         ? 'text-evergreen font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-evergreen'
                         : 'text-charcoal-body hover:text-evergreen'
@@ -179,150 +185,236 @@ export const SiteLayout: React.FC = () => {
 
           {/* Header Action Button */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/contact" className="btn-primary text-xs">
-              Corporate Inquiry
+            <Link to="/contact" className="btn-primary text-xs py-2.5 px-4">
+              Submit Corporate RFQ
             </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-evergreen hover:bg-ivory-canvas rounded-xs transition-colors"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile & Tablet Hamburger Button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              to="/contact"
+              className="text-[11px] font-mono font-bold uppercase tracking-wider bg-evergreen text-white px-3 py-1.5 border border-evergreen hover:bg-evergreen-hover"
+            >
+              RFQ Desk
+            </Link>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2.5 text-evergreen hover:bg-ivory-canvas border border-border min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Toggle Navigation Menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* 3. MOBILE NAVIGATION DRAWER */}
+      {/* 3. MOBILE & TABLET NAVIGATION DRAWER */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-20 z-50 bg-evergreen text-white flex flex-col p-6 overflow-y-auto lg:hidden">
-          <nav className="flex flex-col space-y-4 pt-4 border-b border-evergreen-hover pb-8">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `text-lg font-serif tracking-wide py-2 ${isActive ? 'text-white font-bold' : 'text-border'}`
-              }
-            >
-              Home
-            </NavLink>
-            {NAV_LINKS.map((link) => (
-              <div key={link.href} className="space-y-2">
-                <NavLink
-                  to={link.href}
-                  className={({ isActive }) =>
-                    `text-lg font-serif tracking-wide py-2 block ${isActive ? 'text-white font-bold' : 'text-border'}`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-                {link.hasDropdown && (
-                  <div className="pl-4 space-y-2 border-l border-mineral-teal/40">
-                    {businessUnits.map((u) => (
-                      <Link
-                        key={u.slug}
-                        to={`/business/${u.slug}`}
-                        className="block text-xs font-mono text-border hover:text-white py-1"
-                      >
-                        {u.divisionCode}: {u.name.split('—')[1] || u.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </nav>
-          <div className="pt-8 space-y-6">
-            <Link to="/contact" className="btn-primary w-full bg-white text-evergreen text-center">
-              Corporate Inquiry
-            </Link>
-            <div className="text-xs text-border space-y-2 font-mono">
-              <p>Addis Ababa, Ethiopia</p>
-              <p>{company.contact.generalEmail}</p>
-              <p>{company.contact.phonePrimary}</p>
+        <div className="fixed inset-0 top-16 sm:top-20 z-50 bg-evergreen/98 backdrop-blur-xl text-white flex flex-col justify-between p-5 sm:p-8 overflow-y-auto lg:hidden animate-fadeIn">
+          <div className="space-y-6">
+            {/* Quick Header Identity */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/15">
+              <span className="font-mono text-[11px] text-mineral-teal uppercase font-bold tracking-wider">
+                Corporate Directory Portal
+              </span>
+              <span className="text-[10px] font-mono text-border/80 px-2 py-0.5 bg-white/10">
+                Zone 4 Facilities
+              </span>
             </div>
+
+            {/* Navigation Links */}
+            <nav className="flex flex-col space-y-1">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `text-base sm:text-lg font-serif tracking-wide py-3 px-3 flex items-center justify-between border-b border-white/10 ${
+                    isActive ? 'bg-white/10 text-white font-bold text-mineral-teal' : 'text-border hover:bg-white/5'
+                  }`
+                }
+              >
+                <span>Home Overview</span>
+                {location.pathname === '/' && (
+                  <span className="text-[10px] font-mono text-mineral-teal font-bold px-2 py-0.5 bg-white/10">ACTIVE</span>
+                )}
+              </NavLink>
+
+              {NAV_LINKS.map((link) => {
+                const isActive = location.pathname.startsWith(link.href);
+                return (
+                  <div key={link.href} className="border-b border-white/10">
+                    <div className="flex items-center justify-between">
+                      <NavLink
+                        to={link.href}
+                        className={`text-base sm:text-lg font-serif tracking-wide py-3 px-3 flex-1 flex items-center justify-between ${
+                          isActive ? 'text-mineral-teal font-bold' : 'text-border hover:text-white'
+                        }`}
+                      >
+                        <span>{link.label}</span>
+                        {isActive && (
+                          <span className="text-[10px] font-mono text-mineral-teal font-bold px-2 py-0.5 bg-white/10">
+                            ACTIVE
+                          </span>
+                        )}
+                      </NavLink>
+                      {link.hasDropdown && (
+                        <button
+                          onClick={() => setMobileDivisionsOpen(!mobileDivisionsOpen)}
+                          className="p-3 text-border hover:text-white cursor-pointer"
+                          aria-label="Toggle Divisions List"
+                        >
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform duration-200 ${mobileDivisionsOpen ? 'rotate-180' : ''}`}
+                          />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Expandable Divisions in Mobile Menu */}
+                    {link.hasDropdown && mobileDivisionsOpen && (
+                      <div className="pl-4 pr-2 pb-3 space-y-1.5 border-l-2 border-mineral-teal ml-3 my-1 animate-fadeIn">
+                        {businessUnits.map((u) => (
+                          <Link
+                            key={u.slug}
+                            to={`/business/${u.slug}`}
+                            className="block text-xs font-mono text-border/90 hover:text-white py-1.5 px-2 bg-white/5 hover:bg-white/10 border border-white/5 flex items-center justify-between"
+                          >
+                            <span className="font-bold text-mineral-teal">{u.divisionCode}</span>
+                            <span className="truncate ml-2 text-white font-sans text-xs">{u.name.split('—')[1] || u.name}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Quick Direct Desk Actions at Bottom */}
+          <div className="pt-6 mt-6 border-t border-white/15 space-y-3">
+            <Link
+              to="/contact"
+              className="btn-primary w-full bg-mineral-teal text-white border-mineral-teal text-center justify-center font-bold font-mono text-xs uppercase tracking-wider"
+            >
+              Submit Corporate RFQ
+            </Link>
+            <a
+              href={`tel:${company.contact.phonePrimary.replace(/\s+/g, '')}`}
+              className="btn-secondary w-full text-white border-white/30 hover:bg-white/10 text-center justify-center font-mono text-xs"
+            >
+              <Phone className="w-3.5 h-3.5 mr-1 text-mineral-teal" />
+              <span>Call Direct Dispatch: {company.contact.phonePrimary}</span>
+            </a>
           </div>
         </div>
       )}
 
-      {/* 4. MAIN PAGE OUTLET */}
-      <main className="flex-grow flex flex-col">
+      {/* 4. PAGE OUTLET */}
+      <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* 5. CORPORATE FOOTER */}
-      <footer className="bg-evergreen text-white border-t border-evergreen-hover pt-16 pb-12 mt-auto">
-        <div className="container-corporate">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-evergreen-hover">
-            {/* Brand Column */}
-            <div className="lg:col-span-2 space-y-4">
+      {/* 5. FOOTER */}
+      <footer className="bg-evergreen-active text-white border-t border-evergreen-hover pt-16 pb-12">
+        <div className="container-corporate space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+            {/* Column 1: Brand & Charter */}
+            <div className="lg:col-span-4 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white text-evergreen flex items-center justify-center font-serif font-bold text-lg">
+                <div className="w-10 h-10 bg-white text-evergreen flex items-center justify-center font-serif font-bold text-xl">
                   A
                 </div>
-                <span className="font-serif font-bold text-xl text-white tracking-tight">
-                  ASTERRA GROUP
-                </span>
+                <div>
+                  <div className="font-serif font-bold text-lg text-white">
+                    ASTERRA
+                  </div>
+                  <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-mineral-teal">
+                    Manufacturing Group S.C.
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-border max-w-sm leading-relaxed">
-                Asterra Manufacturing Group is a diversified industrial production organization delivering precision components, heavy materials, and engineering infrastructure across regional and international export corridors.
+
+              <p className="text-xs text-border/85 leading-relaxed">
+                East Africa’s premier diversified industrial manufacturing group. Operating 4 synchronized production facilities across 68,000 m² of covered plant infrastructure.
               </p>
-              <div className="pt-2 text-xs font-mono text-border flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-mineral-teal shrink-0" />
-                <span>ISO 9001:2015 • ISO 14001 • ISO 45001</span>
+
+              <div className="pt-2 text-xs font-mono text-border/70 space-y-1">
+                <div>Share Company Reg. No. 09-412</div>
+                <div>Industrial Zone 4, Addis Ababa, Ethiopia</div>
               </div>
             </div>
 
-            {/* Column 2: Governance & Heritage */}
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-border font-bold mb-4">
-                Organization
+            {/* Column 2: Operating Divisions */}
+            <div className="lg:col-span-3 space-y-3">
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-mineral-teal">
+                Operating Divisions
               </h4>
-              <ul className="space-y-2.5 text-xs text-border">
-                <li><Link to="/about" className="hover:text-white transition-colors">Corporate Story & History</Link></li>
-                <li><Link to="/leadership" className="hover:text-white transition-colors">Board & Executive Team</Link></li>
-                <li><Link to="/about#values" className="hover:text-white transition-colors">Institutional Values</Link></li>
-                <li><Link to="/about#esg" className="hover:text-white transition-colors">Sustainability & ESG</Link></li>
+              <ul className="space-y-2 text-xs text-border/85">
+                {businessUnits.map((unit) => (
+                  <li key={unit.slug}>
+                    <Link
+                      to={`/business/${unit.slug}`}
+                      className="hover:text-mineral-teal transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="font-mono text-[10px] text-mineral-teal">{unit.divisionCode}</span>
+                      <span>{unit.name.split('—')[1] || unit.name}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Column 3: Capabilities */}
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-border font-bold mb-4">
-                Operations
+            {/* Column 3: Corporate Modules */}
+            <div className="lg:col-span-2 space-y-3">
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-mineral-teal">
+                Directorship Portals
               </h4>
-              <ul className="space-y-2.5 text-xs text-border">
-                <li><Link to="/business/precision-metals-fabrication" className="hover:text-white transition-colors">DIV-01: Precision Metals</Link></li>
-                <li><Link to="/business/industrial-materials-building-products" className="hover:text-white transition-colors">DIV-02: Building Products</Link></li>
-                <li><Link to="/business/polymers-engineered-composites" className="hover:text-white transition-colors">DIV-03: Polymers & Piping</Link></li>
-                <li><Link to="/business/automated-equipment-assemblies" className="hover:text-white transition-colors">DIV-04: Automated Assemblies</Link></li>
-                <li><Link to="/projects" className="hover:text-white transition-colors">Delivered Case Studies</Link></li>
+              <ul className="space-y-2 text-xs text-border/85">
+                <li><Link to="/about" className="hover:text-mineral-teal transition-colors">Corporate Story</Link></li>
+                <li><Link to="/projects" className="hover:text-mineral-teal transition-colors">Case Studies Archive</Link></li>
+                <li><Link to="/leadership" className="hover:text-mineral-teal transition-colors">Governance & Board</Link></li>
+                <li><Link to="/insights" className="hover:text-mineral-teal transition-colors">Applied Metallurgy Papers</Link></li>
+                <li><Link to="/careers" className="hover:text-mineral-teal transition-colors">Apprenticeship Academy</Link></li>
+                <li><Link to="/contact" className="hover:text-mineral-teal transition-colors">Commercial Tender Desk</Link></li>
               </ul>
             </div>
 
-            {/* Column 4: Knowledge & Inquiries */}
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-border font-bold mb-4">
-                Connect
+            {/* Column 4: Quality & Dispatch Desks */}
+            <div className="lg:col-span-3 space-y-3">
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-mineral-teal">
+                Compliance & Direct Desks
               </h4>
-              <ul className="space-y-2.5 text-xs text-border">
-                <li><Link to="/insights" className="hover:text-white transition-colors">Technical Whitepapers</Link></li>
-                <li><Link to="/careers" className="hover:text-white transition-colors">Engineering Careers</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Procurement Inquiries</Link></li>
-                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy & Data Policy</Link></li>
-                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Engagement</Link></li>
-              </ul>
+              <div className="space-y-2 text-xs text-border/85 font-mono">
+                <div>
+                  <span className="text-border/60 block text-[10px]">TENDER ESTIMATION:</span>
+                  <span className="text-white">{company.contact.procurementEmail}</span>
+                </div>
+                <div>
+                  <span className="text-border/60 block text-[10px]">EXECUTIVE DESK:</span>
+                  <span className="text-white">{company.contact.generalEmail}</span>
+                </div>
+                <div>
+                  <span className="text-border/60 block text-[10px]">DISPATCH TELEPHONE:</span>
+                  <span className="text-white font-bold">{company.contact.phonePrimary}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Sub-footer copyright */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-border font-mono">
-            <p>© {new Date().getFullYear()} Asterra Manufacturing Group S.C. All rights reserved.</p>
-            <div className="flex gap-6">
+          {/* Bottom Hairline */}
+          <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-border/60">
+            <div>
+              &copy; {new Date().getFullYear()} Asterra Manufacturing Group S.C. All rights reserved.
+            </div>
+            <div className="flex items-center gap-4">
               <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-white transition-colors">Terms of Engagement</Link>
+              <span>•</span>
+              <Link to="/terms" className="hover:text-white transition-colors">Terms of RFQ</Link>
+              <span>•</span>
+              <span>ISO 9001:2015 & EN 1090-2</span>
             </div>
           </div>
         </div>

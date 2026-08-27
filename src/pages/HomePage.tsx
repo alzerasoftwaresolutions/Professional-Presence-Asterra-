@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Factory,
   CheckCircle2,
+  ChevronDown,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -36,6 +37,9 @@ export const HomePage: React.FC = () => {
   const [activeDivisionIndex, setActiveDivisionIndex] = useState(0);
   const [activeProjectTab, setActiveProjectTab] = useState<'solution' | 'challenge' | 'specs'>('solution');
   const [activeCommittee, setActiveCommittee] = useState<'audit' | 'risk' | 'technical'>('audit');
+
+  // Mobile Accordion State for Divisions (allows in-place expansion on mobile/tablet)
+  const [mobileExpandedDivision, setMobileExpandedDivision] = useState<number>(0);
 
   const selectedUnit = businessUnits[activeDivisionIndex] || businessUnits[0];
 
@@ -71,38 +75,38 @@ export const HomePage: React.FC = () => {
       {/* =========================================================================
           1. IMMERSIVE ARCHITECTURAL HERO WITH EMBEDDED TELEMETRY
           ========================================================================= */}
-      <section className="relative bg-evergreen text-white pt-14 pb-20 lg:pt-20 lg:pb-28 overflow-hidden border-b border-evergreen-hover">
+      <section className="relative bg-evergreen text-white pt-10 pb-16 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28 overflow-hidden border-b border-evergreen-hover">
         {/* Subtle Architectural Grid Texture */}
         <div
           className="absolute inset-0 opacity-[0.05] pointer-events-none bg-grid-pattern-dark"
           aria-hidden="true"
         />
 
-        <div className="container-corporate relative z-10 space-y-12">
+        <div className="container-corporate relative z-10 space-y-8 sm:space-y-12">
           {/* Top Institutional Identity Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-4">
-            <div className="inline-flex items-center gap-2.5 text-[11px] font-mono tracking-wider text-mineral-teal uppercase">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/15 pb-4">
+            <div className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-wider text-mineral-teal uppercase">
               <span className="w-2 h-2 rounded-full bg-mineral-teal animate-pulse" />
-              <span>EST. 1998 // SHARE COMPANY REG. NO. 09-412 // ADDIS ABABA INDUSTRIAL ZONE 4</span>
+              <span>EST. 1998 // SHARE COMPANY REG. NO. 09-412 // ZONE 4</span>
             </div>
-            <div className="hidden sm:flex items-center gap-6 text-xs font-mono text-border/80">
-              <span>EN 1090-2 EXC3 CERTIFIED</span>
+            <div className="flex items-center gap-3 sm:gap-6 text-[10px] sm:text-xs font-mono text-border/80">
+              <span className="text-mineral-teal font-bold">EN 1090-2 EXC3</span>
               <span>•</span>
-              <span>120,000 MT ANNUAL CAPACITY</span>
-              <span>•</span>
-              <span>14 EXPORT CORRIDORS</span>
+              <span>120,000 MT CAPACITY</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">14 CORRIDORS</span>
             </div>
           </div>
 
           {/* Hero Main Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6">
               <Heading
                 as="h1"
                 font="serif"
                 size="display-xl"
                 color="white"
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.08] tracking-tight font-bold"
+                className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.12] sm:leading-[1.08] tracking-tight font-bold"
               >
                 Heavy Industrial Metallurgy & Precision Engineering at Continental Scale.
               </Heading>
@@ -110,16 +114,17 @@ export const HomePage: React.FC = () => {
               <Text
                 variant="lead"
                 color="border"
-                className="text-sm sm:text-base text-border/90 leading-relaxed max-w-2xl"
+                className="text-xs sm:text-base text-border/90 leading-relaxed max-w-2xl"
               >
                 Asterra Manufacturing Group operates four specialized production divisions across 68,000 m² of covered plant infrastructure—delivering certified structural steel, UHPC transit elements, and polymer pressure piping for sovereign infrastructure across 14 export corridors.
               </Text>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 <Button
                   to="/business"
                   variant="white"
                   size="md"
+                  className="w-full sm:w-auto justify-center"
                   rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
                 >
                   Explore 4 Operating Divisions
@@ -128,73 +133,88 @@ export const HomePage: React.FC = () => {
                   to="/contact"
                   variant="secondary"
                   size="md"
-                  className="text-white border-white/30 hover:bg-white/10 hover:border-white"
+                  className="w-full sm:w-auto justify-center text-white border-white/30 hover:bg-white/10 hover:border-white"
                 >
                   Request Technical RFQ
                 </Button>
               </div>
             </div>
 
-            {/* Right: Dynamic Division Quick-View Console */}
+            {/* Right: Dynamic Division Quick-View Console (Touch & Tablet Optimized) */}
             <div className="lg:col-span-5">
-              <div className="glass-panel-dark p-6 border border-white/20 space-y-4 relative">
-                <div className="flex items-center justify-between border-b border-white/15 pb-3">
+              <div className="glass-panel-dark p-4 sm:p-6 border border-white/20 space-y-4 relative">
+                <div className="flex items-center justify-between border-b border-white/15 pb-2.5">
                   <div className="flex items-center gap-2">
-                    <Factory className="w-4 h-4 text-mineral-teal" />
+                    <Factory className="w-4 h-4 text-mineral-teal shrink-0" />
                     <span className="font-mono text-xs text-mineral-teal uppercase font-bold tracking-wider">
-                      Live Plant Infrastructure
+                      Interactive Plant Telemetry
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-white/70 px-2 py-0.5 bg-white/10 border border-white/15">
-                    Zone 4 Facility
+                  <span className="text-[10px] font-mono text-white/80 px-2 py-0.5 bg-white/10 border border-white/15">
+                    Tap to Switch Division
                   </span>
                 </div>
 
-                <div className="relative aspect-[16/10] overflow-hidden border border-white/10">
+                <div className="relative aspect-[16/10] overflow-hidden border border-white/10 bg-black/40">
                   <img
+                    key={selectedUnit.slug}
                     src={selectedUnit.heroImage}
                     alt={selectedUnit.name}
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="w-full h-full object-cover transition-opacity duration-300 animate-fadeIn"
                   />
                   <div className="absolute top-2.5 left-2.5">
                     <span className="badge-mono bg-evergreen text-white border-mineral-teal text-[10px]">
                       {selectedUnit.divisionCode}
                     </span>
                   </div>
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-evergreen via-evergreen/80 to-transparent p-4">
-                    <div className="text-sm font-bold font-serif text-white">
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-evergreen via-evergreen/85 to-transparent p-3 sm:p-4">
+                    <div className="text-xs sm:text-sm font-bold font-serif text-white">
                       {selectedUnit.name}
                     </div>
-                    <div className="text-xs text-border/80 font-mono">
+                    <div className="text-[11px] text-border/80 font-mono">
                       Capacity: {selectedUnit.annualCapacity} • {selectedUnit.facilityLocation}
                     </div>
                   </div>
                 </div>
 
-                {/* Division Selector Tabs */}
-                <div className="grid grid-cols-4 gap-1.5 pt-1">
-                  {businessUnits.map((unit, idx) => (
-                    <button
-                      key={unit.slug}
-                      onClick={() => setActiveDivisionIndex(idx)}
-                      className={`p-2 text-center text-[10px] font-mono uppercase tracking-wider transition-all border cursor-pointer ${
-                        activeDivisionIndex === idx
-                          ? 'bg-mineral-teal text-white border-mineral-teal font-bold shadow-xs'
-                          : 'bg-white/5 text-border/70 border-white/10 hover:bg-white/10'
-                      }`}
-                    >
-                      {unit.divisionCode}
-                    </button>
-                  ))}
+                {/* Division Selector Buttons (Large min 44px touch target) */}
+                <div className="space-y-1.5 pt-1">
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {businessUnits.map((unit, idx) => {
+                      const isActive = activeDivisionIndex === idx;
+                      return (
+                        <button
+                          key={unit.slug}
+                          onClick={() => setActiveDivisionIndex(idx)}
+                          className={`min-h-[44px] p-2 text-center text-xs font-mono uppercase tracking-wider transition-all border cursor-pointer flex flex-col items-center justify-center ${
+                            isActive
+                              ? 'bg-mineral-teal text-white border-mineral-teal font-bold shadow-xs scale-[1.02] ring-2 ring-mineral-teal/40'
+                              : 'bg-white/5 text-border/80 border-white/15 hover:bg-white/10 active:scale-95'
+                          }`}
+                          aria-label={`View ${unit.divisionCode}: ${unit.name}`}
+                          aria-pressed={isActive}
+                        >
+                          <span className="font-bold">{unit.divisionCode}</span>
+                          <span className="text-[9px] opacity-75 hidden sm:inline">
+                            {idx === 0 ? 'Steel' : idx === 1 ? 'Precast' : idx === 2 ? 'Pipes' : 'Assembly'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="text-[10px] font-mono text-center text-mineral-teal pt-0.5">
+                    ● Viewing {selectedUnit.divisionCode}: {selectedUnit.name.split('—')[1] || selectedUnit.name}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-mono text-border/70 pt-2 border-t border-white/10">
                   <span>Workforce: {selectedUnit.workforceCount}</span>
                   <Link
                     to={`/business/${selectedUnit.slug}`}
-                    className="text-mineral-teal hover:underline flex items-center gap-1 font-semibold"
+                    className="text-mineral-teal hover:underline flex items-center gap-1 font-bold py-1 min-h-[36px]"
                   >
-                    Division Specs &rarr;
+                    <span>Full Plant Specs</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -204,34 +224,34 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          2. INTEGRATED OPERATIONAL CAPABILITY MATRIX (NO OVERSIZED STATS)
+          2. INTEGRATED OPERATIONAL CAPABILITY MATRIX (RESPONSIVE ACCORDION ON MOBILE)
           ========================================================================= */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8 sm:space-y-12">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
             <div className="space-y-2 max-w-3xl">
               <span className="badge-mono">Sovereign Industrial Footprint</span>
-              <Heading as="h2" font="serif" size="display-md" color="evergreen">
+              <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl lg:text-4xl">
                 Four Autonomous Divisions. One Synchronous Standard.
               </Heading>
-              <Text variant="lead" color="body">
+              <Text variant="lead" color="body" className="text-xs sm:text-base">
                 Our 68,000 m² covered production complex integrates metallurgical plate profiling, heavy girder fabrication, automated UHPC precast batching, and polymer pressure extrusion.
               </Text>
             </div>
             <Link
               to="/business"
-              className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0 border border-evergreen/30 px-4 py-2.5 bg-white hover:border-evergreen transition-all"
+              className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0 border border-evergreen/30 px-4 py-2.5 bg-white hover:border-evergreen transition-all min-h-[44px]"
             >
               <span>Explore All Specifications</span>
               <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
             </Link>
           </div>
 
-          {/* Interactive Split Capability Console */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* DESKTOP VIEW (lg+): 2-Column Split Screen Console */}
+          <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch">
             {/* Left: Division Navigation List */}
-            <div className="lg:col-span-5 space-y-3">
+            <div className="col-span-5 space-y-3">
               {businessUnits.map((unit, idx) => {
                 const isActive = activeDivisionIndex === idx;
                 return (
@@ -240,7 +260,7 @@ export const HomePage: React.FC = () => {
                     onClick={() => setActiveDivisionIndex(idx)}
                     className={`p-5 border transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-white border-evergreen shadow-sm translate-x-1'
+                        ? 'bg-white border-evergreen shadow-sm translate-x-1.5 ring-1 ring-evergreen'
                         : 'bg-white/60 border-border hover:bg-white hover:border-border-strong'
                     }`}
                   >
@@ -264,14 +284,14 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Right: Active Division Showcase Card */}
-            <div className="lg:col-span-7 bg-white border border-border p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-xs">
+            <div className="col-span-7 bg-white border border-border p-8 flex flex-col justify-between space-y-6 shadow-xs">
               <div className="space-y-5">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
                   <div>
                     <span className="font-mono text-xs font-bold text-mineral-teal uppercase block">
                       {selectedUnit.divisionCode} // SPECIFICATION PROFILE
                     </span>
-                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-evergreen">
+                    <h3 className="font-serif text-2xl font-bold text-evergreen">
                       {selectedUnit.name}
                     </h3>
                   </div>
@@ -291,7 +311,7 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm text-charcoal-body leading-relaxed">
+                <p className="text-sm text-charcoal-body leading-relaxed">
                   {selectedUnit.overview}
                 </p>
 
@@ -300,12 +320,12 @@ export const HomePage: React.FC = () => {
                   <h4 className="font-mono text-[11px] uppercase tracking-wider text-charcoal-muted font-bold">
                     Audited Production Tolerances & Equipment:
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-charcoal-body">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-charcoal-body">
                     {selectedUnit.capabilities.slice(0, 4).map((cap) => (
                       <div key={cap.id} className="flex items-start gap-2 bg-ivory-canvas/60 p-2.5 border border-border">
                         <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
                         <div>
-                          <span className="font-semibold block text-evergreen">{cap.title}</span>
+                          <span className="font-bold text-evergreen block">{cap.title}</span>
                           <span className="text-[11px] text-charcoal-muted">{cap.description}</span>
                         </div>
                       </div>
@@ -329,6 +349,104 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* MOBILE & TABLET VIEW (<lg): Interactive In-Place Expandable Accordion */}
+          <div className="lg:hidden space-y-4">
+            {businessUnits.map((unit, idx) => {
+              const isExpanded = mobileExpandedDivision === idx;
+              return (
+                <div
+                  key={unit.slug}
+                  className={`bg-white border transition-all ${
+                    isExpanded ? 'border-evergreen shadow-md ring-1 ring-evergreen' : 'border-border'
+                  }`}
+                >
+                  {/* Tap Header */}
+                  <button
+                    type="button"
+                    onClick={() => setMobileExpandedDivision(isExpanded ? -1 : idx)}
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-3 cursor-pointer min-h-[54px]"
+                    aria-expanded={isExpanded}
+                  >
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="badge-mono text-[9px] bg-ivory-canvas text-evergreen border-border">
+                          {unit.divisionCode}
+                        </span>
+                        <span className="font-mono text-[10px] text-mineral-teal font-bold">
+                          {unit.annualCapacity}
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-evergreen">
+                        {unit.name}
+                      </h3>
+                      <p className="text-xs text-charcoal-muted line-clamp-1">
+                        {unit.tagline}
+                      </p>
+                    </div>
+
+                    <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                      isExpanded ? 'bg-evergreen text-white border-evergreen rotate-180' : 'bg-ivory-canvas text-charcoal-body border-border'
+                    }`}>
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </button>
+
+                  {/* Expandable In-Place Content */}
+                  {isExpanded && (
+                    <div className="p-4 sm:p-6 pt-0 border-t border-border space-y-4 animate-fadeIn">
+                      <div className="relative aspect-[16/9] overflow-hidden border border-border mt-3">
+                        <img
+                          src={unit.heroImage}
+                          alt={unit.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-2 left-2 bg-evergreen/90 text-white px-2.5 py-1 text-[10px] font-mono">
+                          {unit.facilityLocation} • {unit.facilitySizeSqM}
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-charcoal-body leading-relaxed">
+                        {unit.overview}
+                      </p>
+
+                      <div className="space-y-2 pt-2 border-t border-border">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-charcoal-muted font-bold block">
+                          Audited Capabilities:
+                        </span>
+                        <div className="space-y-1.5 text-xs text-charcoal-body">
+                          {unit.capabilities.slice(0, 3).map((cap) => (
+                            <div key={cap.id} className="flex items-start gap-2 bg-ivory-canvas/70 p-2 border border-border">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
+                              <div>
+                                <span className="font-bold text-evergreen block">{cap.title}</span>
+                                <span className="text-[11px] text-charcoal-muted">{cap.description}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        <span className="font-mono text-[11px] text-charcoal-muted">
+                          Workforce: {unit.workforceCount}
+                        </span>
+                        <Button
+                          to={`/business/${unit.slug}`}
+                          variant="primary"
+                          size="sm"
+                          className="w-full sm:w-auto justify-center"
+                          rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
+                        >
+                          View Machine Specs & Catalog
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -336,21 +454,21 @@ export const HomePage: React.FC = () => {
           3. DEMONSTRATED ENGINEERING PERFORMANCE (FLAGSHIP CASE STUDY)
           ========================================================================= */}
       {flagshipProject && (
-        <section className="py-16 lg:py-24 bg-white border-b border-border">
-          <div className="container-corporate space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6">
+        <section className="py-12 sm:py-16 lg:py-24 bg-white border-b border-border">
+          <div className="container-corporate space-y-8 sm:space-y-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-border pb-6">
               <div className="space-y-2 max-w-3xl">
                 <span className="badge-mono">Infrastructure Delivery Dossier</span>
-                <Heading as="h2" font="serif" size="display-md" color="evergreen">
+                <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl lg:text-4xl">
                   Awash Heavy Rail Transit Overpass: 1,420 MT Structural Delivery.
                 </Heading>
-                <Text variant="lead" color="body">
+                <Text variant="lead" color="body" className="text-xs sm:text-base">
                   Sub-millimeter welding tolerances and EN 1090-2 EXC3 bridge girders fabricated under a zero-tolerance fatigue testing protocol.
                 </Text>
               </div>
               <Link
                 to="/projects"
-                className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0"
+                className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0 min-h-[44px]"
               >
                 <span>View Complete Portfolio</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -358,66 +476,75 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Case Study Split Feature */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-ivory-canvas border border-border p-6 sm:p-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center bg-ivory-canvas border border-border p-4 sm:p-8 lg:p-10">
               <div className="lg:col-span-6 space-y-6">
-                {/* Interactive Challenge / Solution Tabs */}
-                <div className="flex border-b border-border">
+                {/* Touch-Optimized Segmented Tab Selector */}
+                <div className="grid grid-cols-3 gap-1 bg-white p-1 border border-border">
                   <button
                     onClick={() => setActiveProjectTab('solution')}
-                    className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    className={`py-2.5 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer text-center min-h-[44px] flex items-center justify-center ${
                       activeProjectTab === 'solution'
-                        ? 'border-evergreen text-evergreen bg-white'
-                        : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                        ? 'bg-evergreen text-white shadow-xs'
+                        : 'text-charcoal-muted hover:text-evergreen'
                     }`}
                   >
-                    Engineering Solution
+                    Solution
                   </button>
                   <button
                     onClick={() => setActiveProjectTab('challenge')}
-                    className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    className={`py-2.5 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer text-center min-h-[44px] flex items-center justify-center ${
                       activeProjectTab === 'challenge'
-                        ? 'border-evergreen text-evergreen bg-white'
-                        : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                        ? 'bg-evergreen text-white shadow-xs'
+                        : 'text-charcoal-muted hover:text-evergreen'
                     }`}
                   >
-                    The Challenge
+                    Challenge
                   </button>
                   <button
                     onClick={() => setActiveProjectTab('specs')}
-                    className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all border-b-2 font-bold cursor-pointer ${
+                    className={`py-2.5 px-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider transition-all font-bold cursor-pointer text-center min-h-[44px] flex items-center justify-center ${
                       activeProjectTab === 'specs'
-                        ? 'border-evergreen text-evergreen bg-white'
-                        : 'border-transparent text-charcoal-muted hover:text-evergreen'
+                        ? 'bg-evergreen text-white shadow-xs'
+                        : 'text-charcoal-muted hover:text-evergreen'
                     }`}
                   >
-                    Execution Specs
+                    Specs
                   </button>
                 </div>
 
-                <div className="min-h-[140px] text-xs sm:text-sm text-charcoal-body leading-relaxed">
+                <div className="min-h-[120px] text-xs sm:text-sm text-charcoal-body leading-relaxed bg-white p-4 border border-border">
                   {activeProjectTab === 'solution' && (
-                    <div className="space-y-3 animate-fadeIn">
+                    <div className="space-y-2 animate-fadeIn">
+                      <div className="font-mono text-[10px] text-mineral-teal uppercase font-bold">
+                        ● Engineering Execution Solution
+                      </div>
                       <p>{flagshipProject.solution}</p>
-                      <div className="flex items-center gap-2 text-xs font-mono text-evergreen font-bold">
-                        <ShieldCheck className="w-4 h-4 text-mineral-teal" />
+                      <div className="flex items-center gap-2 text-xs font-mono text-evergreen font-bold pt-1">
+                        <ShieldCheck className="w-4 h-4 text-mineral-teal shrink-0" />
                         <span>100% Radiographic & Ultrasonic Weld Inspection</span>
                       </div>
                     </div>
                   )}
                   {activeProjectTab === 'challenge' && (
-                    <div className="space-y-3 animate-fadeIn">
+                    <div className="space-y-2 animate-fadeIn">
+                      <div className="font-mono text-[10px] text-mineral-teal uppercase font-bold">
+                        ● Site Challenge & Demands
+                      </div>
                       <p>{flagshipProject.challenge}</p>
-                      <div className="flex items-center gap-2 text-xs font-mono text-charcoal-muted">
-                        <span>Location: {flagshipProject.location} • Sector: {flagshipProject.sector}</span>
+                      <div className="text-xs font-mono text-charcoal-muted pt-1">
+                        Location: {flagshipProject.location} • Sector: {flagshipProject.sector}
                       </div>
                     </div>
                   )}
                   {activeProjectTab === 'specs' && (
-                    <div className="space-y-3 animate-fadeIn">
+                    <div className="space-y-2 animate-fadeIn">
+                      <div className="font-mono text-[10px] text-mineral-teal uppercase font-bold">
+                        ● Execution Class Standards
+                      </div>
                       <p>{flagshipProject.engineeringExecution}</p>
-                      <div className="flex flex-wrap gap-2 pt-1">
+                      <div className="flex flex-wrap gap-1.5 pt-1">
                         {flagshipProject.certificationsApplied.map((cert) => (
-                          <span key={cert} className="badge-mono text-[10px] bg-white">
+                          <span key={cert} className="badge-mono text-[9px] bg-ivory-canvas">
                             {cert}
                           </span>
                         ))}
@@ -427,13 +554,13 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* 4 Quantitative Result Chips */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-border">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                   {flagshipProject.results.map((res) => (
                     <div key={res.label} className="bg-white p-3 border border-border">
-                      <div className="font-serif text-lg font-bold text-evergreen">
+                      <div className="font-serif text-base sm:text-lg font-bold text-evergreen">
                         {res.metric}
                       </div>
-                      <span className="font-mono text-[10px] text-charcoal-muted uppercase block leading-tight">
+                      <span className="font-mono text-[9px] text-charcoal-muted uppercase block leading-tight">
                         {res.label}
                       </span>
                     </div>
@@ -445,6 +572,7 @@ export const HomePage: React.FC = () => {
                     to={`/projects/${flagshipProject.slug}`}
                     variant="primary"
                     size="sm"
+                    className="w-full sm:w-auto justify-center"
                     rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
                   >
                     Read Full Case Study Dossier
@@ -473,9 +601,9 @@ export const HomePage: React.FC = () => {
       {/* =========================================================================
           4. BOARD FIDUCIARY STEWARDSHIP & LEADERSHIP DOSSIER
           ========================================================================= */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8 sm:space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
             {/* Left: Governance Charter & Interactive Committee Tabs */}
             <div className="lg:col-span-5 bg-evergreen text-white p-6 sm:p-8 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
@@ -483,54 +611,38 @@ export const HomePage: React.FC = () => {
                   <ShieldCheck className="w-4 h-4" />
                   <span>Dual-Tier Governance Charter</span>
                 </div>
-                <Heading as="h2" font="serif" size="display-md" color="white">
+                <Heading as="h2" font="serif" size="display-md" color="white" className="text-xl sm:text-3xl">
                   Institutional Direction & Fiduciary Stewardship.
                 </Heading>
-                <Text variant="sm" color="border" className="leading-relaxed text-border/90">
+                <Text variant="sm" color="border" className="leading-relaxed text-border/90 text-xs sm:text-sm">
                   Asterra Group operates under strict fiduciary governance with independent board oversight, statutory audits by Bureau Veritas, and specialized sub-committees.
                 </Text>
 
-                {/* Committee Selector */}
+                {/* Committee Selector (Touch Friendly) */}
                 <div className="space-y-2 pt-2">
                   <span className="font-mono text-[10px] text-mineral-teal uppercase font-bold tracking-wider block">
                     Select Governance Directorate:
                   </span>
                   <div className="grid grid-cols-3 gap-1.5">
-                    <button
-                      onClick={() => setActiveCommittee('audit')}
-                      className={`p-2 text-[10px] font-mono uppercase tracking-wider text-center transition-all border cursor-pointer ${
-                        activeCommittee === 'audit'
-                          ? 'bg-mineral-teal text-white border-mineral-teal font-bold'
-                          : 'bg-white/5 text-border/70 border-white/10 hover:bg-white/10'
-                      }`}
-                    >
-                      Audit
-                    </button>
-                    <button
-                      onClick={() => setActiveCommittee('risk')}
-                      className={`p-2 text-[10px] font-mono uppercase tracking-wider text-center transition-all border cursor-pointer ${
-                        activeCommittee === 'risk'
-                          ? 'bg-mineral-teal text-white border-mineral-teal font-bold'
-                          : 'bg-white/5 text-border/70 border-white/10 hover:bg-white/10'
-                      }`}
-                    >
-                      Risk
-                    </button>
-                    <button
-                      onClick={() => setActiveCommittee('technical')}
-                      className={`p-2 text-[10px] font-mono uppercase tracking-wider text-center transition-all border cursor-pointer ${
-                        activeCommittee === 'technical'
-                          ? 'bg-mineral-teal text-white border-mineral-teal font-bold'
-                          : 'bg-white/5 text-border/70 border-white/10 hover:bg-white/10'
-                      }`}
-                    >
-                      Technical
-                    </button>
+                    {(['audit', 'risk', 'technical'] as const).map((comm) => (
+                      <button
+                        key={comm}
+                        onClick={() => setActiveCommittee(comm)}
+                        className={`min-h-[44px] p-2 text-xs font-mono uppercase tracking-wider text-center transition-all border cursor-pointer flex items-center justify-center ${
+                          activeCommittee === comm
+                            ? 'bg-mineral-teal text-white border-mineral-teal font-bold shadow-xs'
+                            : 'bg-white/5 text-border/70 border-white/10 hover:bg-white/10'
+                        }`}
+                        aria-pressed={activeCommittee === comm}
+                      >
+                        {comm.charAt(0).toUpperCase() + comm.slice(1)}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
                 {/* Committee Detail Card */}
-                <div className="p-4 bg-white/5 border border-white/10 space-y-2 text-xs">
+                <div className="p-4 bg-white/5 border border-white/10 space-y-2 text-xs animate-fadeIn">
                   <div className="font-bold text-white font-serif text-sm">
                     {committeeDetails[activeCommittee].title}
                   </div>
@@ -545,7 +657,7 @@ export const HomePage: React.FC = () => {
 
               <Link
                 to="/leadership"
-                className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-mineral-teal hover:underline font-bold"
+                className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-mineral-teal hover:underline font-bold py-2 min-h-[44px]"
               >
                 <span>Review Complete Governance Charter & Board</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -558,7 +670,7 @@ export const HomePage: React.FC = () => {
                 <Link
                   key={exec.slug}
                   to={`/leadership/${exec.slug}`}
-                  className="bg-white border border-border p-5 flex flex-col justify-between group hover:border-evergreen transition-all shadow-xs"
+                  className="bg-white border border-border p-4 sm:p-5 flex flex-col justify-between group hover:border-evergreen transition-all shadow-xs"
                 >
                   <div className="space-y-3">
                     <div className="aspect-[4/5] bg-ivory-canvas overflow-hidden border border-border">
@@ -577,7 +689,7 @@ export const HomePage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-border flex items-center justify-between text-[10px] font-mono text-charcoal-muted">
+                  <div className="pt-3 mt-3 border-t border-border flex items-center justify-between text-[10px] font-mono text-charcoal-muted min-h-[32px]">
                     <span>{exec.credentials[0] || 'Executive'}</span>
                     <span className="text-evergreen font-bold group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                   </div>
@@ -591,9 +703,9 @@ export const HomePage: React.FC = () => {
       {/* =========================================================================
           5. INTERNATIONAL AUDITED QUALITY & ACCREDITATION STRIP
           ========================================================================= */}
-      <section className="py-12 bg-white border-b border-border">
+      <section className="py-10 sm:py-12 bg-white border-b border-border">
         <div className="container-corporate">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
             <div className="lg:max-w-xs space-y-1">
               <span className="font-mono text-[10px] uppercase tracking-widest text-mineral-teal font-bold block">
                 Audited Standards
@@ -606,7 +718,7 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 flex-1">
               {company.certifications.map((cert) => (
                 <div
                   key={cert.code}
@@ -631,41 +743,41 @@ export const HomePage: React.FC = () => {
       {/* =========================================================================
           6. APPLIED METALLURGY & TECHNICAL MONOGRAPHS
           ========================================================================= */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8 sm:space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-border pb-6">
             <div className="space-y-2 max-w-3xl">
               <span className="badge-mono">Engineering Whitepapers</span>
-              <Heading as="h2" font="serif" size="display-md" color="evergreen">
+              <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl">
                 Applied Metallurgy & Materials Science Monographs.
               </Heading>
-              <Text variant="lead" color="body">
+              <Text variant="lead" color="body" className="text-xs sm:text-base">
                 Authoritative research papers, structural fatigue evaluations, and ESG circularity studies published by Asterra engineering leadership.
               </Text>
             </div>
             <Link
               to="/insights"
-              className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0"
+              className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold shrink-0 min-h-[44px]"
             >
               <span>Explore Knowledge Center</span>
               <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
             {/* Lead Monograph Feature */}
             {leadArticle && (
-              <div className="lg:col-span-7 bg-white border border-border p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div className="lg:col-span-7 bg-white border border-border p-5 sm:p-8 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-2 border-b border-border pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
                     <Badge variant="mono">{leadArticle.category}</Badge>
                     <span className="font-mono text-[11px] text-charcoal-muted">
-                      {leadArticle.readTimeMinutes} min read • Published {leadArticle.publishedDate}
+                      {leadArticle.readTimeMinutes} min read • {leadArticle.publishedDate}
                     </span>
                   </div>
 
                   <Link to={`/insights/${leadArticle.slug}`} className="block group">
-                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-evergreen group-hover:text-mineral-teal transition-colors">
+                    <h3 className="font-serif text-lg sm:text-2xl font-bold text-evergreen group-hover:text-mineral-teal transition-colors">
                       {leadArticle.title}
                     </h3>
                   </Link>
@@ -675,7 +787,7 @@ export const HomePage: React.FC = () => {
                   </p>
 
                   {leadArticle.keyTakeaways && leadArticle.keyTakeaways.length > 0 && (
-                    <div className="p-4 bg-ivory-canvas border border-border space-y-1.5">
+                    <div className="p-3.5 sm:p-4 bg-ivory-canvas border border-border space-y-1.5">
                       <span className="font-mono text-[10px] uppercase font-bold text-evergreen tracking-wider block">
                         Executive Engineering Takeaway:
                       </span>
@@ -697,7 +809,7 @@ export const HomePage: React.FC = () => {
                   </div>
                   <Link
                     to={`/insights/${leadArticle.slug}`}
-                    className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold"
+                    className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold min-h-[44px]"
                   >
                     <span>Read Monograph</span>
                     <ArrowRight className="w-3.5 h-3.5 ml-1" />
@@ -711,7 +823,7 @@ export const HomePage: React.FC = () => {
               {secondaryArticles.map((article) => (
                 <div
                   key={article.slug}
-                  className="bg-white border border-border p-5 flex flex-col justify-between space-y-3 hover:border-evergreen transition-all"
+                  className="bg-white border border-border p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-evergreen transition-all"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -734,15 +846,16 @@ export const HomePage: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-border flex items-center justify-between text-xs">
+                  <div className="pt-2 border-t border-border flex items-center justify-between text-xs min-h-[32px]">
                     <span className="font-mono text-[11px] text-charcoal-muted">
                       {article.author.name}
                     </span>
                     <Link
                       to={`/insights/${article.slug}`}
-                      className="font-mono text-[11px] font-bold text-evergreen hover:text-mineral-teal uppercase"
+                      className="font-mono text-[11px] font-bold text-evergreen hover:text-mineral-teal uppercase flex items-center gap-1"
                     >
-                      Read &rarr;
+                      <span>Read</span>
+                      <span>&rarr;</span>
                     </Link>
                   </div>
                 </div>
@@ -755,17 +868,17 @@ export const HomePage: React.FC = () => {
       {/* =========================================================================
           7. DIRECT COMMERCIAL & RFQ BANNER
           ========================================================================= */}
-      <section className="bg-evergreen text-white py-16 border-t border-evergreen-hover">
+      <section className="bg-evergreen text-white py-12 sm:py-16 border-t border-evergreen-hover">
         <div className="container-corporate">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center justify-between">
             <div className="lg:col-span-8 space-y-3">
               <span className="font-mono text-xs uppercase tracking-widest text-mineral-teal font-bold block">
                 Direct Procurement & Tender Inquiries
               </span>
-              <Heading as="h2" font="serif" size="display-md" color="white">
+              <Heading as="h2" font="serif" size="display-md" color="white" className="text-xl sm:text-3xl">
                 Require certified structural steel fabrication or high-volume precast allocations?
               </Heading>
-              <Text variant="body" color="border" className="text-border/90 text-sm max-w-2xl">
+              <Text variant="body" color="border" className="text-border/90 text-xs sm:text-sm max-w-2xl">
                 Our directorship teams provide formal technical proposals, plant capacity allocations, and feasibility reviews within 48 business hours.
               </Text>
             </div>

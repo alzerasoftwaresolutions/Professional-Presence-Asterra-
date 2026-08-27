@@ -42,60 +42,65 @@ export const BusinessListingPage: React.FC = () => {
       />
 
       {/* 2. OPERATIONAL TELEMETRY & FILTER BAR */}
-      <section className="bg-white border-b border-border py-8">
+      <section className="bg-white border-b border-border py-6 sm:py-8">
         <div className="container-corporate space-y-6">
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-6 border-b border-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-border">
             <div className="space-y-1">
-              <span className="font-mono text-[10px] text-charcoal-muted uppercase font-bold">Covered Footprint</span>
-              <div className="font-serif text-2xl font-bold text-evergreen">68,000 m²</div>
-              <p className="text-[11px] text-charcoal-body">Four synchronized plant facilities</p>
+              <span className="font-mono text-[9px] sm:text-[10px] text-charcoal-muted uppercase font-bold">Covered Footprint</span>
+              <div className="font-serif text-xl sm:text-2xl font-bold text-evergreen">68,000 m²</div>
+              <p className="text-[10px] sm:text-[11px] text-charcoal-body">Four plant facilities</p>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] text-charcoal-muted uppercase font-bold">Annual Volume</span>
-              <div className="font-serif text-2xl font-bold text-evergreen">120,000 MT</div>
-              <p className="text-[11px] text-charcoal-body">Certified structural & material output</p>
+              <span className="font-mono text-[9px] sm:text-[10px] text-charcoal-muted uppercase font-bold">Annual Volume</span>
+              <div className="font-serif text-xl sm:text-2xl font-bold text-evergreen">120,000 MT</div>
+              <p className="text-[10px] sm:text-[11px] text-charcoal-body">Certified output</p>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] text-charcoal-muted uppercase font-bold">Quality Standard</span>
-              <div className="font-serif text-2xl font-bold text-evergreen">EN 1090-2</div>
-              <p className="text-[11px] text-charcoal-body">EXC3 execution class certified</p>
+              <span className="font-mono text-[9px] sm:text-[10px] text-charcoal-muted uppercase font-bold">Quality Standard</span>
+              <div className="font-serif text-xl sm:text-2xl font-bold text-evergreen">EN 1090-2</div>
+              <p className="text-[10px] sm:text-[11px] text-charcoal-body">EXC3 certified</p>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] text-charcoal-muted uppercase font-bold">Traceability</span>
-              <div className="font-serif text-2xl font-bold text-evergreen">100% Heat Lot</div>
-              <p className="text-[11px] text-charcoal-body">Independent metallurgical testing</p>
+              <span className="font-mono text-[9px] sm:text-[10px] text-charcoal-muted uppercase font-bold">Traceability</span>
+              <div className="font-serif text-xl sm:text-2xl font-bold text-evergreen">100% Heat Lot</div>
+              <p className="text-[10px] sm:text-[11px] text-charcoal-body">Lab tested</p>
             </div>
           </div>
 
-          {/* Interactive Division Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-2">
-              {filterCategories.map((cat) => (
-                <button
-                  key={cat.value}
-                  onClick={() => setSelectedFilter(cat.value)}
-                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
-                    selectedFilter === cat.value
-                      ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs'
-                      : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
+          {/* Touch-Friendly Horizontally Scrollable Division Filter Tabs */}
+          <div className="space-y-2">
+            <div className="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+              {filterCategories.map((cat) => {
+                const isActive = selectedFilter === cat.value;
+                return (
+                  <button
+                    key={cat.value}
+                    onClick={() => setSelectedFilter(cat.value)}
+                    className={`px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border shrink-0 min-h-[44px] flex items-center justify-center ${
+                      isActive
+                        ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs ring-2 ring-mineral-teal/30 scale-[1.02]'
+                        : 'bg-ivory-canvas/70 text-charcoal-body border-border hover:border-evergreen active:scale-95'
+                    }`}
+                    aria-pressed={isActive}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
             </div>
-            <span className="text-xs font-mono text-charcoal-muted">
-              Showing {filteredUnits.length} of {businessUnits.length} Divisions
-            </span>
+            <div className="flex items-center justify-between text-[11px] font-mono text-charcoal-muted px-1">
+              <span>Showing {filteredUnits.length} of {businessUnits.length} Divisions</span>
+              <span className="text-mineral-teal font-bold hidden sm:inline">Tap any card for plant blueprint</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 3. BESPOKE INDUSTRIAL DIVISION BLUEPRINT CARDS */}
-      <section className="py-16 lg:py-24 bg-ivory-canvas border-b border-border">
-        <div className="container-corporate space-y-10">
-          <div className="space-y-8">
+      <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
+        <div className="container-corporate space-y-8 sm:space-y-10">
+          <div className="space-y-6 sm:space-y-8">
             {filteredUnits.map((unit) => (
               <div
                 key={unit.slug}
@@ -108,20 +113,21 @@ export const BusinessListingPage: React.FC = () => {
                       src={unit.heroImage}
                       alt={unit.name}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                      loading="lazy"
                     />
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
                       <span className="badge-mono bg-evergreen text-white border-mineral-teal">
                         {unit.divisionCode}
                       </span>
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4 bg-evergreen/90 text-white p-3 text-xs font-mono flex items-center justify-between">
-                      <span>{unit.facilityLocation}</span>
-                      <span className="text-mineral-teal font-bold">{unit.facilitySizeSqM}</span>
+                    <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-evergreen/90 text-white p-2.5 sm:p-3 text-xs font-mono flex items-center justify-between">
+                      <span className="truncate mr-2">{unit.facilityLocation}</span>
+                      <span className="text-mineral-teal font-bold shrink-0">{unit.facilitySizeSqM}</span>
                     </div>
                   </div>
 
                   {/* Right Specification Profile */}
-                  <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
+                  <div className="lg:col-span-7 p-5 sm:p-8 lg:p-10 flex flex-col justify-between space-y-5 sm:space-y-6">
                     <div className="space-y-4">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
                         <span className="font-mono text-xs font-bold text-mineral-teal uppercase">
@@ -136,7 +142,7 @@ export const BusinessListingPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-evergreen">
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-evergreen">
                         {unit.name}
                       </h3>
 
@@ -145,13 +151,13 @@ export const BusinessListingPage: React.FC = () => {
                       </p>
 
                       {/* Equipment Capabilities Matrix */}
-                      <div className="pt-2">
-                        <h4 className="font-mono text-[11px] uppercase tracking-widest text-charcoal-muted font-bold mb-2.5">
+                      <div className="pt-1">
+                        <h4 className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-charcoal-muted font-bold mb-2">
                           Key Production Capabilities & Tolerances:
                         </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-charcoal-body">
                           {unit.capabilities.map((cap) => (
-                            <div key={cap.id} className="flex items-start gap-2 bg-ivory-canvas/60 p-2.5 border border-border">
+                            <div key={cap.id} className="flex items-start gap-2 bg-ivory-canvas/60 p-2 sm:p-2.5 border border-border">
                               <CheckCircle2 className="w-3.5 h-3.5 text-mineral-teal shrink-0 mt-0.5" />
                               <div>
                                 <span className="font-bold text-evergreen block">{cap.title}</span>
@@ -163,7 +169,7 @@ export const BusinessListingPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
+                    <div className="pt-4 sm:pt-6 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                       <span className="font-mono text-xs text-charcoal-muted">
                         Personnel: {unit.workforceCount}
                       </span>
@@ -171,6 +177,7 @@ export const BusinessListingPage: React.FC = () => {
                         to={`/business/${unit.slug}`}
                         variant="primary"
                         size="sm"
+                        className="w-full sm:w-auto justify-center"
                         rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
                       >
                         Detailed Plant Specs & Machinery &rarr;
@@ -185,13 +192,13 @@ export const BusinessListingPage: React.FC = () => {
       </section>
 
       {/* 4. DIRECT RFQ ROUTING ACTION */}
-      <section className="py-16 bg-white border-b border-border">
-        <div className="container-corporate flex flex-col md:flex-row items-center justify-between gap-6">
+      <section className="py-12 sm:py-16 bg-white border-b border-border">
+        <div className="container-corporate flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6">
           <div className="space-y-1">
             <span className="font-mono text-xs font-bold text-mineral-teal uppercase block">
               Direct Technical Inquiries
             </span>
-            <h3 className="font-serif text-2xl font-bold text-evergreen">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-evergreen">
               Require engineering proposals or plant capacity reservations?
             </h3>
           </div>
@@ -199,6 +206,7 @@ export const BusinessListingPage: React.FC = () => {
             to="/contact"
             variant="primary"
             size="md"
+            className="w-full md:w-auto justify-center"
             rightIcon={<ArrowRight className="w-4 h-4 ml-1" />}
           >
             Submit Corporate RFQ
