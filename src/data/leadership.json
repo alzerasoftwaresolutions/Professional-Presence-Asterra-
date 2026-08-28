@@ -4,7 +4,7 @@
     "name": "Dr. Samuel Bekele",
     "role": "Group Chief Executive Officer",
     "department": "Executive Committee",
-    "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    "photo": "/images/leadership/leader-tadesse.jpg",
     "bio": "Dr. Samuel Bekele has served as Group CEO since 2014, leading Asterra's transition from a regional steel fabricator into a four-division diversified manufacturing conglomerate. He previously held senior manufacturing leadership roles at global engineering firms in Germany and the United States before returning to lead Asterra's industrial modernization.",
     "governanceQuote": "Sustainable industrialization requires disciplined capital allocation, relentless operational precision, and an uncompromising commitment to international quality standards.",
     "education": [
@@ -34,7 +34,7 @@
     "name": "Eng. Selam Haile",
     "role": "Chief Technology Officer & Engineering Director",
     "department": "Executive Committee",
-    "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+    "photo": "/images/leadership/leader-selam.jpg",
     "bio": "Eng. Selam Haile leads group-wide engineering design, quality assurance laboratories, and automated manufacturing research. With over 18 years of metallurgical and structural design expertise, she holds European Welding Engineer (EWE) certification and oversees Asterra's ISO execution compliance.",
     "governanceQuote": "Engineering credibility is not measured in marketing claims; it is proven in destructive tensile testing labs, sub-millimeter laser scans, and 50-year structural fatigue endurance.",
     "education": [
@@ -59,7 +59,7 @@
     "name": "Dawit Tadesse",
     "role": "Chief Operating Officer",
     "department": "Executive Committee",
-    "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    "photo": "/images/leadership/leader-yohannes.jpg",
     "bio": "Dawit Tadesse oversees operational execution across Asterra's four production plants. He specializes in lean manufacturing, supply chain optimization, and facility expansion, ensuring on-time delivery across multi-thousand-ton contractual manufacturing orders.",
     "governanceQuote": "Plant productivity is the harmonic alignment of automated tooling, predictable raw material logistics, and an uncompromising standard of workplace safety.",
     "education": [
@@ -83,7 +83,7 @@
     "name": "Helen Girum",
     "role": "Chief Financial Officer",
     "department": "Executive Committee",
-    "photo": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80",
+    "photo": "/images/leadership/leader-meron.jpg",
     "bio": "Helen Girum directs financial strategy, capital allocation, risk governance, and investor relations for Asterra Group. She brings 16 years of corporate finance and private equity experience across sub-Saharan industrial infrastructure.",
     "governanceQuote": "Prudent financial governance underpins industrial resilience, ensuring continuous capital reinvestment across changing macroeconomic cycles.",
     "education": [
@@ -107,7 +107,7 @@
     "name": "Prof. Alemu Worku",
     "role": "Independent Chairman of the Board",
     "department": "Board of Directors",
-    "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80",
+    "photo": "/images/leadership/leader-daniel.jpg",
     "bio": "Prof. Alemu Worku is an internationally recognized authority in materials science and industrial policy. He serves as Independent Board Chairman, ensuring rigorous corporate governance, fiduciary responsibility, and alignment with national industrial strategies.",
     "governanceQuote": "A board's duty is to safeguard institutional integrity, hold executive leadership to the highest ethical and technical benchmarks, and steward value for future generations.",
     "education": [
