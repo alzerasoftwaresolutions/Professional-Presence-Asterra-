@@ -105,8 +105,8 @@ export const CareersListingPage: React.FC = () => {
       {/* 3. OPEN POSITIONS DIRECTORY & FILTER */}
       <section className="py-12 sm:py-16 lg:py-24 bg-ivory-canvas border-b border-border">
         <div className="container-corporate space-y-8 sm:space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-border pb-4 sm:pb-6">
-            <div className="space-y-1.5">
+          <div className="space-y-6 border-b border-border pb-6 sm:pb-8">
+            <div className="space-y-2 max-w-3xl">
               <span className="badge-mono">Open Vacancies</span>
               <Heading as="h2" font="serif" size="display-md" color="evergreen" className="text-xl sm:text-3xl">
                 Current Engineering & Operational Roles.
@@ -116,15 +116,15 @@ export const CareersListingPage: React.FC = () => {
               </Text>
             </div>
 
-            {/* Department Filter Pills (Horizontally Scrollable on Mobile) */}
-            <div className="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+            {/* Department Filter Navigation (Placed below the description text) */}
+            <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
               {departments.map((dept) => {
                 const isActive = selectedDept === dept;
                 return (
                   <button
                     key={dept}
                     onClick={() => setSelectedDept(dept)}
-                    className={`px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border shrink-0 min-h-[44px] flex items-center justify-center ${
+                    className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border shrink-0 min-h-[44px] flex items-center justify-center ${
                       isActive
                         ? 'bg-evergreen text-white border-evergreen font-bold shadow-xs ring-2 ring-mineral-teal/30 scale-[1.02]'
                         : 'bg-white text-charcoal-body border-border hover:border-evergreen active:scale-95'
