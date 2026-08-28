@@ -803,7 +803,7 @@ export const HomePage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="pt-4 border-t border-border flex items-center justify-between">
+                <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5">
                   <div className="text-xs">
                     <span className="font-bold text-evergreen block">
                       {leadArticle.author.name}
@@ -812,13 +812,15 @@ export const HomePage: React.FC = () => {
                       {leadArticle.author.role}
                     </span>
                   </div>
-                  <Link
+                  <Button
                     to={`/insights/${leadArticle.slug}`}
-                    className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-evergreen hover:text-mineral-teal font-bold min-h-[44px]"
+                    variant="primary"
+                    size="sm"
+                    className="w-full sm:w-auto justify-center shadow-xs"
+                    rightIcon={<ArrowRight className="w-3.5 h-3.5 ml-1" />}
                   >
-                    <span>Read Monograph</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </Link>
+                    Read Monograph
+                  </Button>
                 </div>
               </div>
             )}
