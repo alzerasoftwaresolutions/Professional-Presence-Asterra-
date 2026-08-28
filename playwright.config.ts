@@ -11,22 +11,19 @@ export default defineConfig({
     baseURL: 'http://localhost:5174',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    channel: 'msedge',
   },
   projects: [
     {
-      name: 'Desktop Edge',
+      name: 'Desktop Chromium',
       use: {
-        ...devices['Desktop Edge'],
+        ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },
-        channel: 'msedge',
       },
     },
     {
-      name: 'Mobile Viewport',
+      name: 'Mobile Chrome',
       use: {
         ...devices['Pixel 5'],
-        channel: 'msedge',
       },
     },
   ],
