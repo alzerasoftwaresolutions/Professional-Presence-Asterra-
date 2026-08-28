@@ -13,12 +13,26 @@ Template 03 moves beyond functional data density into an **evocative, cinematic,
 
 The digital presence must evoke the immediate prestige of an invitation-only private salon or high-end design monograph. Visual luxury is conveyed through generous negative space, sophisticated tone-on-tone palettes, bespoke micro-interactions, rich documentary cinematography, and refined typography.
 
+> [!IMPORTANT]
+> **Template 03 is an INDEPENDENT TEMPLATE CONCEPT.**
+> 
+> The Template 03 direction document (`01-TEMPLATE-DIRECTIONS/Template_03_Premium_Experience.md`) defines the intended identity and goals of Template 03.
+> 
+> Template 01 documents are provided as **methodology references only**. Template 01's:
+> * Colors (Deep Evergreen `#173A35`, Warm Ivory `#F3F0E8`)
+> * Fonts (IBM Plex Serif)
+> * Layouts & Grid compositions
+> * Components & Content
+> * Asterra client decisions
+> 
+> **Must NOT be treated as requirements.** You must develop Template 03 independently.
+
 ---
 
 ## 2. Required Reading & Reference Matrix
 
 ### 2.1 Foundational Briefs (Read First)
-1. **`01-SHARED-FOUNDATIONS/Template_03_Premium_Experience.md`**:
+1. **`01-TEMPLATE-DIRECTIONS/Template_03_Premium_Experience.md`**:
    * *Why read*: This is your primary design brief and requirements manual.
    * *What to learn*: Target audience expectations, emotional pacing, immersive visual philosophy, and premium brand values.
 2. **`02-UNIVERSAL-STANDARDS/Universal_Design_Analysis.md`**:

@@ -13,12 +13,26 @@ Template 02 shifts the visual and content emphasis from industrial factory scale
 
 The user journey must feel like reading a high-prestige publication (e.g. *McKinsey Quarterly*, *The Economist*, *Financial Times Special Reports*, or *MIT Technology Review*) while maintaining corporate conversion pathways for high-value client advisory engagements.
 
+> [!IMPORTANT]
+> **Template 02 is an INDEPENDENT TEMPLATE CONCEPT.**
+> 
+> The Template 02 direction document (`01-TEMPLATE-DIRECTIONS/Template_02_Editorial_Expertise.md`) defines the intended identity and goals of Template 02.
+> 
+> Template 01 documents are provided as **methodology references only**. Template 01's:
+> * Colors (Deep Evergreen `#173A35`, Warm Ivory `#F3F0E8`)
+> * Fonts (IBM Plex Serif)
+> * Layouts & Grid compositions
+> * Components & Content
+> * Asterra client decisions
+> 
+> **Must NOT be treated as requirements.** You must develop Template 02 independently.
+
 ---
 
 ## 2. Required Reading & Reference Matrix
 
 ### 2.1 Foundational Briefs (Read First)
-1. **`01-SHARED-FOUNDATIONS/Template_02_Editorial_Expertise.md`**:
+1. **`01-TEMPLATE-DIRECTIONS/Template_02_Editorial_Expertise.md`**:
    * *Why read*: This is your primary design mandate and requirements document.
    * *What to learn*: Target audience, content hierarchy, monograph structures, and editorial brand character.
 2. **`02-UNIVERSAL-STANDARDS/Universal_Design_Analysis.md`**:
