@@ -49,3 +49,27 @@
 - **Context:** Phase 2 Foundation requires a strict, performant, and type-checked baseline for all routing, layouts, and typography.
 - **Decision:** Implemented `SiteLayout.tsx` with top utility bar, sticky desktop header, full-screen mobile menu with scroll lock, and 5-column footer. Added `container-corporate` (1440px max-width) and Google Fonts `IBM Plex Sans`, `IBM Plex Serif`, and `IBM Plex Mono`.
 - **Consequences:** All 16 routes build cleanly into a sub-65kB gzipped production bundle.
+
+---
+
+## ADR-006 — Dual-Tier Automated Testing Strategy (Unit + E2E)
+- **Status:** Accepted
+- **Context:** The application requires high regression prevention across both data/component units and real-browser viewport interactions without test runner collisions.
+- **Decision:** Use **Vitest** for fast isolated unit tests in `src/**/*.{test,spec}.{ts,tsx}` and **Playwright** for multi-viewport E2E testing in `e2e/specs/` using Page Object Models.
+- **Consequences:** Provides comprehensive test coverage (15 unit tests + 27 E2E tests) across Desktop Chromium (1440x900) and Mobile Chrome (Pixel 5 touch simulation).
+
+---
+
+## ADR-007 — Local Industrial Asset Caching & Offline Resilience
+- **Status:** Accepted
+- **Context:** Reliance on external image CDNs (e.g. Unsplash) introduces external network latency, risk of 404 dead links, and slower Largest Contentful Paint (LCP).
+- **Decision:** Download, bundle, and cache all 27 high-resolution industrial photography and executive assets locally in `public/images/` categorized by domain entity (`divisions/`, `projects/`, `leadership/`, `insights/`).
+- **Consequences:** Guarantees 100% offline resilience, instant asset decoding, zero external network dependency, and sub-second LCP.
+
+---
+
+## ADR-008 — Impeccable Responsive Touch Ergonomics
+- **Status:** Accepted
+- **Context:** Complex industrial telemetry tables and multi-division consoles can degrade on mobile and tablet viewports.
+- **Decision:** Enforce `min-h-[44px]` touch targets, horizontal touch-scrolling filter bars with hidden scrollbars (`no-scrollbar`), and in-place expandable accordions replacing hover popovers on mobile.
+- **Consequences:** Delivers seamless ergonomics and prevents layout shifts across mobile, tablet, and high-DPI desktop viewports.
