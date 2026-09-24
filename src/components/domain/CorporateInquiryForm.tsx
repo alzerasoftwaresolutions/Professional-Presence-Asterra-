@@ -77,7 +77,7 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
     return errors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -96,13 +96,28 @@ export const CorporateInquiryForm: React.FC<CorporateInquiryFormProps> = ({
 
     setIsSubmitting(true);
 
-    // Simulate enterprise backend dispatch
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const generatedRef = `AST-RFQ-${Math.floor(100000 + Math.random() * 900000)}`;
-      setReferenceNumber(generatedRef);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error || 'Unable to transmit your corporate inquiry at this time. Please try again.');
+      }
+
+      setReferenceNumber(data.referenceNumber || `AST-RFQ-${Math.floor(100000 + Math.random() * 900000)}`);
       setIsSubmitted(true);
-    }, 600);
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'A network error occurred while transmitting your request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
