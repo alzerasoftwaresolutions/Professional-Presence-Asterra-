@@ -77,13 +77,16 @@ export const InsightDetailPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => alert(`Technical Report PDF: ${article.title} downloaded.`)}
+            <a
+              href={article.downloadablePdfUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-ivory-canvas border border-border text-evergreen hover:border-evergreen transition-colors cursor-pointer text-xs font-bold font-mono min-h-[44px]"
             >
               <Download className="w-3.5 h-3.5 text-mineral-teal" />
               <span>Download PDF Monograph</span>
-            </button>
+            </a>
           </div>
         </div>
       </section>

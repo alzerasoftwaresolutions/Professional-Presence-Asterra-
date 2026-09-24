@@ -66,13 +66,16 @@ export const LegalPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => alert(`Official signed legal document for ${title} initiated for download.`)}
+            <a
+              href="/documents/asterra-legal-policy.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-ivory-canvas border border-border text-evergreen hover:border-evergreen font-mono text-xs font-bold uppercase transition-colors min-h-[44px] cursor-pointer"
             >
               <Download className="w-4 h-4 text-mineral-teal" />
               <span>Download PDF Policy Document</span>
-            </button>
+            </a>
           </div>
         </div>
       </section>
