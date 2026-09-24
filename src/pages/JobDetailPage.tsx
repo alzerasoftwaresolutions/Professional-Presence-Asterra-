@@ -66,7 +66,7 @@ export const JobDetailPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -93,10 +93,34 @@ export const JobDetailPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      const response = await fetch('/api/career', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formState,
+          jobTitle: job.title,
+          division: job.division,
+          slug: job.slug,
+          department: job.department,
+        }),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error || 'Unable to transmit your candidate dossier at this time. Please try again.');
+      }
+
       setIsSubmitted(true);
-    }, 600);
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'A network error occurred while submitting your dossier. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

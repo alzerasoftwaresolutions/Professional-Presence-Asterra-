@@ -195,7 +195,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* 4. FOUR OPERATIONAL PILLARS (CORE VALUES) */}
-      <section className="py-12 sm:py-16 lg:py-24 bg-white border-b border-border">
+      <section id="values" className="py-12 sm:py-16 lg:py-24 bg-white border-b border-border">
         <div className="container-corporate space-y-8 sm:space-y-12">
           <div className="max-w-3xl space-y-2">
             <span className="badge-mono">Operating Values</span>
